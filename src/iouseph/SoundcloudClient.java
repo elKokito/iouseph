@@ -26,11 +26,9 @@ public class SoundcloudClient {
 	private String client_secret = "c792cfd55e331d931f074b8d8a7f351a";
 	private String token ="";
 	
-	public void get_token() throws ClientProtocolException, IOException {
+	public void retreive_token() throws ClientProtocolException, IOException {
 	
 		String url = "https://api.soundcloud.com/oauth2/token";
-		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpPost post = new HttpPost(url);
 		
 		List<NameValuePair> body_args = new ArrayList<NameValuePair>();
 		body_args.add(new BasicNameValuePair("client_id", client_id));
@@ -40,6 +38,47 @@ public class SoundcloudClient {
 		body_args.add(new BasicNameValuePair("password", "1234abcd"));
 		body_args.add(new BasicNameValuePair("scope", "non-expiring"));
 		
+		JSONObject res = post(url, body_args);
+		token = res.getString("access_token");
+ 
+	}
+	
+	public void get_personnal_info() throws ClientProtocolException, IOException {
+
+		String url = host + "me?oauth_token=" + token;
+		JSONObject res = get(url);
+		System.out.println(res.toString());
+	}
+	
+	public void get_user_info(String user_id) throws UnsupportedOperationException, IOException {
+		String url = host + "users/" + user_id + "?client_id=" + client_id;
+		JSONObject res = get(url);
+		System.out.println(res.toString());
+	}
+	
+	private JSONObject get(String url) throws UnsupportedOperationException, IOException {
+		
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpGet get = new HttpGet(url);
+
+		CloseableHttpResponse httpresponse = httpclient.execute(get);
+
+		JSONObject res_json = null;
+		if(httpresponse.getStatusLine().getStatusCode() == 200) {
+			res_json = read_response(httpresponse.getEntity().getContent());
+			//System.out.println(res_json.toString());
+		}
+		else {
+			System.out.println("error");
+			System.out.println(httpresponse.getStatusLine().getReasonPhrase());
+		}
+		return res_json;
+	}
+	
+	private JSONObject post(String url, List<NameValuePair> body_args) throws UnsupportedOperationException, IOException {
+		
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpPost post = new HttpPost(url);
 		post.setEntity(new UrlEncodedFormEntity(body_args, Consts.UTF_8));
 		
 		CloseableHttpResponse httpresponse = httpclient.execute(post);
@@ -54,28 +93,8 @@ public class SoundcloudClient {
 			System.out.println("error");
 			System.out.println(httpresponse.getStatusLine().getReasonPhrase());
 		}
- 
-	}
-	
-	public void get_personnal_info() throws ClientProtocolException, IOException {
-
-		String url = host + "me?oauth_token=" + token;
-		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpGet get = new HttpGet(url);
-
-		CloseableHttpResponse httpresponse = httpclient.execute(get);
-
-		JSONObject res_json = null;
-		if(httpresponse.getStatusLine().getStatusCode() == 200) {
-			res_json = read_response(httpresponse.getEntity().getContent());
-			System.out.println(res_json.toString());
-		}
-		else {
-			System.out.println("error");
-			System.out.println(httpresponse.getStatusLine().getReasonPhrase());
-		}
 		
-
+		return res_json;
 	}
 	
 	private JSONObject read_response(InputStream r) throws IOException {
@@ -91,5 +110,4 @@ public class SoundcloudClient {
         JSONObject res_json = new JSONObject(response.toString());
         return res_json;
 	}
-	
 }
