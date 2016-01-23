@@ -10,6 +10,7 @@ import java.util.List;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -20,10 +21,10 @@ import org.json.JSONObject;
 
 public class SoundcloudClient {
 
-	public final String host = "https://soundcloud.com/connect";
-	public String client_id = "0b26692829174e89b8c12870cbdc77aa";
-	public String client_secret = "c792cfd55e331d931f074b8d8a7f351a";
-	public String token ="";
+	private final String host = "https://api.soundcloud.com/";
+	private String client_id = "0b26692829174e89b8c12870cbdc77aa";
+	private String client_secret = "c792cfd55e331d931f074b8d8a7f351a";
+	private String token ="";
 	
 	public void get_token() throws ClientProtocolException, IOException {
 	
@@ -39,27 +40,56 @@ public class SoundcloudClient {
 		body_args.add(new BasicNameValuePair("password", "1234abcd"));
 		body_args.add(new BasicNameValuePair("scope", "non-expiring"));
 		
-		
 		post.setEntity(new UrlEncodedFormEntity(body_args, Consts.UTF_8));
 		
-		CloseableHttpResponse res = httpclient.execute(post);
-		System.out.println("\nSending 'POST' request to URL : " + url);
-		System.out.println("res : " + res.getStatusLine());
+		CloseableHttpResponse httpresponse = httpclient.execute(post);
 
-		BufferedReader reader = new BufferedReader(new InputStreamReader(
-                res.getEntity().getContent()));
-		
-		String inputLine;
-		StringBuffer response = new StringBuffer();
-		
-		while((inputLine = reader.readLine()) != null) {
-			response.append(inputLine);
+		JSONObject res_json = null;
+		if(httpresponse.getStatusLine().getStatusCode() == 200) {
+			res_json = read_response(httpresponse.getEntity().getContent());
+			token = res_json.getString("access_token");
+			System.out.println(token);
 		}
-		reader.close();
-		
-		JSONObject obj = new JSONObject(response.toString());
-		token = obj.getString("access_token");
-		res.close();
+		else {
+			System.out.println("error");
+			System.out.println(httpresponse.getStatusLine().getReasonPhrase());
+		}
  
 	}
+	
+	public void get_personnal_info() throws ClientProtocolException, IOException {
+
+		String url = host + "me?oauth_token=" + token;
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpGet get = new HttpGet(url);
+
+		CloseableHttpResponse httpresponse = httpclient.execute(get);
+
+		JSONObject res_json = null;
+		if(httpresponse.getStatusLine().getStatusCode() == 200) {
+			res_json = read_response(httpresponse.getEntity().getContent());
+			System.out.println(res_json.toString());
+		}
+		else {
+			System.out.println("error");
+			System.out.println(httpresponse.getStatusLine().getReasonPhrase());
+		}
+		
+
+	}
+	
+	private JSONObject read_response(InputStream r) throws IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(r)); 
+ 
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+ 
+        while ((inputLine = reader.readLine()) != null) {
+            response.append(inputLine);
+        }
+        reader.close();
+        JSONObject res_json = new JSONObject(response.toString());
+        return res_json;
+	}
+	
 }

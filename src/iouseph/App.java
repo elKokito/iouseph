@@ -10,7 +10,7 @@ public class App {
 		
 		SoundcloudClient c = new SoundcloudClient();
 		c.get_token();
-		System.out.println(c.token);
+		c.get_personnal_info();
 	}
 
 }
