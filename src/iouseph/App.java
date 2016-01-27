@@ -18,6 +18,12 @@ public class App {
 		//c.get_tracks();
 		//c.search("trap");
 		c.track("5555");
+
+		
+		Deezer d = new Deezer();
+		
+		d.get_user_info("25315581");
+		d.get_search("muse");
 	}
 
 }
