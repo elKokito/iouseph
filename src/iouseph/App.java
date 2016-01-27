@@ -12,6 +12,10 @@ public class App {
 		c.retreive_token();
 		c.get_personnal_info();
 		c.get_user_info("2020");
+		c.get_user_info("20201");
+		c.resolve("https://soundcloud.com/matas/hobnotropic");
+		c.get_tracks();
+		c.search("trap");
 	}
 
 }
