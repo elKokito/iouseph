@@ -16,6 +16,11 @@ public class App {
 		c.resolve("https://soundcloud.com/matas/hobnotropic");
 		c.get_tracks();
 		c.search("trap");
+		
+		Deezer d = new Deezer();
+		
+		d.get_user_info("25315581");
+		d.get_search("muse");
 	}
 
 }
