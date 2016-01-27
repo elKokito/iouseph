@@ -9,13 +9,15 @@ public class App {
 	public static void main( String[] args) throws ClientProtocolException, IOException {
 		
 		SoundcloudClient c = new SoundcloudClient();
-		c.retreive_token();
-		c.get_personnal_info();
-		c.get_user_info("2020");
-		c.get_user_info("20201");
-		c.resolve("https://soundcloud.com/matas/hobnotropic");
-		c.get_tracks();
-		c.search("trap");
+		// username and password in args
+		c.retreive_token(args[1], args[2]);
+		//c.get_personnal_info();
+		//c.get_user_info("2020");
+		//c.get_user_info("20201");
+		//c.resolve("https://soundcloud.com/matas/hobnotropic");
+		//c.get_tracks();
+		//c.search("trap");
+		c.track("5555");
 	}
 
 }

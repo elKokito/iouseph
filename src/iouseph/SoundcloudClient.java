@@ -27,7 +27,7 @@ public class SoundcloudClient {
 	private String client_secret = "c792cfd55e331d931f074b8d8a7f351a";
 	private String token ="";
 	
-	public void retreive_token() throws ClientProtocolException, IOException {
+	public void retreive_token(String username, String password) throws ClientProtocolException, IOException {
 	
 		String url = "https://api.soundcloud.com/oauth2/token";
 		
@@ -35,8 +35,8 @@ public class SoundcloudClient {
 		body_args.add(new BasicNameValuePair("client_id", client_id));
 		body_args.add(new BasicNameValuePair("client_secret", client_secret));
 		body_args.add(new BasicNameValuePair("grant_type", "password"));
-		body_args.add(new BasicNameValuePair("username", "is_the_freeze@hotmail.com"));
-		body_args.add(new BasicNameValuePair("password", "1234abcd"));
+		body_args.add(new BasicNameValuePair("username", username));
+		body_args.add(new BasicNameValuePair("password", password));
 		body_args.add(new BasicNameValuePair("scope", "non-expiring"));
 		
 		JSONObject res = post(url, body_args);
@@ -72,6 +72,12 @@ public class SoundcloudClient {
 	public void search(String query) throws UnsupportedOperationException, IOException {
 		String url = host + "tracks?q=" + query + "&client_id=" + client_id;
 		JSONArray res = get_array(url);
+		System.out.println(res.toString());
+	}
+	
+	public void track(String song_id) throws UnsupportedOperationException, IOException {
+		String url = host + "tracks/" + song_id + "?client_id=" + client_id;
+		JSONObject res = get(url);
 		System.out.println(res.toString());
 	}
 	
