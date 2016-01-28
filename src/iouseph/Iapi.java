@@ -1,26 +1,57 @@
 package iouseph;
 
+/**
+ * Interface pour chaque client d'API public de l'application.
+ * Ceci est pour repondre aux requis defini dans le tp1
+ * 1. outils de recherche de musique independant des systemes de streaming.
+ * 2. gestion des listes de musique.
+ * 3. reproduction des listes de musique.
+ * 4. bonus: system de parole de chanson.
+ * 
+ * @author Marcial Lopez-Ferrada, Youssef Zemmahi, Aymen Zalila
+ *
+ */
 public interface Iapi {
 	
-	public void retreive_token();
-	public void get_personnal_info();
-	public void get_search(String search);// : track album artist playlist
-	public void get_user_info(String user_id); // > albums artists charts flow folders followings followers history notifications permissions options personal_songs playlists podcasts radios recommendations tracks
-	public void get_album(String album_id);// > comments fans tracks
-	public void get_artist(String artist_id);// > top albums comments fans related radio playlists
-	public void get_chart();// > tracks albums artists playlists
-	public void get_comment(String comment_id);
-	public void get_editorials();
-	public void get_editorial(String editorial_id);// > selection charts releases
-	//public void get_episode(String episode_id);// > bookmark
+	/** methode servant a faire une recherche de chason de facon general
+	 * 
+	 * @param search	String decrivant la recherche
+	 */
+	public void get_search(String search);
+
+	/** methode pour recuperer l'information d'un album avec son id
+	 * 
+	 * @param album_id 	id de l'album
+	 */
+	public void get_album(String album_id);
+
+	/** methode pour recuperer l'information d'un artist avec son id
+	 * @param artist_id	id de l'artiste
+	 */
+	public void get_artist(String artist_id);
+	
+	
+	/** methode pour recuperer les genres disponible
+	 * 
+	 */
 	public void get_genres();
-	public void get_genre(String genre_id);// > artists podcasts radios
-	public void get_options();
-	public void get_playlist(String playlist_id);// > seen comments fans tracks
-	public void get_podcast(String podcast_id);// > episodes
-	public void get_radios();// > genres top lists 
-	public void get_radio(String radio_id);// > tracks
+	
+	
+	/** methode pour recupere de l'information sur un genre en particulier
+	 * @param genre_id	id du genre rechercher
+	 */
+	public void get_genre(String genre_id);
+	
+	
+	/** methode pour recuperer une playlist
+	 * @param playlist_id 	id le la playlist rechercher
+	 */
+	public void get_playlist(String playlist_id);
+	
+	
+	/** methode pour recupere de l'information sur une chanson en particulier
+	 * @param track_id 	id de la chanson rechercher
+	 */
 	public void get_track(String track_id);
-	//public void get_();
 	
 }

@@ -1,33 +1,47 @@
 package iouseph;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.Consts;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class SoundcloudClient {
+/** client utilisant l'API public de Soundcloud [https://developers.soundcloud.com/docs/api/reference]
+ * et respectant l'interface Iapi
+ * 
+ * @author Marcial Lopez-Ferrada
+ *
+ */
+public class SoundcloudClient implements Iapi {
 
+	/**
+	 * String qui contient l'url de l'api de Soundcloud
+	 */
 	private final String host = "http://api.soundcloud.com/";
+	/**
+	 * String de l'id de l'application enregister chez soundcloud
+	 */
 	private String client_id = "0b26692829174e89b8c12870cbdc77aa";
+	/**
+	 * String du token permanent lorsqu'une application est enregistrer chez soundcloud
+	 */
 	private String client_secret = "c792cfd55e331d931f074b8d8a7f351a";
+	/**
+	 * String du token ressu pour la periode d'utilisation de l'application par un user
+	 */
 	private String token ="";
+	/**
+	 * NetworkWrapper utilitaire pour faire les requetes http
+	 */
+	private NetworkWrapper client = new NetworkWrapper();
 	
-	public void retreive_token(String username, String password) throws ClientProtocolException, IOException {
+	/** methode pour s'authentifier aupres de soundcloud et obtenir un token de session
+	 * @param username 	String username de l'utilisateur
+	 * @param password	String password de l'utilisateur
+	 */
+	public void retreive_token(String username, String password) {
 	
 		String url = "https://api.soundcloud.com/oauth2/token";
 		
@@ -39,138 +53,85 @@ public class SoundcloudClient {
 		body_args.add(new BasicNameValuePair("password", password));
 		body_args.add(new BasicNameValuePair("scope", "non-expiring"));
 		
-		JSONObject res = post(url, body_args);
+		JSONObject res = client.post(url, body_args);
 		token = res.getString("access_token");
  
 	}
 	
-	public void get_personnal_info() throws ClientProtocolException, IOException {
+	/**
+	 * methode permettant de recuperer l'information personnel de l'utilisateur
+	 */
+	public void get_personnal_info() {
 
 		String url = host + "me?oauth_token=" + token;
-		JSONObject res = get(url);
+		JSONObject res = client.get(url);
 		System.out.println(res.toString());
 	}
 	
-	public void get_user_info(String user_id) throws UnsupportedOperationException, IOException {
+	/** methode permettant de recuperer l'information d'un membre de soundcloud
+	 * @param user_id	id du membre rechercher
+	 */
+	public void get_user_info(String user_id) {
 		String url = host + "users/" + user_id + "?client_id=" + client_id;
-		JSONObject res = get(url);
+		JSONObject res = client.get(url);
 		System.out.println(res.toString());
 	}
 	
-	public void resolve(String soundcloud_url) throws UnsupportedOperationException, IOException {
+	public void resolve(String soundcloud_url) {
 		String url = host + "resolve?url=" + soundcloud_url + "&client_id=" + client_id;
-		JSONObject res = get(url);
+		JSONObject res = client.get(url);
 		System.out.println(res.toString());
 	}
 	
-	public void get_tracks() throws UnsupportedOperationException, IOException {
+	public void get_tracks() {
 		String url = host + "tracks?client_id=" + client_id;
-		JSONArray res = get_array(url);
+		JSONArray res = client.get_array(url);
 		System.out.println(res.toString());
 	}
 	
-	public void search(String query) throws UnsupportedOperationException, IOException {
+	@Override
+	public void get_search(String query) {
 		String url = host + "tracks?q=" + query + "&client_id=" + client_id;
-		JSONArray res = get_array(url);
+		JSONArray res = client.get_array(url);
 		System.out.println(res.toString());
 	}
 	
-	public void track(String song_id) throws UnsupportedOperationException, IOException {
+	@Override
+	public void get_track(String song_id) {
 		String url = host + "tracks/" + song_id + "?client_id=" + client_id;
-		JSONObject res = get(url);
+		JSONObject res = client.get(url);
 		System.out.println(res.toString());
 	}
-	
-	private JSONObject get(String url) throws UnsupportedOperationException, IOException {
+
+
+	@Override
+	public void get_album(String album_id) {
+		// TODO Auto-generated method stub
 		
-		CloseableHttpClient httpclient = HttpClients.createDefault();
-		System.out.println("sending GET: " + url);
-		HttpGet get = new HttpGet(url);
-
-		CloseableHttpResponse httpresponse = httpclient.execute(get);
-
-		JSONObject res_json = null;
-		if(httpresponse.getStatusLine().getStatusCode() == 200) {
-			res_json = read_response(httpresponse.getEntity().getContent());
-			//System.out.println(res_json.toString());
-		}
-		else {
-			System.out.println("error");
-			System.out.println(httpresponse.getStatusLine().getReasonPhrase());
-		}
-		return res_json;
-	}
-	
-	private JSONArray get_array(String url) throws UnsupportedOperationException, IOException {
-		
-		CloseableHttpClient httpclient = HttpClients.createDefault();
-		System.out.println("sending GET: " + url);
-		HttpGet get = new HttpGet(url);
-
-		CloseableHttpResponse httpresponse = httpclient.execute(get);
-
-		JSONArray res_json = null;
-		if(httpresponse.getStatusLine().getStatusCode() == 200) {
-			res_json = read_response_array(httpresponse.getEntity().getContent());
-			//System.out.println(res_json.toString());
-		}
-		else {
-			System.out.println("error");
-			System.out.println(httpresponse.getStatusLine().getReasonPhrase());
-		}
-		return res_json;
 	}
 
-	private JSONObject post(String url, List<NameValuePair> body_args) throws UnsupportedOperationException, IOException {
+	@Override
+	public void get_artist(String artist_id) {
+		// TODO Auto-generated method stub
 		
-		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpPost post = new HttpPost(url);
-		post.setEntity(new UrlEncodedFormEntity(body_args, Consts.UTF_8));
-		
-		CloseableHttpResponse httpresponse = httpclient.execute(post);
+	}
 
-		JSONObject res_json = null;
-		if(httpresponse.getStatusLine().getStatusCode() == 200) {
-			res_json = read_response(httpresponse.getEntity().getContent());
-			token = res_json.getString("access_token");
-			System.out.println(token);
-		}
-		else {
-			System.out.println("error");
-			System.out.println(httpresponse.getStatusLine().getReasonPhrase());
-		}
+	@Override
+	public void get_genres() {
+		// TODO Auto-generated method stub
 		
-		return res_json;
 	}
-	
-	private JSONObject read_response(InputStream r) throws IOException {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(r)); 
- 
-        String inputLine;
-        StringBuffer response = new StringBuffer();
- 
-        while ((inputLine = reader.readLine()) != null) {
-            response.append(inputLine);
-        }
-        System.out.println(response);
-        reader.close();
-        JSONObject res_json = new JSONObject(response.toString());
-        return res_json;
+
+	@Override
+	public void get_genre(String genre_id) {
+		// TODO Auto-generated method stub
+		
 	}
-	
-	private JSONArray read_response_array(InputStream r) throws IOException {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(r)); 
-		 
-        String inputLine;
-        StringBuffer response = new StringBuffer();
- 
-        while ((inputLine = reader.readLine()) != null) {
-            response.append(inputLine);
-        }
-        System.out.println(response);
-        reader.close();
-        JSONArray res_json = new JSONArray(response.toString());
-        return res_json;
-	
+
+	@Override
+	public void get_playlist(String playlist_id) {
+		// TODO Auto-generated method stub
+		
 	}
+
 }
