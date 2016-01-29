@@ -32,10 +32,6 @@ public class SoundcloudClient implements Iapi {
 	 * String du token ressu pour la periode d'utilisation de l'application par un user
 	 */
 	private String token ="";
-	/**
-	 * NetworkWrapper utilitaire pour faire les requetes http
-	 */
-	private NetworkWrapper client = new NetworkWrapper();
 	
 	/** methode pour s'authentifier aupres de soundcloud et obtenir un token de session
 	 * @param username 	String username de l'utilisateur
@@ -53,7 +49,7 @@ public class SoundcloudClient implements Iapi {
 		body_args.add(new BasicNameValuePair("password", password));
 		body_args.add(new BasicNameValuePair("scope", "non-expiring"));
 		
-		JSONObject res = client.post(url, body_args);
+		JSONObject res = NetworkWrapper.post(url, body_args);
 		token = res.getString("access_token");
  
 	}
@@ -64,7 +60,7 @@ public class SoundcloudClient implements Iapi {
 	public void get_personnal_info() {
 
 		String url = host + "me?oauth_token=" + token;
-		JSONObject res = client.get(url);
+		JSONObject res = NetworkWrapper.get(url);
 		System.out.println(res.toString());
 	}
 	
@@ -73,33 +69,33 @@ public class SoundcloudClient implements Iapi {
 	 */
 	public void get_user_info(String user_id) {
 		String url = host + "users/" + user_id + "?client_id=" + client_id;
-		JSONObject res = client.get(url);
+		JSONObject res = NetworkWrapper.get(url);
 		System.out.println(res.toString());
 	}
 	
 	public void resolve(String soundcloud_url) {
 		String url = host + "resolve?url=" + soundcloud_url + "&client_id=" + client_id;
-		JSONObject res = client.get(url);
+		JSONObject res = NetworkWrapper.get(url);
 		System.out.println(res.toString());
 	}
 	
 	public void get_tracks() {
 		String url = host + "tracks?client_id=" + client_id;
-		JSONArray res = client.get_array(url);
+		JSONArray res = NetworkWrapper.get_array(url);
 		System.out.println(res.toString());
 	}
 	
 	@Override
 	public void get_search(String query) {
 		String url = host + "tracks?q=" + query + "&client_id=" + client_id;
-		JSONArray res = client.get_array(url);
+		JSONArray res = NetworkWrapper.get_array(url);
 		System.out.println(res.toString());
 	}
 	
 	@Override
 	public void get_track(String song_id) {
 		String url = host + "tracks/" + song_id + "?client_id=" + client_id;
-		JSONObject res = client.get(url);
+		JSONObject res = NetworkWrapper.get(url);
 		System.out.println(res.toString());
 	}
 

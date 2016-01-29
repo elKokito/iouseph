@@ -21,13 +21,18 @@ import org.json.JSONObject;
  * @author Marcial Lopez-Ferrada
  *
  */
-public class NetworkWrapper {
+public final class NetworkWrapper {
 
 	/** methode permettant d'envoyer une requete http GET
 	 * @param url 	url demander
 	 * @return 		object contenant la reponse qui respecte le format json	
 	 */
-	public JSONObject get(String url) {
+	private NetworkWrapper()
+	{
+		
+	}
+	
+	public static JSONObject get(String url) {
 		
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		System.out.println("sending GET: " + url);
@@ -62,7 +67,7 @@ public class NetworkWrapper {
 	 * @param url	url demander
 	 * @return 		object retourner par la requete sous forme de liste
 	 */
-	public JSONArray get_array(String url) {
+	public static JSONArray get_array(String url) {
 		
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		System.out.println("sending GET: " + url);
@@ -98,7 +103,7 @@ public class NetworkWrapper {
 	 * @param body_args		argument a ajouter dans le corps(body) de la requete
 	 * @return				object contenant la reponse qui respecte le format json
 	 */
-	public JSONObject post(String url, List<NameValuePair> body_args) {
+	public static JSONObject post(String url, List<NameValuePair> body_args) {
 		
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost post = new HttpPost(url);
@@ -133,7 +138,7 @@ public class NetworkWrapper {
 	 * @param r 	reponse recu
 	 * @return		retourne la reponse sous forme de JSONObject
 	 */
-	private JSONObject read_response(InputStream r) {
+	private static JSONObject read_response(InputStream r) {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(r)); 
  
         String inputLine;
@@ -162,7 +167,7 @@ public class NetworkWrapper {
 	 * @param r	reponse recu
 	 * @return	retourne la reponse sour forme de list JSONArray
 	 */
-	private JSONArray read_response_array(InputStream r) {
+	private static JSONArray read_response_array(InputStream r) {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(r)); 
 		 
         String inputLine;
