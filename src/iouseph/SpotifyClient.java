@@ -15,6 +15,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.crypto.SecretKey;
+
 import org.apache.http.Consts;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -29,6 +31,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import com.sun.corba.se.impl.orbutil.RepositoryIdUtility;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 public class SpotifyClient {
 
@@ -65,23 +68,7 @@ public class SpotifyClient {
 
 	void getProfile() throws ClientProtocolException, IOException {
 		String url = "https://api.spotify.com/v1/me";
-		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpGet get = new HttpGet(url);
-
-		System.out.println(access_token);
-
-		get.setHeader("Authorization", "Bearer " + access_token);
-
-		CloseableHttpResponse httpresponse = httpclient.execute(get);
-		JSONObject res_json1 = null;
-		if (httpresponse.getStatusLine().getStatusCode() == 200) {
-			System.out.println("access granted");
-			res_json1 = read_response(httpresponse.getEntity().getContent());
-			System.out.println(res_json1);
-		} else {
-			System.out.println(httpresponse.getStatusLine().getStatusCode());
-			System.out.println("access denied");
-		}
+		JSONObject res_json = NetworkWrapper.get(url, "Authorization", "Bearer " + access_token);
 	}
 
 	// un serveur se met en ecoute pour recuperer le code d'authorization
@@ -134,51 +121,22 @@ public class SpotifyClient {
 
 	private void requestRefrechAndAccessToken() throws Exception
 	{
+		String url = host + TokenPath ;
 		// recuperation de la partie qui nous importe 
 		// format du code GET /callback?code=AQA1Bw3lyz_oJU3oWBaRPIgQUkCiWFnLLecNrbROeQwJWKl92l9p0XdVqRvXguxjiYcceaceoF_oMNTqMdV6O6SQwnOFq4qXFdPfEEI-jcjk9tkYwNJMwNO8-j_ufyS543p_LZGK7ix7UMlz55_8A-S6q1Phrso3eUa5QLpEcWR3zba8VJf34F0UJp5G0ntCrw18MJTKECU5nS0JxWtkj0yT2PWthr54jgF9BdNj6SAit20M7-x3Qg HTTP/1.1
 		String[] parts = code_retrieved.split("=");
 		parts= parts[1].split(" ");
 		code_retrieved=parts[0];
-		System.out.println("code received = " + code_retrieved);	
 		
-		String url = host + TokenPath ;//+ "?user-read-private%20user-read-email";
-		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpPost post = new HttpPost(url);
 		List<NameValuePair> body_args = new ArrayList<NameValuePair>();
 		body_args.add(new BasicNameValuePair("grant_type", "authorization_code"));
 		body_args.add(new BasicNameValuePair("redirect_uri",redirect_uri));
 		body_args.add(new BasicNameValuePair("code",code_retrieved));
-		post.setEntity(new UrlEncodedFormEntity(body_args, Consts.UTF_8));
-		
 		// client_id:secret_id en base 64
-		post.setHeader("Authorization",
-				"Basic Y2NiMjRiYzUwOTk3NGE3MmJhYmQxNGU5MjkwMmY4MTY6OWU4NTIyNWNiMTMyNGVlMWJiN2ZhMzJiZTEyMWE5NmM=");
-
-		CloseableHttpResponse httpresponse = httpclient.execute(post);
-		JSONObject res_json = null;
-		if (httpresponse.getStatusLine().getStatusCode() == 200) {
-			System.out.println("access granted");
-			res_json = read_response(httpresponse.getEntity().getContent());
-			access_token= res_json.getString("access_token");
-			refresh_token=res_json.getString("refresh_token");
-			System.out.println(res_json.toString());
-		} else {
-			System.out.println("access denied");
-		}
+		String encodedBytes = Base64.encode((client_id+":"+client_secret).getBytes());
 		
-	}
-
-	private JSONObject read_response(InputStream r) throws IOException {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(r));
-
-		String inputLine;
-		StringBuffer response = new StringBuffer();
-
-		while ((inputLine = reader.readLine()) != null) {
-			response.append(inputLine);
-		}
-		reader.close();
-		JSONObject res_json = new JSONObject(response.toString());
-		return res_json;
+		JSONObject res_json=NetworkWrapper.post(url, body_args, "Authorization", "Basic "+encodedBytes);
+		access_token= res_json.getString("access_token");
+		refresh_token=res_json.getString("refresh_token");
 	}
 }

@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.apache.http.Consts;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -59,6 +60,40 @@ public final class NetworkWrapper {
 		else {
 			System.out.println("error");
 			System.out.println(httpresponse.getStatusLine().getReasonPhrase());
+		}
+		return res_json;
+	}
+
+	/** methode permettant d'envoyer une requete http GET
+	 * @param url 	url demandé ,
+	 * @param HeaderName    Nom de l'entete 
+	 * @param HeaderValue   valeur de l'entete
+	 * @return 		object contenant la reponse qui respecte le format json	
+	 */
+	public static JSONObject get(String url,String HeaderName,String HeaderValue )  {
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpGet get = new HttpGet(url);
+
+		get.setHeader(HeaderName, HeaderValue);
+		CloseableHttpResponse httpresponse= null;
+			try {
+				httpresponse = httpclient.execute(get);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		JSONObject res_json = null;
+		if (httpresponse.getStatusLine().getStatusCode() == 200) {
+			System.out.println("access granted");
+				try {
+					res_json = read_response(httpresponse.getEntity().getContent());
+				} catch (UnsupportedOperationException | IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+		} else {
+			System.out.println("access denied");
 		}
 		return res_json;
 	}
@@ -133,7 +168,43 @@ public final class NetworkWrapper {
 		
 		return res_json;
 	}
-	
+	/** methode permettant d'envoyer une requete http POST
+	 * @param url			url demander
+	 * @param body_args		argument a ajouter dans le corps(body) de la requete
+	 * @param HeaderName    Nom de l'entete 
+	 * @param HeaderValue   valeur de l'entete
+	 * @return				object contenant la reponse qui respecte le format json
+	 */
+	public static JSONObject post(String url, List<NameValuePair> body_args,String HeaderName,String HeaderValue)
+	{
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpPost post = new HttpPost(url);
+		post.setEntity(new UrlEncodedFormEntity(body_args, Consts.UTF_8));
+		// client_id:secret_id en base 64
+		post.setHeader(HeaderName,HeaderValue);
+
+		CloseableHttpResponse httpresponse = null;
+		try {
+			httpresponse = httpclient.execute(post);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		JSONObject res_json = null;
+		if (httpresponse.getStatusLine().getStatusCode() == 200) {
+			System.out.println("access granted");
+			try {
+				res_json = read_response(httpresponse.getEntity().getContent());
+			} catch (UnsupportedOperationException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			System.out.println("access denied");
+		}
+		
+		return res_json;
+	}
 	/** methode permettant d'analyser la reponse recu (parsing)
 	 * @param r 	reponse recu
 	 * @return		retourne la reponse sous forme de JSONObject
