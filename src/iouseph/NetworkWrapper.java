@@ -94,6 +94,7 @@ public final class NetworkWrapper {
 
 		} else {
 			System.out.println("access denied");
+			System.out.println(httpresponse.getStatusLine().getStatusCode());
 		}
 		return res_json;
 	}

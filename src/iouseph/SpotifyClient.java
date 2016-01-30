@@ -13,7 +13,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.crypto.SecretKey;
 
@@ -28,6 +31,7 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.sun.corba.se.impl.orbutil.RepositoryIdUtility;
@@ -45,6 +49,8 @@ public class SpotifyClient {
 	private String token_type ;
 	private String refresh_token;
 	private String code_retrieved;
+	
+	private Map<String, String> lastItemSearchedInfo=new HashMap<String, String>();
 
 	public void retreive_token() throws Exception {
 		String url = host + AuthPath;
@@ -66,9 +72,10 @@ public class SpotifyClient {
 		this.waitForauthorizationCode();
 	}
 
-	void getProfile() throws ClientProtocolException, IOException {
+	public JSONObject getProfile() throws ClientProtocolException, IOException {
 		String url = "https://api.spotify.com/v1/me";
 		JSONObject res_json = NetworkWrapper.get(url, "Authorization", "Bearer " + access_token);
+		return res_json;
 	}
 
 	// un serveur se met en ecoute pour recuperer le code d'authorization
@@ -139,4 +146,82 @@ public class SpotifyClient {
 		access_token= res_json.getString("access_token");
 		refresh_token=res_json.getString("refresh_token");
 	}
+	
+
+	public Set<String> getListOfTracks(String item)
+	{
+		String url = "https://api.spotify.com/v1/search?";
+		List<NameValuePair> body_args = new ArrayList<NameValuePair>();
+		body_args.add(new BasicNameValuePair("q", item));
+		body_args.add(new BasicNameValuePair("type", "track"));
+		String paramString = URLEncodedUtils.format(body_args, "utf-8");
+
+		url+=paramString;
+
+		System.out.println(url);
+		JSONObject res_json = NetworkWrapper.get(url);
+		// format 
+		res_json = res_json.getJSONObject("tracks");
+		JSONArray jsonobjectsArray = (JSONArray) res_json.get("items");
+		// returning the tracks found
+		String MyKey,external_urls;
+		lastItemSearchedInfo.clear();
+		for(int i=0;i<jsonobjectsArray.length();i++)
+		{
+			// cle est titre-artiste
+			String title = jsonobjectsArray.getJSONObject(i).getString("name");
+			String artist = jsonobjectsArray.getJSONObject(i).getJSONArray("artists").getJSONObject(0).getString("name");
+			 external_urls= jsonobjectsArray.getJSONObject(i).getJSONObject("external_urls").getString("spotify");
+			 MyKey = title + " - " + artist;
+			lastItemSearchedInfo.put(MyKey, external_urls);
+		}
+		return lastItemSearchedInfo.keySet();
+	}
+	public JSONObject getListOfArtist(String item)
+	{
+		String url = "https://api.spotify.com/v1/search?";
+		List<NameValuePair> body_args = new ArrayList<NameValuePair>();
+		body_args.add(new BasicNameValuePair("q", item));
+		body_args.add(new BasicNameValuePair("type", "artist"));
+		String paramString = URLEncodedUtils.format(body_args, "utf-8");
+
+		url+=paramString;
+
+		System.out.println(url);
+		JSONObject res_json = NetworkWrapper.get(url);
+		System.out.println(res_json);
+		
+		return res_json;
+	}
+	public Set<String> getListOfAlbum(String item)
+	{
+		String url = "https://api.spotify.com/v1/search?";
+		List<NameValuePair> body_args = new ArrayList<NameValuePair>();
+		body_args.add(new BasicNameValuePair("q", item));
+		body_args.add(new BasicNameValuePair("type", "album"));
+		String paramString = URLEncodedUtils.format(body_args, "utf-8");
+
+		url+=paramString;
+
+		System.out.println(url);
+		JSONObject res_json = NetworkWrapper.get(url);
+
+		// format 
+		res_json = res_json.getJSONObject("albums");
+		JSONArray jsonobjectsArray = (JSONArray) res_json.get("items");
+		// returning the tracks found
+		String MyKey, albumType,external_urls;
+		lastItemSearchedInfo.clear();
+		for(int i=0;i<jsonobjectsArray.length();i++)
+		{
+			// cle est titre-artiste
+			MyKey = jsonobjectsArray.getJSONObject(i).getString("name");
+			albumType=jsonobjectsArray.getJSONObject(i).getString("album_type");
+			external_urls= jsonobjectsArray.getJSONObject(i).getJSONObject("external_urls").getString("spotify");
+			MyKey+=" - " + albumType;
+			lastItemSearchedInfo.put(MyKey, external_urls);
+		}
+		return lastItemSearchedInfo.keySet();
+	}
+	
 }
