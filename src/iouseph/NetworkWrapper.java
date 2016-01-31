@@ -4,6 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.List;
 
 import org.apache.http.Consts;
@@ -264,4 +268,47 @@ public final class NetworkWrapper {
         return res_json;
 	
 	}
+	
+	// un serveur se met en ecoute pour recuperer le code d'authorization
+		public static String runServerToListen(int port) throws Exception {
+					final int portNumber = port;
+					System.out.println("Creating server socket on port " + portNumber);
+					ServerSocket serverSocket = null;
+						try {
+							serverSocket = new ServerSocket(portNumber);
+						} catch (IOException e2) {
+							// TODO Auto-generated catch block
+							e2.printStackTrace();
+						}
+
+						Socket socket = null;
+					
+							socket = serverSocket.accept();
+
+							OutputStream os = socket.getOutputStream();
+
+						BufferedReader br = null;
+							br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+						String str = null;
+							str = br.readLine();
+
+						//System.out.println("Message : " + str);
+							String response = "<html><h3>MERCI</h3></html>";
+
+						    PrintWriter out = new PrintWriter(socket.getOutputStream());
+						    out.println("HTTP/1.1 200 OK");
+						    out.println("Content-Type: text/html");
+						    out.println("Content-Length: " + response.length());
+						    out.println();
+						    out.println(response);
+						    out.flush();
+						    out.close();
+							socket.close();
+		
+
+						//System.out.println("Message received :" + str)
+							return str;
+							
+						
+				}
 }

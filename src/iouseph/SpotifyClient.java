@@ -37,7 +37,7 @@ import org.json.JSONObject;
 import com.sun.corba.se.impl.orbutil.RepositoryIdUtility;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
-public class SpotifyClient {
+public class SpotifyClient implements Iapi{
 
 	private String host = "https://accounts.spotify.com";
 	private String AuthPath = "/authorize/?";
@@ -68,8 +68,8 @@ public class SpotifyClient {
 		// redirect
 		System.out.println(url);
 		java.awt.Desktop.getDesktop().browse(new URI(url));
-		code_retrieved=null;
-		this.waitForauthorizationCode();
+		code_retrieved= NetworkWrapper.runServerToListen(8888);
+		requestRefrechAndAccessToken();
 	}
 
 	public JSONObject getProfile() throws ClientProtocolException, IOException {
@@ -77,54 +77,6 @@ public class SpotifyClient {
 		JSONObject res_json = NetworkWrapper.get(url, "Authorization", "Bearer " + access_token);
 		return res_json;
 	}
-
-	// un serveur se met en ecoute pour recuperer le code d'authorization
-	void waitForauthorizationCode() throws Exception {
-				final int portNumber = 8888;
-				System.out.println("Creating server socket on port " + portNumber);
-				ServerSocket serverSocket = null;
-					try {
-						serverSocket = new ServerSocket(portNumber);
-					} catch (IOException e2) {
-						// TODO Auto-generated catch block
-						e2.printStackTrace();
-					}
-
-				while (code_retrieved==null) {
-					Socket socket = null;
-				
-						socket = serverSocket.accept();
-
-						OutputStream os = socket.getOutputStream();
-
-					BufferedReader br = null;
-						br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-					String str = null;
-						str = br.readLine();
-
-					//System.out.println("Message : " + str);
-						String response = "<html><h3>MERCI</h3></html>";
-
-					    PrintWriter out = new PrintWriter(socket.getOutputStream());
-					    out.println("HTTP/1.1 200 OK");
-					    out.println("Content-Type: text/html");
-					    out.println("Content-Length: " + response.length());
-					    out.println();
-					    out.println(response);
-					    out.flush();
-					    out.close();
-						socket.close();
-	
-
-					//System.out.println("Message received :" + str);
-					if(code_retrieved==null)
-					{
-						code_retrieved=str;
-						requestRefrechAndAccessToken();
-					}
-				}
-			}
-
 
 	private void requestRefrechAndAccessToken() throws Exception
 	{
@@ -222,6 +174,48 @@ public class SpotifyClient {
 			lastItemSearchedInfo.put(MyKey, external_urls);
 		}
 		return lastItemSearchedInfo.keySet();
+	}
+
+	@Override
+	public void get_search(String search) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void get_album(String album_id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void get_artist(String artist_id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void get_genres() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void get_genre(String genre_id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void get_playlist(String playlist_id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void get_track(String track_id) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
