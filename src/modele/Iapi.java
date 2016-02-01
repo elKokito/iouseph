@@ -1,4 +1,4 @@
-package iouseph;
+package modele;
 
 /**
  * Interface pour chaque client d'API public de l'application. Ceci est pour

@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
+import modele.NetworkWrapper;
 
 public class ButtonBox extends VBox{
 	
@@ -23,13 +24,21 @@ public class ButtonBox extends VBox{
 		
 		//TODO changer pour les URLs de connexion des clients
         LoginBox soundCloudLoginBox = new LoginBox(soundCloudImagePath, "SoundCloud", "http://www.soundcloud.com");
-        LoginBox spotifyLoginBox = new LoginBox(spotifyImagePath, "Spotify", "http://www.spotify.com");
+        LoginBox spotifyLoginBox = new LoginBox(spotifyImagePath, "Spotify", "https://accounts.spotify.com/authorize/?client_id=ccb24bc509974a72babd14e92902f816&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A8888%2Fcallback&scope=playlist-read-private+playlist-read-collaborative+playlist-modify-public+playlist-modify-private+streaming+user-follow-modify+user-follow-read+user-library-read+user-library-modify+user-read-private+user-read-birthdate+user-read-email");
         LoginBox deezerLoginBox = new LoginBox(deezerImagePath, "Deezer", "http://www.deezer.com");
         this.getChildren().add(soundCloudLoginBox);
         this.getChildren().add(spotifyLoginBox);
         this.getChildren().add(deezerLoginBox);
         
-		
+       /* String temp = null;
+		try {
+			temp=NetworkWrapper.runServerToListen(8888);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(temp);
+		*/
 		myPlaylistsButton = new Button("My Playlists");
 		myPlaylistsButton.setOnAction(new EventHandler<ActionEvent>() {
 			 
