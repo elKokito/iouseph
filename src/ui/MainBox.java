@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
 import modele.Iapi;
+import modele.Track;
 
 import org.json.JSONObject;
 
@@ -38,6 +39,11 @@ public class MainBox extends HBox{
 	
 	public void setList(JSONObject jsonArray){
 		tracksBox.setList(jsonArray);
+	}
+	
+	public void setPlayer(Track track){
+		playerBox.refresh(track);
+		
 	}
 
 }

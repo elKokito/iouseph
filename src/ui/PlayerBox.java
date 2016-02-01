@@ -1,5 +1,6 @@
 package ui;
 
+import modele.Track;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
@@ -60,6 +61,11 @@ public class PlayerBox extends VBox{
 	
 	public void loadTrack(String url){
 		webView.getEngine().load(url);
+	}
+
+	public void refresh(Track track) {
+		trackTitle.setText(track.getTitle());
+		loadTrack(track.getExternalUrl());
 	}
 
 }
