@@ -86,10 +86,11 @@ public class SoundcloudClient implements Iapi {
 	}
 	
 	@Override
-	public void get_search(String query) {
+	public JSONObject get_search(String query) {
 		String url = host + "tracks?q=" + query + "&client_id=" + client_id;
 		JSONArray res = NetworkWrapper.get_array(url);
 		System.out.println(res.toString());
+		return null;
 	}
 	
 	@Override

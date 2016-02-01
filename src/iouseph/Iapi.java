@@ -1,5 +1,8 @@
 package iouseph;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 /**
  * Interface pour chaque client d'API public de l'application. Ceci est pour
  * repondre aux requis defini dans le tp1 1. outils de recherche de musique
@@ -16,8 +19,9 @@ public interface Iapi {
 	 * 
 	 * @param search
 	 *            String decrivant la recherche
+	 * @return 
 	 */
-	public void get_search(String search);
+	public JSONObject get_search(String search);
 
 	/**
 	 * methode pour recuperer l'information d'un album avec son id

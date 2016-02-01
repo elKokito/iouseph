@@ -25,6 +25,8 @@ public class PlaylistsBox extends VBox{
 		sp.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
 		this.getChildren().add(sp);
 		
+		
+		
 	}
 
 }

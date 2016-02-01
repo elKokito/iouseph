@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class DeezerClient implements Iapi {
@@ -47,7 +48,7 @@ public class DeezerClient implements Iapi {
 		}
 	}
 
-	public void get_search(String search) {
+	public JSONObject get_search(String search) {
 
 		String url = host + "/search?q=" + search;// +
 													// "&index=0&limit=5";//me?oauth_token="
@@ -55,11 +56,12 @@ public class DeezerClient implements Iapi {
 		JSONObject res = null;
 		res = NetworkWrapper.get(url);
 		// System.out.println(res.toString());
-		Iterator<String> i = res.keys();
+		/*Iterator<String> i = res.keys();
 		while (i.hasNext()) {
 			String s = i.next();
 			System.out.println(s + " : " + res.get(s));
-		}
+		}*/
+		return res;
 	}
 
 	public void get_user_info(String user_id) {

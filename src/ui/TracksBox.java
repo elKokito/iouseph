@@ -8,6 +8,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 public class TracksBox extends VBox{
 
 	public TracksBox(double uI_HEIGHT, double uI_WIDTH) {
@@ -26,4 +29,22 @@ public class TracksBox extends VBox{
 		this.getChildren().add(sp);
 	}
 
+	public void setList(JSONObject jsonArray){
+		/*Iterator<String> i = jsonArray.keys();
+		while (i.hasNext()) {
+			String s = i.next();
+			System.out.println(s + " : " + jsonArray.get(s));
+		}*/
+		
+		refresh(jsonArray);
+	}
+	
+	private void refresh(JSONObject json){
+		System.out.println(((JSONObject)json.getJSONArray("data").get(0)).getString("title"));
+		System.out.println(((JSONObject)json.getJSONArray("data").get(0)).getString("preview"));
+		System.out.println(((JSONObject)((JSONObject)json.getJSONArray("data").get(0)).get("artist")).getString("name"));
+		System.out.println(((JSONObject)((JSONObject)json.getJSONArray("data").get(0)).get("album")).getString("title"));
+		System.out.println(((JSONObject)((JSONObject)json.getJSONArray("data").get(0)).get("album")).getString("cover_big"));
+	}
+	
 }

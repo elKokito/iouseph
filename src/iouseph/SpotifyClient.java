@@ -150,7 +150,8 @@ public class SpotifyClient implements Iapi {
 	}
 
 	@Override
-	public void get_search(String search) {
+	public JSONObject get_search(String search) {
+		return null;
 		// TODO Auto-generated method stub
 
 	}
