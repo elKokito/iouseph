@@ -1,6 +1,5 @@
 package ui;
 
-import iouseph.Iapi;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -8,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import modele.Iapi;
 
 public class SearchBox extends VBox{
 	

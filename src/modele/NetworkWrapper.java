@@ -1,4 +1,4 @@
-package iouseph;
+package modele;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,7 +26,7 @@ import org.json.JSONObject;
  * classe NetworkWrapper pour faciliter l'envoie de requete http
  * 
  * @author Marcial Lopez-Ferrada
- * 
+ *
  */
 public final class NetworkWrapper {
 
@@ -82,8 +82,7 @@ public final class NetworkWrapper {
 	 *            valeur de l'entete
 	 * @return object contenant la reponse qui respecte le format json
 	 */
-	public static JSONObject get(String url, String HeaderName,
-			String HeaderValue) {
+	public static JSONObject get(String url, String HeaderName, String HeaderValue) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpGet get = new HttpGet(url);
 
@@ -137,8 +136,7 @@ public final class NetworkWrapper {
 		JSONArray res_json = null;
 		if (httpresponse.getStatusLine().getStatusCode() == 200) {
 			try {
-				res_json = read_response_array(httpresponse.getEntity()
-						.getContent());
+				res_json = read_response_array(httpresponse.getEntity().getContent());
 			} catch (UnsupportedOperationException | IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -203,8 +201,7 @@ public final class NetworkWrapper {
 	 *            valeur de l'entete
 	 * @return object contenant la reponse qui respecte le format json
 	 */
-	public static JSONObject post(String url, List<NameValuePair> body_args,
-			String HeaderName, String HeaderValue) {
+	public static JSONObject post(String url, List<NameValuePair> body_args, String HeaderName, String HeaderValue) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost post = new HttpPost(url);
 		post.setEntity(new UrlEncodedFormEntity(body_args, Consts.UTF_8));

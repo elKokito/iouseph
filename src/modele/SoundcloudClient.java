@@ -1,4 +1,4 @@
-package iouseph;
+package modele;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,6 +91,7 @@ public class SoundcloudClient implements Iapi {
 		JSONArray res = NetworkWrapper.get_array(url);
 		System.out.println(res.toString());
 		return null;
+		
 	}
 	
 	@Override

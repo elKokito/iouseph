@@ -1,14 +1,12 @@
 package ui;
 
-import org.json.JSONObject;
-
-import iouseph.Iapi;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import modele.Iapi;
 
 public class MenuBox extends VBox{
 	

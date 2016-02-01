@@ -1,6 +1,5 @@
-package iouseph;
+package modele;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**

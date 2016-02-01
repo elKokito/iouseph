@@ -1,12 +1,11 @@
 package ui;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import iouseph.Iapi;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
+import modele.Iapi;
+
+import org.json.JSONObject;
 
 public class MainBox extends HBox{
 	

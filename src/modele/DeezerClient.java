@@ -1,4 +1,4 @@
-package iouseph;
+package modele;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class DeezerClient implements Iapi {
@@ -24,12 +23,13 @@ public class DeezerClient implements Iapi {
 		body_args.add(new BasicNameValuePair("client_id", client_id));
 		body_args.add(new BasicNameValuePair("client_secret", client_secret));
 		body_args.add(new BasicNameValuePair("grant_type", "password"));
-		body_args.add(new BasicNameValuePair("username", "eymen.zalila@me.com"));
+		body_args
+				.add(new BasicNameValuePair("username", "eymen.zalila@me.com"));
 		body_args.add(new BasicNameValuePair("password", "a5z4&988"));
 		body_args.add(new BasicNameValuePair("scope", "non-expiring"));
 
-		NetworkWrapper.get(
-				"https://connect.deezer.com/oauth/auth.php?app_id=171795&redirect_uri=http://localhost:8080/callback.html&perms=basic_access,email,offline_access,manage_library,listening_history");
+		NetworkWrapper
+				.get("https://connect.deezer.com/oauth/auth.php?app_id=171795&redirect_uri=http://localhost:8080/callback.html&perms=basic_access,email,offline_access,manage_library,listening_history");
 		JSONObject res = NetworkWrapper.post(url, body_args);
 		// token = res.getString("access_token");
 

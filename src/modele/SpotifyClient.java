@@ -1,4 +1,4 @@
-package iouseph;
+package modele;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -25,6 +25,9 @@ public class SpotifyClient implements Iapi {
 
 	private Map<String, String> lastItemSearchedInfo = new HashMap<String, String>();
 
+	/**
+	 * @throws Exception
+	 */
 	public void retreive_token() throws Exception {
 		String url = host + "/authorize/?";
 		String scope = "playlist-read-private playlist-read-collaborative playlist-modify-public "
@@ -63,12 +66,21 @@ public class SpotifyClient implements Iapi {
 		access_token = res_json.getString("access_token");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see modele.Iapi#get_personnal_info()
+	 */
 	public void get_personnal_info() {
 		String url = "https://api.spotify.com/v1/me";
 		JSONObject res_json = NetworkWrapper.get(url, "Authorization", "Bearer " + access_token);
 		System.out.println(res_json.toString());
 	}
 
+	/**
+	 * @param item
+	 * @return
+	 */
 	public Set<String> getListOfTracks(String item) {
 		String url = "https://api.spotify.com/v1/search?";
 		List<NameValuePair> body_args = new ArrayList<NameValuePair>();
@@ -98,6 +110,10 @@ public class SpotifyClient implements Iapi {
 		return lastItemSearchedInfo.keySet();
 	}
 
+	/**
+	 * @param item
+	 * @return
+	 */
 	public JSONObject getListOfArtist(String item) {
 		String url = "https://api.spotify.com/v1/search?";
 		List<NameValuePair> body_args = new ArrayList<NameValuePair>();
@@ -114,6 +130,10 @@ public class SpotifyClient implements Iapi {
 		return res_json;
 	}
 
+	/**
+	 * @param item
+	 * @return
+	 */
 	public Set<String> getListOfAlbum(String item) {
 		String url = "https://api.spotify.com/v1/search?";
 		List<NameValuePair> body_args = new ArrayList<NameValuePair>();
@@ -143,12 +163,20 @@ public class SpotifyClient implements Iapi {
 		return lastItemSearchedInfo.keySet();
 	}
 
+	/**
+	 * @param user_id
+	 */
 	public void get_user_info(String user_id) {
 		String url = "https://api.spotify.com/v1/users/" + user_id;
 		JSONObject res_json = NetworkWrapper.get(url);
 		System.out.println(res_json);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see modele.Iapi#get_search(java.lang.String)
+	 */
 	@Override
 	public JSONObject get_search(String search) {
 		return null;
@@ -156,11 +184,19 @@ public class SpotifyClient implements Iapi {
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see modele.Iapi#get_album(java.lang.String)
+	 */
 	@Override
 	public void get_album(String album_id) {
 		// TODO Auto-generated method stub
 	}
 
+	/**
+	 * 
+	 */
 	public void get_tracks() {
 		String url = "https://api.spotify.com/v1/me/tracks";
 		JSONObject res_json = NetworkWrapper.get(url, "Authorization", "Bearer " + access_token);
@@ -168,28 +204,53 @@ public class SpotifyClient implements Iapi {
 		System.out.println(res_json);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see modele.Iapi#get_artist(java.lang.String)
+	 */
 	@Override
 	public void get_artist(String artist_id) {
 		// TODO Auto-generated method stub
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see modele.Iapi#get_genres()
+	 */
 	@Override
 	public void get_genres() {
 		// TODO Auto-generated method stub
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see modele.Iapi#get_genre(java.lang.String)
+	 */
 	@Override
 	public void get_genre(String genre_id) {
 		// TODO Auto-generated method stub
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see modele.Iapi#get_playlist(java.lang.String)
+	 */
 	@Override
 	public void get_playlist(String playlist_id) {
 		// TODO Auto-generated method stub
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see modele.Iapi#get_track(java.lang.String)
+	 */
 	@Override
 	public void get_track(String track_id) {
 		String url = "https://api.spotify.com/v1/tracks/" + track_id;

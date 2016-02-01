@@ -1,15 +1,15 @@
 package ui;
 
-import org.json.JSONObject;
-
-import iouseph.DeezerClient;
-import iouseph.Iapi;
-import iouseph.SoundcloudClient;
-import iouseph.SpotifyClient;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import modele.DeezerClient;
+import modele.Iapi;
+import modele.SoundcloudClient;
+import modele.SpotifyClient;
+
+import org.json.JSONObject;
 
 public class UI extends Application {
 	
