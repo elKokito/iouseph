@@ -57,26 +57,32 @@ public class SoundcloudClient implements Iapi {
 	/**
 	 * methode permettant de recuperer l'information personnel de l'utilisateur
 	 */
-	public void get_personnal_info() {
+	public JSONObject get_personnal_info() {
 
 		String url = host + "me?oauth_token=" + token;
 		JSONObject res = NetworkWrapper.get(url);
 		System.out.println(res.toString());
+		
+		return res;
 	}
 	
 	/** methode permettant de recuperer l'information d'un membre de soundcloud
 	 * @param user_id	id du membre rechercher
 	 */
-	public void get_user_info(String user_id) {
+	public JSONObject get_user_info(String user_id) {
 		String url = host + "users/" + user_id + "?client_id=" + client_id;
 		JSONObject res = NetworkWrapper.get(url);
 		System.out.println(res.toString());
+		
+		return res;
 	}
 	
-	public void resolve(String soundcloud_url) {
+	public JSONObject  resolve(String soundcloud_url) {
 		String url = host + "resolve?url=" + soundcloud_url + "&client_id=" + client_id;
 		JSONObject res = NetworkWrapper.get(url);
 		System.out.println(res.toString());
+		
+		return res;
 	}
 	
 	public void get_tracks() {
@@ -87,6 +93,7 @@ public class SoundcloudClient implements Iapi {
 	
 	@Override
 	public JSONObject get_search(String query) {
+		// TODO fix return
 		String url = host + "tracks?q=" + query + "&client_id=" + client_id;
 		JSONArray res = NetworkWrapper.get_array(url);
 		System.out.println(res.toString());
@@ -95,40 +102,57 @@ public class SoundcloudClient implements Iapi {
 	}
 	
 	@Override
-	public void get_track(String song_id) {
+	public JSONObject get_track(String song_id) {
 		String url = host + "tracks/" + song_id + "?client_id=" + client_id;
 		JSONObject res = NetworkWrapper.get(url);
 		System.out.println(res.toString());
+		
+		return res;
 	}
 
 
 	@Override
-	public void get_album(String album_id) {
+	public JSONObject get_album(String album_id) {
 		// TODO Auto-generated method stub
+		JSONObject res = null;
+		
+		return res;
 		
 	}
 
 	@Override
-	public void get_artist(String artist_id) {
+	public JSONObject get_artist(String artist_id) {
 		// TODO Auto-generated method stub
+		JSONObject res = null;
+		
+		return res;
 		
 	}
 
 	@Override
-	public void get_genres() {
+	public JSONObject get_genres() {
 		// TODO Auto-generated method stub
+		JSONObject res = null;
+		
+		return res;
 		
 	}
 
 	@Override
-	public void get_genre(String genre_id) {
+	public JSONObject  get_genre(String genre_id) {
 		// TODO Auto-generated method stub
+		JSONObject res = null;
+		
+		return res;
 		
 	}
 
 	@Override
-	public void get_playlist(String playlist_id) {
+	public JSONObject get_playlist(String playlist_id) {
 		// TODO Auto-generated method stub
+		JSONObject res = null;
+		
+		return res;
 		
 	}
 

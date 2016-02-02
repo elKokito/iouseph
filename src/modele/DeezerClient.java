@@ -35,7 +35,7 @@ public class DeezerClient implements Iapi {
 
 	}
 
-	public void get_personnal_info() {
+	public JSONObject get_personnal_info() {
 
 		String url = host + "/infos";// me?oauth_token=" + token;
 		JSONObject res = null;
@@ -46,6 +46,8 @@ public class DeezerClient implements Iapi {
 			String s = i.next();
 			System.out.println(s + " : " + res.get(s));
 		}
+		
+		return res;
 	}
 
 	public JSONObject get_search(String search) {
@@ -64,7 +66,7 @@ public class DeezerClient implements Iapi {
 		return res;
 	}
 
-	public void get_user_info(String user_id) {
+	public JSONObject get_user_info(String user_id) {
 		String url = host + "user/" + user_id;// + "/playlists";// +
 												// "?client_id=" + client_id;
 		JSONObject res = NetworkWrapper.get(url);
@@ -74,17 +76,25 @@ public class DeezerClient implements Iapi {
 			String s = i.next();
 			System.out.println(s + " : " + res.get(s));
 		}
+		
+		return res;
 	}
 
 	@Override
-	public void get_album(String album_id) {
+	public JSONObject get_album(String album_id) {
 		// TODO Auto-generated method stub
+		JSONObject res = null;
+		
+		return res;
 
 	}
 
 	@Override
-	public void get_artist(String artist_id) {
+	public JSONObject get_artist(String artist_id) {
 		// TODO Auto-generated method stub
+		JSONObject res = null;
+		
+		return res;
 
 	}
 
@@ -108,13 +118,19 @@ public class DeezerClient implements Iapi {
 
 	}
 
-	public void get_genres() {
+	public JSONObject get_genres() {
 		// TODO Auto-generated method stub
+		JSONObject res = null;
+		
+		return res;
 
 	}
 
-	public void get_genre(String genre_id) {
+	public JSONObject get_genre(String genre_id) {
 		// TODO Auto-generated method stub
+		JSONObject res = null;
+		
+		return res;
 
 	}
 
@@ -123,9 +139,11 @@ public class DeezerClient implements Iapi {
 
 	}
 
-	public void get_playlist(String playlist_id) {
+	public JSONObject get_playlist(String playlist_id) {
 		// TODO Auto-generated method stub
-
+		JSONObject res = null;
+		
+		return res;
 	}
 
 	public void get_podcast(String podcast_id) {
@@ -143,8 +161,11 @@ public class DeezerClient implements Iapi {
 
 	}
 
-	public void get_track(String track_id) {
+	public JSONObject get_track(String track_id) {
 		// TODO Auto-generated method stub
+		JSONObject res = null;
+		
+		return res;
 
 	}
 

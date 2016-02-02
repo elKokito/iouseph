@@ -28,7 +28,7 @@ public interface Iapi {
 	 * @param album_id
 	 *            id de l'album
 	 */
-	public void get_album(String album_id);
+	public JSONObject get_album(String album_id);
 
 	/**
 	 * methode pour recuperer l'information d'un artist avec son id
@@ -36,13 +36,13 @@ public interface Iapi {
 	 * @param artist_id
 	 *            id de l'artiste
 	 */
-	public void get_artist(String artist_id);
+	public JSONObject get_artist(String artist_id);
 
 	/**
 	 * methode pour recuperer les genres disponible
 	 * 
 	 */
-	public void get_genres();
+	public JSONObject get_genres();
 
 	/**
 	 * methode pour recupere de l'information sur un genre en particulier
@@ -50,7 +50,7 @@ public interface Iapi {
 	 * @param genre_id
 	 *            id du genre rechercher
 	 */
-	public void get_genre(String genre_id);
+	public JSONObject get_genre(String genre_id);
 
 	/**
 	 * methode pour recuperer une playlist
@@ -58,7 +58,7 @@ public interface Iapi {
 	 * @param playlist_id
 	 *            id le la playlist rechercher
 	 */
-	public void get_playlist(String playlist_id);
+	public JSONObject get_playlist(String playlist_id);
 
 	/**
 	 * methode pour recupere de l'information sur une chanson en particulier
@@ -66,13 +66,13 @@ public interface Iapi {
 	 * @param track_id
 	 *            id de la chanson rechercher
 	 */
-	public void get_track(String track_id);
+	public JSONObject get_track(String track_id);
 
 	/**
-	 * methode pour recuperer les informations personnelles de l'utilisateur lié
-	 * à l'application
+	 * methode pour recuperer les informations personnelles de l'utilisateur liï¿½
+	 * ï¿½ l'application
 	 * 
 	 */
-	public void get_personnal_info();
+	public JSONObject get_personnal_info();
 
 }

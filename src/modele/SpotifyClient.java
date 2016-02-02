@@ -71,10 +71,12 @@ public class SpotifyClient implements Iapi {
 	 * 
 	 * @see modele.Iapi#get_personnal_info()
 	 */
-	public void get_personnal_info() {
+	public JSONObject get_personnal_info() {
 		String url = "https://api.spotify.com/v1/me";
-		JSONObject res_json = NetworkWrapper.get(url, "Authorization", "Bearer " + access_token);
-		System.out.println(res_json.toString());
+		JSONObject res = NetworkWrapper.get(url, "Authorization", "Bearer " + access_token);
+		System.out.println(res.toString());
+		
+		return res;
 	}
 
 	/**
@@ -190,8 +192,11 @@ public class SpotifyClient implements Iapi {
 	 * @see modele.Iapi#get_album(java.lang.String)
 	 */
 	@Override
-	public void get_album(String album_id) {
+	public JSONObject get_album(String album_id) {
 		// TODO Auto-generated method stub
+		JSONObject res = null;
+		
+		return res;
 	}
 
 	/**
@@ -210,8 +215,11 @@ public class SpotifyClient implements Iapi {
 	 * @see modele.Iapi#get_artist(java.lang.String)
 	 */
 	@Override
-	public void get_artist(String artist_id) {
+	public JSONObject  get_artist(String artist_id) {
 		// TODO Auto-generated method stub
+		JSONObject res = null;
+		
+		return res;
 	}
 
 	/*
@@ -220,8 +228,11 @@ public class SpotifyClient implements Iapi {
 	 * @see modele.Iapi#get_genres()
 	 */
 	@Override
-	public void get_genres() {
+	public JSONObject get_genres() {
 		// TODO Auto-generated method stub
+		JSONObject res = null;
+		
+		return res;
 	}
 
 	/*
@@ -230,8 +241,11 @@ public class SpotifyClient implements Iapi {
 	 * @see modele.Iapi#get_genre(java.lang.String)
 	 */
 	@Override
-	public void get_genre(String genre_id) {
+	public JSONObject get_genre(String genre_id) {
 		// TODO Auto-generated method stub
+		JSONObject res = null;
+		
+		return res;
 
 	}
 
@@ -241,8 +255,11 @@ public class SpotifyClient implements Iapi {
 	 * @see modele.Iapi#get_playlist(java.lang.String)
 	 */
 	@Override
-	public void get_playlist(String playlist_id) {
+	public JSONObject get_playlist(String playlist_id) {
 		// TODO Auto-generated method stub
+		JSONObject res = null;
+		
+		return res;
 
 	}
 
@@ -252,12 +269,14 @@ public class SpotifyClient implements Iapi {
 	 * @see modele.Iapi#get_track(java.lang.String)
 	 */
 	@Override
-	public void get_track(String track_id) {
+	public JSONObject get_track(String track_id) {
 		String url = "https://api.spotify.com/v1/tracks/" + track_id;
 
-		JSONObject res_json = NetworkWrapper.get(url, "Authorization", "Bearer " + access_token);
+		JSONObject res = NetworkWrapper.get(url, "Authorization", "Bearer " + access_token);
 		System.out.println("track");
-		System.out.println(res_json.toString());
+		System.out.println(res.toString());
+		
+		return res;
 	}
 
 }
