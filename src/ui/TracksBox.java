@@ -1,14 +1,20 @@
 package ui;
 
+import iouseph.Parser;
+
+import java.util.ArrayList;
 import java.util.Vector;
 
-import iouseph.Parser;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.control.ListView;
+import javafx.geometry.Orientation;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -19,8 +25,10 @@ import org.json.JSONObject;
 
 public class TracksBox extends VBox{
 	
-	ListView<VBox> tracksItem;
-	VBox sp;
+	private ScrollBar sc;
+	private ScrollPane sp;
+	private VBox box;
+	private ObservableList<VBox> items;
 
 	public TracksBox(double uI_HEIGHT, double uI_WIDTH) {
 		super();
@@ -30,22 +38,45 @@ public class TracksBox extends VBox{
 
 		Text tracksText = new Text("Tracks");
 		tracksText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
-		this.getChildren().add(tracksText);
+				
+		sc = new ScrollBar();
+		sc.setLayoutX(this.getWidth()-sc.getWidth());
+        sc.setMin(0);
+        sc.setOrientation(Orientation.VERTICAL);
+        sc.setMaxHeight(uI_HEIGHT);
+        sc.setMax(uI_HEIGHT*1.5);
 		
-		tracksItem = new ListView<>();
-		sp = new VBox();
-		/*sp.setHbarPolicy(ScrollBarPolicy.NEVER);
-		sp.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);*/
-		//sp.getChildren().add(tracksItem);
-		this.getChildren().add(sp);
+		box = new VBox();
+		box.setLayoutX(5);
+        box.setSpacing(10);
+        box.setMaxHeight(uI_HEIGHT-20);
+        box.setMaxWidth(this.getMaxWidth()-(sc.getWidth()*2));
+		
+		
+		sp = new ScrollPane();
+		sp.setMaxSize(uI_HEIGHT-20, uI_WIDTH-20);
+		sp.setContent(box);
+		this.getChildren().addAll(tracksText, sp);
+		
+		sc.valueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> ov,
+                Number old_val, Number new_val) {
+                    box.setLayoutY(-new_val.doubleValue());
+            }
+        });
 	}
 
 	public void setList(JSONObject json){
 		Vector<Track> tracks = Parser.tracksParse(json);
+		ArrayList<VBox> list = new ArrayList<>();
 
 		for ( int i = 0; i < tracks.size(); i++)
-			sp.getChildren().add(createTrackItem(tracks.get(i)));
-
+			list.add(createTrackItem(tracks.get(i)));
+		items = FXCollections.observableArrayList(list);		
+		
+		box.getChildren().clear();
+		box.getChildren().addAll(items);
+		sc.setLayoutX(this.getWidth()-sc.getWidth());
 	}
 	
 	private VBox createTrackItem(final Track track){

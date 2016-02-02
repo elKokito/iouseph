@@ -65,6 +65,10 @@ public class PlayerBox extends VBox{
 
 	public void refresh(Track track) {
 		trackTitle.setText(track.getTitle());
+		artistName.setText(track.getArtist());
+		albumTitle.setText(track.getAlbum());
+		image = new Image(track.getImage_());
+		imageView.setImage(image);
 		loadTrack(track.getExternalUrl());
 	}
 

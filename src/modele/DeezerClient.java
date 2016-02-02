@@ -40,7 +40,6 @@ public class DeezerClient implements Iapi {
 		String url = host + "/infos";// me?oauth_token=" + token;
 		JSONObject res = null;
 		res = NetworkWrapper.get(url);
-		// System.out.println(res.toString());
 		Iterator<String> i = res.keys();
 		while (i.hasNext()) {
 			String s = i.next();
@@ -57,12 +56,6 @@ public class DeezerClient implements Iapi {
 													// + token;
 		JSONObject res = null;
 		res = NetworkWrapper.get(url);
-		// System.out.println(res.toString());
-		/*Iterator<String> i = res.keys();
-		while (i.hasNext()) {
-			String s = i.next();
-			System.out.println(s + " : " + res.get(s));
-		}*/
 		return res;
 	}
 
@@ -70,7 +63,6 @@ public class DeezerClient implements Iapi {
 		String url = host + "user/" + user_id;// + "/playlists";// +
 												// "?client_id=" + client_id;
 		JSONObject res = NetworkWrapper.get(url);
-		// System.out.println(res.toString());
 		Iterator<String> i = res.keys();
 		while (i.hasNext()) {
 			String s = i.next();
