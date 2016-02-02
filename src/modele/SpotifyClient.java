@@ -279,4 +279,10 @@ public class SpotifyClient implements Iapi {
 		return res;
 	}
 
+	@Override
+	public JSONObject get_playlists(String search) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

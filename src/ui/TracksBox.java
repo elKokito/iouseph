@@ -3,6 +3,7 @@ package ui;
 import iouseph.Parser;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import javafx.beans.value.ChangeListener;
@@ -67,13 +68,15 @@ public class TracksBox extends VBox{
 	}
 
 	public void setList(JSONObject json){
-		Vector<Track> tracks = Parser.tracksParse(json);
-		ArrayList<VBox> list = new ArrayList<>();
+		refresh(Parser.tracksParse(json));		
+	}
+	
+	public void refresh(List<Track> tracks){
+		List<VBox> list = new ArrayList<>();
 
 		for ( int i = 0; i < tracks.size(); i++)
 			list.add(createTrackItem(tracks.get(i)));
-		items = FXCollections.observableArrayList(list);		
-		
+		items = FXCollections.observableArrayList(list);
 		box.getChildren().clear();
 		box.getChildren().addAll(items);
 		sc.setLayoutX(this.getWidth()-sc.getWidth());

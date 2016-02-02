@@ -51,6 +51,8 @@ public interface Iapi {
 	 *            id du genre rechercher
 	 */
 	public JSONObject get_genre(String genre_id);
+	
+	public JSONObject get_playlists(String search);
 
 	/**
 	 * methode pour recuperer une playlist

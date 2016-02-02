@@ -30,15 +30,14 @@ public class PlayerBox extends VBox{
 		this.getChildren().add(playerText);
 		
 		imageView = new ImageView();
-        image = new Image("http://api.deezer.com/album/5965734/image");//TODO JSONObject.getimage
+        image = new Image("https://pbs.twimg.com/profile_images/426420605945004032/K85ZWV2F_400x400.png");
         imageView.setImage(image);
         imageView.setFitHeight(40);
         imageView.setFitWidth(40);
         
-        trackTitle = new Text("Track");//TODO JSONObject.getTitle
-        artistName = new Text("Artist");//TODO JSONObject.getArtist
-        albumTitle = new Text("Album");//TODO JSONObject.getAlbum
-        
+        trackTitle = new Text("Track");
+        artistName = new Text("Artist");
+        albumTitle = new Text("Album");      
 
 		VBox trackInfo = new VBox();
 		trackInfo.setAlignment(Pos.CENTER);

@@ -45,7 +45,7 @@ public class DeezerClient implements Iapi {
 			String s = i.next();
 			System.out.println(s + " : " + res.get(s));
 		}
-		
+
 		return res;
 	}
 
@@ -68,7 +68,7 @@ public class DeezerClient implements Iapi {
 			String s = i.next();
 			System.out.println(s + " : " + res.get(s));
 		}
-		
+
 		return res;
 	}
 
@@ -76,7 +76,7 @@ public class DeezerClient implements Iapi {
 	public JSONObject get_album(String album_id) {
 		// TODO Auto-generated method stub
 		JSONObject res = null;
-		
+
 		return res;
 
 	}
@@ -85,7 +85,7 @@ public class DeezerClient implements Iapi {
 	public JSONObject get_artist(String artist_id) {
 		// TODO Auto-generated method stub
 		JSONObject res = null;
-		
+
 		return res;
 
 	}
@@ -113,7 +113,7 @@ public class DeezerClient implements Iapi {
 	public JSONObject get_genres() {
 		// TODO Auto-generated method stub
 		JSONObject res = null;
-		
+
 		return res;
 
 	}
@@ -121,7 +121,7 @@ public class DeezerClient implements Iapi {
 	public JSONObject get_genre(String genre_id) {
 		// TODO Auto-generated method stub
 		JSONObject res = null;
-		
+
 		return res;
 
 	}
@@ -131,10 +131,22 @@ public class DeezerClient implements Iapi {
 
 	}
 
-	public JSONObject get_playlist(String playlist_id) {
-		// TODO Auto-generated method stub
+	public JSONObject get_playlists(String search) {
+		String url = host + "/search/playlist?q=" + search;
 		JSONObject res = null;
-		
+		res = NetworkWrapper.get(url);
+		return res;
+	}
+	
+	/* retourne la liste de track de la playlist
+	 * (non-Javadoc)
+	 * @see modele.Iapi#get_playlist(java.lang.String)
+	 */
+	@Override
+	public JSONObject get_playlist(String playlist_id) {
+		String url = host + "/playlist/" + playlist_id + "/tracks";
+		JSONObject res = null;
+		res = NetworkWrapper.get(url);
 		return res;
 	}
 
@@ -156,7 +168,7 @@ public class DeezerClient implements Iapi {
 	public JSONObject get_track(String track_id) {
 		// TODO Auto-generated method stub
 		JSONObject res = null;
-		
+
 		return res;
 
 	}

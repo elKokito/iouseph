@@ -156,4 +156,10 @@ public class SoundcloudClient implements Iapi {
 		
 	}
 
+	@Override
+	public JSONObject get_playlists(String search) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

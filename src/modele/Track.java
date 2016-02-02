@@ -1,7 +1,7 @@
 package modele;
 
 public class Track {
-	private int id_;
+	private String id_;
 	private String title_;
 	private String externalUrl_;
 	private float duration_;
@@ -18,7 +18,7 @@ public class Track {
 	 * @param artist
 	 * @param album
 	 */
-	Track(int id, String title, String url, float duration, String artist, String album, String image, String source) {
+	Track(String id, String title, String url, float duration, String artist, String album, String image, String source) {
 		id_ = id;
 		title_ = title;
 		externalUrl_ = url;
@@ -35,14 +35,14 @@ public class Track {
 	/**
 	 * @return
 	 */
-	public int getId() {
+	public String getId() {
 		return id_;
 	}
 
 	/**
 	 * @param id
 	 */
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id_ = id;
 	}
 
@@ -134,11 +134,13 @@ public class Track {
 
 	@Override
 	public String toString() {
-		return "Track [title_=" + title_ + ", externalUrl_=" + externalUrl_
-				+ ", duration_=" + duration_ + ", artist_=" + artist_
-				+ ", album_=" + album_ + ", image_=" + image_ + ", source_="
-				+ source_ + "]";
+		return "Track [id_=" + id_ + ", title_=" + title_ + ", externalUrl_="
+				+ externalUrl_ + ", duration_=" + duration_ + ", artist_="
+				+ artist_ + ", album_=" + album_ + ", image_=" + image_
+				+ ", source_=" + source_ + "]";
 	}
+
+	
 	
 	
 
