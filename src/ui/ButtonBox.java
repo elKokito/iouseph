@@ -28,17 +28,8 @@ public class ButtonBox extends VBox{
         LoginBox deezerLoginBox = new LoginBox(deezerImagePath, "Deezer", "http://www.deezer.com");
         this.getChildren().add(soundCloudLoginBox);
         this.getChildren().add(spotifyLoginBox);
-        this.getChildren().add(deezerLoginBox);
-        
-       /* String temp = null;
-		try {
-			temp=NetworkWrapper.runServerToListen(8888);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println(temp);
-		*/
+        this.getChildren().add(deezerLoginBox);        
+       
 		myPlaylistsButton = new Button("My Playlists");
 		myPlaylistsButton.setOnAction(new EventHandler<ActionEvent>() {
 			 

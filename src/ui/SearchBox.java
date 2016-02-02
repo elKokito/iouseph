@@ -59,8 +59,8 @@ public class SearchBox extends VBox{
 	}
 	
 	private void refresh(){
-		((MainBox)SearchBox.this.getParent().getParent()).setTrackList(this.api.get_search(searchField.getText()));
-		((MainBox)SearchBox.this.getParent().getParent()).setPlaylistList(this.api.get_playlists(searchField.getText()));
+		((MainBox)this.getParent().getParent()).setTrackList(this.api.get_search(searchField.getText()));
+		((MainBox)this.getParent().getParent()).setPlaylistList(this.api.get_playlists(searchField.getText()));
 	}
 
 }

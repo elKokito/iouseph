@@ -1,36 +1,82 @@
 package modele;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+
+
 public class DeezerClient implements Iapi {
 
-	private final String host = "http://api.deezer.com/";
-	private String client_id = "171795";
+	private final String host = "https://api.deezer.com/";
+	private String app_id = "171795";
+	private String client_id = "";
 	private String client_secret = "a460f3efd5e3e0c98af00730d882b5f0";
-	private String token = "ny80x01z2456a7bff4829f7h9TJ0R3D56a7bff482a3dtzk9wDL";
+	private String redirect_uri = "http://localhost:8080/callback";
+	private String access_token = "";
 
-	public void retreive_token() {
+	
 
-		String url = "https://api.deezer.com/oauth2/token";
+	public void retreive_token() throws Exception {
+
+		/*
+		 * https://connect.deezer.com/oauth/auth.php?app_id=YOUR_APP_ID&redirect_uri
+		 * =YOUR_REDIRECT_URI&perms=YOUR_PERMS
+		 * http://redirect_uri?error_reason=user_denied
+		 * http://redirect_uri?code=A_CODE_GENERATED_BY_DEEZER
+		 * https://connect.deezer.com/oauth/access_token.php
+		 * https://connect.deezer
+		 * .com/oauth/access_token.php?app_id=YOU_APP_ID&secret
+		 * =YOU_APP_SECRET&code=THE_CODE_FROM_ABOVE
+		 */
+		String url = "https://connect.deezer.com/oauth/auth.php?";
+		String perms = "basic_access,email,offline_access,manage_library,listening_history";
 
 		List<NameValuePair> body_args = new ArrayList<NameValuePair>();
-		body_args.add(new BasicNameValuePair("client_id", client_id));
-		body_args.add(new BasicNameValuePair("client_secret", client_secret));
-		body_args.add(new BasicNameValuePair("grant_type", "password"));
-		body_args
-				.add(new BasicNameValuePair("username", "eymen.zalila@me.com"));
-		body_args.add(new BasicNameValuePair("password", "a5z4&988"));
-		body_args.add(new BasicNameValuePair("scope", "non-expiring"));
+		//body_args.add(new BasicNameValuePair("response_type", "code"));
+		//body_args.add(new BasicNameValuePair("client_id", client_id));
+		body_args.add(new BasicNameValuePair("app_id", app_id));
+		body_args.add(new BasicNameValuePair("redirect_uri", redirect_uri));
+		//body_args.add(new BasicNameValuePair("client_secret", client_secret));
+		//body_args.add(new BasicNameValuePair("grant_type", "password"));
+		body_args.add(new BasicNameValuePair("perms", perms));
+		String paramString = URLEncodedUtils.format(body_args, "utf-8");
 
-		NetworkWrapper
-				.get("https://connect.deezer.com/oauth/auth.php?app_id=171795&redirect_uri=http://localhost:8080/callback.html&perms=basic_access,email,offline_access,manage_library,listening_history");
-		JSONObject res = NetworkWrapper.post(url, body_args);
+		url += "app_id=" +app_id+ "&redirect_uri="+redirect_uri+"&perms="+perms;//paramString;
+		System.out.println(url);
+			java.awt.Desktop.getDesktop().browse(new URI(url));
+		String code_retrieved = NetworkWrapper.runServerToListen(8080);
+		System.out.println(code_retrieved);
+		url = host + "/api/token";
+		String[] parts = code_retrieved.split("=");
+		parts = parts[1].split(" ");
+		code_retrieved = parts[0];
+
+		body_args = new ArrayList<NameValuePair>();
+		body_args
+				.add(new BasicNameValuePair("grant_type", "authorization_code"));
+		body_args.add(new BasicNameValuePair("redirect_uri", redirect_uri));
+		body_args.add(new BasicNameValuePair("code", code_retrieved));
+		// client_id:secret_id en base 64
+		String encodedBytes = Base64.encode((client_id + ":" + client_secret)
+				.getBytes());
+
+		JSONObject res_json = NetworkWrapper.post(url, body_args,
+				"Authorization", "Basic " + encodedBytes);
+		access_token = res_json.getString("access_token");
+		
+		/*NetworkWrapper
+				.get("https://connect.deezer.com/oauth/auth.php?app_id=171795&"
+						+ "redirect_uri=http://localhost:8080/callback.html&"
+						+ "perms=basic_access,email,offline_access,manage_library,listening_history");
+		JSONObject res = NetworkWrapper.post(url, body_args);*/
 		// token = res.getString("access_token");
 
 	}
@@ -137,9 +183,10 @@ public class DeezerClient implements Iapi {
 		res = NetworkWrapper.get(url);
 		return res;
 	}
-	
-	/* retourne la liste de track de la playlist
-	 * (non-Javadoc)
+
+	/*
+	 * retourne la liste de track de la playlist (non-Javadoc)
+	 * 
 	 * @see modele.Iapi#get_playlist(java.lang.String)
 	 */
 	@Override
