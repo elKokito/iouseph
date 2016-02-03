@@ -2,8 +2,6 @@ package ui;
 
 import iouseph.Parser;
 
-import java.util.Vector;
-
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;

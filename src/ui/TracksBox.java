@@ -4,7 +4,6 @@ import iouseph.Parser;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;

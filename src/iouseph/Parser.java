@@ -2,7 +2,6 @@ package iouseph;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import modele.Playlist;
 import modele.Track;
@@ -12,6 +11,13 @@ import org.json.JSONObject;
 
 public class Parser {
 
+	/**
+	 * retourne un objet Track, il est parse a partir d'un JSONObject
+	 * 
+	 * @param json	un JSONObject recupere depuis le service de streaming
+	 * @return	Track
+	 * @see Parser#tracksParse(JSONObject)
+	 */
 	public static Track trackParse(JSONObject json) {
 		Track track = new Track();
 		track.setId(String.valueOf(json.getInt("id")));
@@ -24,6 +30,13 @@ public class Parser {
 		return track;
 	}
 
+	/**
+	 * retourne une List<Track>, elle est parse a partir d'un JSONObject
+	 * 
+	 * @param json	un JSONObject recupere depuis le service de streaming
+	 *  
+	 * @return	ArrayList<Track>
+	 */
 	public static List<Track> tracksParse(JSONObject json) {
 		List<Track> tracks = new ArrayList<>();
 		int i = 0;
@@ -40,6 +53,13 @@ public class Parser {
 		return tracks;
 	}
 	
+	/**
+	 * retourne un objet Playlist, il est parse a partir d'un JSONObject
+	 * 
+	 * @param json	un JSONObject recupere depuis le service de streaming
+	 * @return	Playlist
+	 * @see Parser#playlistsParse(JSONObject)
+	 */
 	public static Playlist playlistParse(JSONObject json){
 		Playlist playlist = new Playlist();
 		playlist.setId(String.valueOf(json.getInt("id")));
@@ -49,6 +69,14 @@ public class Parser {
 		return playlist;
 	}
 	
+	
+	/**
+	 * retourne une List<Playlist>, elle est parse a partir d'un JSONObject
+	 * 
+	 * @param json	un JSONObject recupere depuis le service de streaming
+	 *  
+	 * @return	ArrayList<Playlist>
+	 */
 	public static List<Playlist> playlistsParse(JSONObject json){
 		List<Playlist> playlists = new ArrayList<>();
 		int i = 0;
@@ -65,6 +93,7 @@ public class Parser {
 		return playlists;
 	}
 
+	
 	public static List<Track> playlistIdParse(JSONObject json) {
 		/*List<Track> tracks = new ArrayList<>();
 		int i = 0;

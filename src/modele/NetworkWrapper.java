@@ -12,7 +12,6 @@ import java.util.List;
 
 import org.apache.http.Consts;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -281,14 +280,12 @@ public final class NetworkWrapper {
 				response.append(inputLine);
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		System.out.println(response);
 		try {
 			reader.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		JSONArray res_json = new JSONArray(response.toString());
@@ -296,6 +293,7 @@ public final class NetworkWrapper {
 	}
 
 	// un serveur se met en ecoute pour recuperer le code d'authorization
+	@SuppressWarnings("resource")
 	public static String runServerToListen(int port) throws Exception {
 		final int portNumber = port;
 		System.out.println("Creating server socket on port " + portNumber);
@@ -308,7 +306,7 @@ public final class NetworkWrapper {
 		}
 		Socket socket = null;
 		socket = serverSocket.accept();
-		OutputStream os = socket.getOutputStream();
+		//OutputStream os = socket.getOutputStream();
 		BufferedReader br = null;
 		br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		String str = null;

@@ -7,7 +7,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import modele.Iapi;
-import modele.NetworkWrapper;
 
 public class ButtonBox extends VBox{
 	

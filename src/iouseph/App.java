@@ -1,9 +1,5 @@
 package iouseph;
 
-import java.io.IOException;
-
-import org.apache.http.client.ClientProtocolException;
-
 import modele.SpotifyClient;
 
 public class App {

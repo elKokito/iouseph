@@ -58,7 +58,7 @@ public interface Iapi {
 	 * methode pour recuperer une playlist
 	 * 
 	 * @param playlist_id
-	 *            id le la playlist rechercher
+	 *            id de la playlist rechercher
 	 */
 	public JSONObject get_playlist(String playlist_id);
 
@@ -71,8 +71,7 @@ public interface Iapi {
 	public JSONObject get_track(String track_id);
 
 	/**
-	 * methode pour recuperer les informations personnelles de l'utilisateur li�
-	 * � l'application
+	 * methode pour recuperer les informations personnelles de l'utilisateur
 	 * 
 	 */
 	public JSONObject get_personnal_info();

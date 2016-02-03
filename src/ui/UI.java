@@ -4,10 +4,6 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import modele.DeezerClient;
-import modele.Iapi;
-import modele.SoundcloudClient;
-import modele.SpotifyClient;
 
 public class UI extends Application {
 	
