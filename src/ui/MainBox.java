@@ -32,7 +32,6 @@ public class MainBox extends HBox{
 		this.setPadding(new Insets(10,10,10,10));
 		this.setHeight(uI_HEIGHT);
 		this.setWidth(uI_WIDTH);
-		((SpotifyClient)spotify).GetAuthorizationUrl();
 		
 		menuBox = new MenuBox(uI_HEIGHT, uI_WIDTH, tracksBox, deezer);
 		this.getChildren().add(menuBox);
@@ -47,7 +46,10 @@ public class MainBox extends HBox{
 		this.getChildren().add(playerBox);	
 		
 	}
-	
+	public void setSpotifyWaitStatus()
+	{
+		((SpotifyClient)spotify).GetAuthorizationUrl();
+	}
 	public void setTrackList(Playlist playlist){
 		playlist.setTracks(Parser.playlistIdParse(deezer.get_playlist(playlist.getId())));
 		tracksBox.refresh(playlist.getTracks());

@@ -35,8 +35,8 @@ public class LoginBox extends HBox{
             public void handle(ActionEvent event) {
             	if (browserStage == null)
             		browserStage = new BrowserStage(title, LoginBox.this.url);  
+            	notifyMainBox();
             	browserStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-					
 					@Override
 					public void handle(WindowEvent arg0) {
 						browserStage = null;
@@ -45,6 +45,11 @@ public class LoginBox extends HBox{
             }
         });
 		this.getChildren().add(loginButton);
+	}
+	
+	public void notifyMainBox()
+	{
+    	((MainBox)this.getParent().getParent().getParent()).setSpotifyWaitStatus();
 	}
 
 }
