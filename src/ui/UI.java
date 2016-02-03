@@ -10,6 +10,7 @@ public class UI extends Application {
 	private double UI_HEIGHT = 500;
 	private double UI_WIDHT = 600;
 
+	
 	@Override
 	public void start(Stage stage) throws Exception {	
        

@@ -15,6 +15,9 @@ public class ButtonBox extends VBox{
 	private String spotifyImagePath = "https://d2c87l0yth4zbw.global.ssl.fastly.net/i/_global/touch-icon-144.png";
 	private String deezerImagePath = "http://e-cdn-files.deezer.com/images/common/favicon/favicon-196x196-v00347634.png";        
 		
+	/**
+	 * cree la section boutton de connexion
+	 */
 	public ButtonBox(){
 		super();
 		this.setAlignment(Pos.TOP_CENTER);

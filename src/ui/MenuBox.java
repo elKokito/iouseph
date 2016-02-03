@@ -10,6 +10,15 @@ import modele.Iapi;
 
 public class MenuBox extends VBox{
 	
+	/**
+	 * cree la section menu de la vue
+	 * 
+	 * @param uI_HEIGHT	pour la longueur de la fenetre 
+	 * @param uI_WIDTH	pour la largeur de la fenetre
+	 * @param tracksBox
+	 *
+	 * @see	VBox
+	 */
 	public MenuBox(double uI_HEIGHT, double uI_WIDTH, TracksBox tracksBox, Iapi deezer){
 		super();
 		this.setAlignment(Pos.TOP_LEFT);

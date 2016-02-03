@@ -16,6 +16,13 @@ public class LoginBox extends HBox{
 	private Image image;
 	private String url = "www.google.com";
 
+	/**
+	 * cree un bouton de connexion
+	 * 
+	 * @param imagePath	lien vers le logo du service
+	 * @param title	nom du service
+	 * @param url	lien de connexion
+	 */
 	public LoginBox(String imagePath, final String title, String url) {
 		super();
 		
@@ -28,15 +35,25 @@ public class LoginBox extends HBox{
         this.getChildren().add(imageView);
         
         loginButton = new Button("Login");
-		//loginButton.setMinSize(arg0, arg1);
 		loginButton.setOnAction(new EventHandler<ActionEvent>() {
 			 
+            /**
+             * cree la fenetre de navigation BrowserStage
+             * 
+             * @param event	clic sur le bouton
+             * @see BrowserStage
+             */
             @Override
             public void handle(ActionEvent event) {
             	if (browserStage == null)
             		browserStage = new BrowserStage(title, LoginBox.this.url);  
             	notifyMainBox();
+            	
+            	
             	browserStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+					/**
+					 * evite qu'un meme lien de connexion soit ouvert deux fois
+					 */
 					@Override
 					public void handle(WindowEvent arg0) {
 						browserStage = null;

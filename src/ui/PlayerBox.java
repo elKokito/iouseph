@@ -18,6 +18,16 @@ public class PlayerBox extends VBox{
 	private Image image;
 	private Text trackTitle, artistName, albumTitle;
 
+	/**
+	 * cree la section Player de la vue
+	 * 
+	 * @param uI_HEIGHT
+	 *            pour la longueur de la fenetre
+	 * @param uI_WIDTH
+	 *            pour la largeur de la fenetre
+	 * 
+	 * @see VBox,
+	 */
 	public PlayerBox(double uI_HEIGHT, double uI_WIDTH) {
 		super();
 		this.setAlignment(Pos.TOP_LEFT);
@@ -52,16 +62,25 @@ public class PlayerBox extends VBox{
 		
         webView = new WebView();
         webView.setMaxHeight(uI_HEIGHT/4);
-        this.getChildren().add(webView);
-        
-        this.loadTrack("http://e-cdn-preview-7.deezer.com/stream/7ed43f379f0f0b3f2527818c8306b63b-3.mp3");
-        
+        this.getChildren().add(webView);        
 	}
 	
+	/**
+	 * execute la lecture
+	 * 
+	 * @param url lien vers la chanson dans le service de streaming
+	 */
 	public void loadTrack(String url){
 		webView.getEngine().load(url);
 	}
 
+	
+	/**
+	 * rafrechit les donnees affiche sur la vue PlayerBox
+	 * 
+	 * @param track le Track dont les donnees vont etre affichees
+	 * @see PlayerBox#loadTrack(String)
+	 */
 	public void refresh(Track track) {
 		trackTitle.setText(track.getTitle());
 		artistName.setText(track.getArtist());

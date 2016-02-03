@@ -16,6 +16,9 @@ public class SearchBox extends VBox{
 	private Button searchButton;
 	private Iapi api;
 	
+	/**
+	 * cree la section recherche de la vue
+	 */
 	public SearchBox(final TracksBox tracksBox, final Iapi api){
 		super();
 		this.setMaxHeight(100);
@@ -35,6 +38,11 @@ public class SearchBox extends VBox{
 		
 		searchField.setOnKeyPressed(new EventHandler<KeyEvent>(){
 			    
+	        /**
+	         * verifie si le bouton ENTRER est cliquer, si c'est le cas la methode {@link SearchBox#refresh()} est executee
+	         * 
+	         * @param ke valeur du bouton clique
+	         */
 	        @Override
 	        public void handle(KeyEvent ke)
 	        {
@@ -58,6 +66,12 @@ public class SearchBox extends VBox{
         });
 	}
 	
+	
+	/**
+	 * rafrechit le contenu de TracksBox et de PlaylistsBox 
+	 * 
+	 * @see {@link MainBox#setTrackList(org.json.JSONObject)}, {@link MainBox#setPlaylistList(org.json.JSONObject)}
+	 */
 	private void refresh(){
 		((MainBox)this.getParent().getParent()).setTrackList(this.api.get_search(searchField.getText()));
 		((MainBox)this.getParent().getParent()).setPlaylistList(this.api.get_playlists(searchField.getText()));

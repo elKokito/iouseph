@@ -9,6 +9,13 @@ public class BrowserStage extends Stage{
 	    
 	private WebView webView;
 
+	/**
+	 * ouvre une fenetre ayant comme titre title et contenant une {@link WebView} qui est dirigee vers l'url passe en parametre  
+	 * 
+	 * @param title titre de la fenetre
+	 * @param url	lien de navigation
+	 * @see Stage
+	 */
 	public BrowserStage(String title, String url){
 		super();
 				

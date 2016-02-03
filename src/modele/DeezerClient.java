@@ -13,7 +13,7 @@ import org.json.JSONObject;
 
 public class DeezerClient implements Iapi {
 
-	private final String host = "https://connect.deezer.com/";
+	private final String host = "https://api.deezer.com/";
 	private String app_id = "171795";
 	private String secret = "a460f3efd5e3e0c98af00730d882b5f0";
 	private String redirect_uri = "http://localhost:9999/callback";
@@ -31,7 +31,7 @@ public class DeezerClient implements Iapi {
 		 * .com/oauth/access_token.php?app_id=YOU_APP_ID&secret
 		 * =YOU_APP_SECRET&code=THE_CODE_FROM_ABOVE
 		 */
-		String url = host + "oauth/auth.php?";
+		String url = "https://connect.deezer.com/oauth/auth.php?";
 		String perms = "basic_access,email,offline_access,manage_library,listening_history";
 
 		List<NameValuePair> body_args = new ArrayList<NameValuePair>();
@@ -46,7 +46,7 @@ public class DeezerClient implements Iapi {
 		java.awt.Desktop.getDesktop().browse(new URI(url));
 		String code_retrieved = NetworkWrapper.runServerToListen(9999);
 		System.out.println(code_retrieved);
-		url = host + "oauth/access_token.php?";
+		url = "https://connect.deezer.com/oauth/access_token.php?";
 		String[] parts = code_retrieved.split("=");
 		parts = parts[1].split(" ");
 		code_retrieved = parts[0];
