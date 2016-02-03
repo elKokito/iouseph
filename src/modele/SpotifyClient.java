@@ -1,5 +1,12 @@
 package modele;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,13 +29,13 @@ public class SpotifyClient implements Iapi {
 	private String client_secret = "9e85225cb1324ee1bb7fa32be121a96c";
 	private String redirect_uri = "http://localhost:8888/callback";
 	private String access_token;
-
+	Thread myMainThread ;
 	private Map<String, String> lastItemSearchedInfo = new HashMap<String, String>();
 
 	/**
 	 * @throws Exception
 	 */
-	public void retreive_token() throws Exception {
+	public String  GetAuthorizationUrl() {
 		String url = host + "/authorize/?";
 		String scope = "playlist-read-private playlist-read-collaborative playlist-modify-public "
 				+ "playlist-modify-private streaming user-follow-modify user-follow-read user-library-read "
@@ -43,9 +50,16 @@ public class SpotifyClient implements Iapi {
 		url += paramString;
 		// redirect
 		System.out.println(url);
-		java.awt.Desktop.getDesktop().browse(new URI(url));
-		String code_retrieved = NetworkWrapper.runServerToListen(8888);
-		url = host + "/api/token";
+		//java.awt.Desktop.getDesktop().browse(new URI(url));
+		runServer(8888);
+		return url;
+	}
+
+
+	public void retreive_token(String code_retrieved) 
+	{
+		String url = host + "/api/token";
+		stopServer();
 		// recuperation de la partie qui nous importe
 		// format du code GET
 		// exemple
@@ -54,7 +68,7 @@ public class SpotifyClient implements Iapi {
 		String[] parts = code_retrieved.split("=");
 		parts = parts[1].split(" ");
 		code_retrieved = parts[0];
-
+		List<NameValuePair> body_args = new ArrayList<NameValuePair>();
 		body_args = new ArrayList<NameValuePair>();
 		body_args.add(new BasicNameValuePair("grant_type", "authorization_code"));
 		body_args.add(new BasicNameValuePair("redirect_uri", redirect_uri));
@@ -284,5 +298,78 @@ public class SpotifyClient implements Iapi {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	void runServer(final int port)
+	{
+		myMainThread = new Thread ( new Runnable() {		
+				
+		public	void run() {
+		final int portNumber = port;
+		System.out.println("Creating server socket on port " + portNumber);
+		ServerSocket serverSocket = null;
+		try {
+			serverSocket = new ServerSocket(portNumber);
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		Socket socket = null;
+		try {
+			socket = serverSocket.accept();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			OutputStream os = socket.getOutputStream();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		BufferedReader br = null;
+		try {
+			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String str = null;
+		try {
+			str = br.readLine();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
+		String response = "<html><h3>MERCI</h3></html>";
+		PrintWriter out = null;
+		try {
+			out = new PrintWriter(socket.getOutputStream());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		out.println("HTTP/1.1 200 OK");
+		out.println("Content-Type: text/html");
+		out.println("Content-Length: " + response.length());
+		out.println();
+		out.println(response);
+		out.flush();
+		out.close();
+		try {
+			socket.close();
+			retreive_token(str) ;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		}});
+		
+		myMainThread.start();
+	}
+
+	void stopServer()
+	{
+		System.out.println("server closed");
+		myMainThread.interrupt();
+	}
 }

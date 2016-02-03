@@ -27,7 +27,7 @@ public class App {
 		d.get_search("muse");*/
 		
 		SpotifyClient SpClient = new SpotifyClient();
-		SpClient.retreive_token();
+		//SpClient.retreive_token();
 		SpClient.get_personnal_info();
 		// valid types : album, artist, playlist, and track
 		SpClient.get_user_info("youssef.zemmahi");

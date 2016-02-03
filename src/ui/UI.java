@@ -16,12 +16,9 @@ public class UI extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {	
-		Iapi deezer = new DeezerClient();
-		Iapi soundCloud = new SoundcloudClient();
-		Iapi spotify = new SpotifyClient();
-        
+       
         StackPane root = new StackPane();
-        MainBox grid = new MainBox(UI_HEIGHT, UI_WIDHT, deezer);
+        MainBox grid = new MainBox(UI_HEIGHT, UI_WIDHT);
         root.getChildren().add(grid);
 
         Scene scene = new Scene(root, UI_WIDHT, UI_HEIGHT);
