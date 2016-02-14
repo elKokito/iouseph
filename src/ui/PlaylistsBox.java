@@ -5,8 +5,6 @@ import iouseph.Parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import modele.Playlist;
-
 import org.json.JSONObject;
 
 import javafx.beans.value.ChangeListener;
@@ -23,6 +21,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import modele.Playlist;
 
 public class PlaylistsBox extends VBox {
 

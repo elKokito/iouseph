@@ -1,6 +1,5 @@
 package ui;
 
-import modele.Track;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
@@ -10,6 +9,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
+import modele.Track;
 
 public class PlayerBox extends VBox{
 	

@@ -3,11 +3,11 @@ package iouseph;
 import java.util.ArrayList;
 import java.util.List;
 
-import modele.Playlist;
-import modele.Track;
-
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import modele.Playlist;
+import modele.Track;
 
 public class Parser {
 
