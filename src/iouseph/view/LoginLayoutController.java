@@ -17,12 +17,14 @@ public class LoginLayoutController {
 	public void loadTrack(String url){
 		loginView.getEngine().load(url);
 	}
+
 	/**
      * Initializes the controller class. This method is automatically called
      * after the fxml file has been loaded.
      */
     @FXML
     private void initialize() {
+    	//TODO lancer le serveur
     }
 
     /**

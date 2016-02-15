@@ -105,7 +105,7 @@ public class Track {
 	public String toString() {
 		return /*"Track [id=" + id.get() + ", title=" + title.get() + ", externalUrl=" + externalUrl.get() + ", duration="
 				+ duration.get() + ", artist=" + artist.get() + ", album=" + album.get() + ", image=" + image.get()
-				+ ", source=" + source.get() + "]"*/title.get();
+				+ ", source=" + source.get() + "]"*/title.get()+"\n"+ artist.get()+"\n"+album.get();
 	}
 
 }

@@ -11,11 +11,11 @@ import javafx.scene.layout.VBox;
 import modele.Iapi;
 
 public class SearchBox extends VBox{
-	
+
 	private TextField searchField;
 	private Button searchButton;
 	private Iapi api;
-	
+
 	/**
 	 * cree la section recherche de la vue
 	 */
@@ -23,24 +23,24 @@ public class SearchBox extends VBox{
 		super();
 		this.setMaxHeight(100);
 		this.api = api;
-		
+
 		searchField = new TextField("\"Artist\", \"Track\" or \"Album\"");
 		this.getChildren().add(searchField);
-		
+
 		searchField.setOnMouseClicked(new EventHandler<Event>() {
 
 			@Override
 			public void handle(Event arg0) {
 				searchField.setText("");
 			}
-			
+
 		});
-		
+
 		searchField.setOnKeyPressed(new EventHandler<KeyEvent>(){
-			    
+
 	        /**
 	         * verifie si le bouton ENTRER est cliquer, si c'est le cas la methode {@link SearchBox#refresh()} est executee
-	         * 
+	         *
 	         * @param ke valeur du bouton clique
 	         */
 	        @Override
@@ -52,24 +52,24 @@ public class SearchBox extends VBox{
 	            }
 	        }
 	    });
-		
+
 		searchButton = new Button("Search");
 		this.setAlignment(Pos.BOTTOM_RIGHT);
 		this.getChildren().add(searchButton);
-		
+
         searchButton.setOnAction(new EventHandler<ActionEvent>() {
- 
+
             @Override
-            public void handle(ActionEvent event) {                
+            public void handle(ActionEvent event) {
                 refresh();
             }
         });
 	}
-	
-	
+
+
 	/**
-	 * rafrechit le contenu de TracksBox et de PlaylistsBox 
-	 * 
+	 * rafrechit le contenu de TracksBox et de PlaylistsBox
+	 *
 	 * @see {@link MainBox#setTrackList(org.json.JSONObject)}, {@link MainBox#setPlaylistList(org.json.JSONObject)}
 	 */
 	private void refresh(){

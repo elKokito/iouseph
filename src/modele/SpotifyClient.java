@@ -19,6 +19,8 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import iouseph.model.Track;
+
 
 public class SpotifyClient implements Iapi {
 
@@ -193,7 +195,7 @@ public class SpotifyClient implements Iapi {
 	 * @see modele.Iapi#get_search(java.lang.String)
 	 */
 	@Override
-	public JSONObject get_search(String search) {
+	public List<Track> get_search(String search) {
 		return null;
 		// TODO Auto-generated method stub
 

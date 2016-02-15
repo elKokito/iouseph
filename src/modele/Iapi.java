@@ -1,5 +1,7 @@
 package modele;
 
+import java.util.List;
+
 import org.json.JSONObject;
 
 /**
@@ -7,7 +9,7 @@ import org.json.JSONObject;
  * repondre aux requis defini dans le tp1 1. outils de recherche de musique
  * independant des systemes de streaming. 2. gestion des listes de musique. 3.
  * reproduction des listes de musique. 4. bonus: system de parole de chanson.
- * 
+ *
  * @author Marcial Lopez-Ferrada, Youssef Zemmahi, Aymen Zalila
  *
  */
@@ -15,16 +17,16 @@ public interface Iapi {
 
 	/**
 	 * methode servant a faire une recherche de chason de facon general
-	 * 
+	 *
 	 * @param search
 	 *            String decrivant la recherche
-	 * @return 
+	 * @return
 	 */
-	public JSONObject get_search(String search);
+	public List<iouseph.model.Track> get_search(String search);
 
 	/**
 	 * methode pour recuperer l'information d'un album avec son id
-	 * 
+	 *
 	 * @param album_id
 	 *            id de l'album
 	 */
@@ -32,7 +34,7 @@ public interface Iapi {
 
 	/**
 	 * methode pour recuperer l'information d'un artist avec son id
-	 * 
+	 *
 	 * @param artist_id
 	 *            id de l'artiste
 	 */
@@ -40,31 +42,31 @@ public interface Iapi {
 
 	/**
 	 * methode pour recuperer les genres disponible
-	 * 
+	 *
 	 */
 	public JSONObject get_genres();
 
 	/**
 	 * methode pour recupere de l'information sur un genre en particulier
-	 * 
+	 *
 	 * @param genre_id
 	 *            id du genre rechercher
 	 */
 	public JSONObject get_genre(String genre_id);
-	
-	public JSONObject get_playlists(String search);
+
+	public List<iouseph.model.Playlist> get_playlists(String search);
 
 	/**
 	 * methode pour recuperer une playlist
-	 * 
+	 *
 	 * @param playlist_id
 	 *            id de la playlist rechercher
 	 */
-	public JSONObject get_playlist(String playlist_id);
+	public List<iouseph.model.Track> get_playlist(String playlist_id);
 
 	/**
 	 * methode pour recupere de l'information sur une chanson en particulier
-	 * 
+	 *
 	 * @param track_id
 	 *            id de la chanson rechercher
 	 */
@@ -72,7 +74,7 @@ public interface Iapi {
 
 	/**
 	 * methode pour recuperer les informations personnelles de l'utilisateur
-	 * 
+	 *
 	 */
 	public JSONObject get_personnal_info();
 

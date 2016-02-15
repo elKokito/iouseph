@@ -10,6 +10,10 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
+import iouseph.Parser;
+import iouseph.model.Playlist;
+import iouseph.model.Track;
+
 
 public class DeezerClient implements Iapi {
 
@@ -56,9 +60,9 @@ public class DeezerClient implements Iapi {
 		body_args.add(new BasicNameValuePair("secret", secret));
 		body_args.add(new BasicNameValuePair("code", code_retrieved));
 		paramString = URLEncodedUtils.format(body_args, "utf-8");
-		
+
 		//url += "app_id=" + app_id + "&secret=" + secret + "&code="+ code_retrieved;
-		url += paramString; 
+		url += paramString;
 		JSONObject res_json = NetworkWrapper.post(url, body_args);
 		access_token = res_json.getString("access_token");
 
@@ -78,23 +82,23 @@ public class DeezerClient implements Iapi {
 		return res;
 	}
 
-	
+
 	/**
 	 * @see modele.Iapi#get_search(java.lang.String)
 	 */
-	public JSONObject get_search(String search) {
+	public List<Track> get_search(String search) {
 
 		String url = host + "/search?q=" + search;// +
 													// "&index=0&limit=5";//me?oauth_token="
 													// + token;
 		JSONObject res = null;
 		res = NetworkWrapper.get(url);
-		return res;
+		return Parser.tracksParse(res);
 	}
 
 	/**
 	 * retourne les informations de l'utilisateur connecte
-	 * 
+	 *
 	 * @param user_id	l'id du user dans deezer
 	 * @return un JSONObject contenant les informations de l'utilisateur
 	 */
@@ -113,33 +117,33 @@ public class DeezerClient implements Iapi {
 
 
 
-	/** 
+	/**
 	 *	retourne une liste de playlists
-	 * 
-	 * @param search	le String a rechercher dana deezer 
+	 *
+	 * @param search	le String a rechercher dana deezer
 	 * @return un JSONObject contenant une liste de playlists
 	 * @see modele.Iapi#get_playlists(java.lang.String)
 	 */
-	public JSONObject get_playlists(String search) {
+	public List<Playlist> get_playlists(String search) {
 		String url = host + "/search/playlist?q=" + search;
 		JSONObject res = null;
 		res = NetworkWrapper.get(url);
-		return res;
+		return Parser.playlistsParse(res);
 	}
 
 	/*
-	 * retourne la liste des tracks de la playlist 
-	 * 
+	 * retourne la liste des tracks de la playlist
+	 *
 	 * @see modele.Iapi#get_playlist(java.lang.String)
 	 */
 	@Override
-	public JSONObject get_playlist(String playlist_id) {
+	public List<Track> get_playlist(String playlist_id) {
 		String url = host + "/playlist/" + playlist_id + "/tracks";
 		JSONObject res = null;
 		res = NetworkWrapper.get(url);
-		return res;
+		return Parser.playlistIdParse(res);
 	}
-	
+
 	//TODO ces methodes seront implementees dans les prochaines versions
 
 	@Override
@@ -160,7 +164,7 @@ public class DeezerClient implements Iapi {
 
 	}
 
-	
+
 
 	public JSONObject get_genre(String genre_id) {
 		// TODO Auto-generated method stub
@@ -168,8 +172,8 @@ public class DeezerClient implements Iapi {
 
 		return res;
 
-	} 
-	
+	}
+
 	public JSONObject get_track(String track_id) {
 		// TODO Auto-generated method stub
 		JSONObject res = null;
@@ -185,7 +189,7 @@ public class DeezerClient implements Iapi {
 		return res;
 
 	}
-	
+
 	public void get_chart() {
 		// TODO Auto-generated method stub
 

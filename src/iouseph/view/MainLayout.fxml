@@ -18,12 +18,12 @@
    <children>
       <HBox id="search_box" prefHeight="70.0">
          <children>
-            <TextField id="search_textfield" prefWidth="250.0" promptText="&quot;Artist&quot;, &quot;Track&quot; or &quot;Album&quot;">
+            <TextField id="search_textfield" fx:id="searchTextField" onKeyPressed="#handleSearchTextField" prefWidth="250.0" promptText="&quot;Artist&quot;, &quot;Track&quot; or &quot;Album&quot;">
                <HBox.margin>
                   <Insets left="30.0" top="20.0" />
                </HBox.margin>
             </TextField>
-            <Button id="search_button" mnemonicParsing="false" prefWidth="20.0" text="Search">
+            <Button id="search_button" fx:id="searcheButton" mnemonicParsing="false" prefWidth="20.0" text="Search">
                <HBox.margin>
                   <Insets top="20.0" />
                </HBox.margin>
