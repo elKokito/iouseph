@@ -135,10 +135,10 @@ public class MainLayoutController {
          }
 	}
 
-	private Iapi api = new DeezerClient();
+	private Iapi api;
 	@FXML
 	private void handleSearch(){
-
+		api = new DeezerClient();
 		mainController.getTracks().clear();
 		mainController.getTracks().addAll(api.get_search(searchTextField.getText()));
 		mainController.getPlaylists().clear();
