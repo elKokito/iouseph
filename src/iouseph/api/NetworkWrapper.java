@@ -23,20 +23,20 @@ import org.json.JSONObject;
 
 /**
  * classe NetworkWrapper pour faciliter l'envoie de requete http
- * 
+ *
  * @author Marcial Lopez-Ferrada
  *
  */
-public final class NetworkWrapper {
+public abstract class NetworkWrapper {
 
 	/**
 	 * methode permettant d'envoyer une requete http GET
-	 * 
+	 *
 	 * @param url
 	 *            url demander
 	 * @return object contenant la reponse qui respecte le format json
 	 */
-	private NetworkWrapper() {
+	public NetworkWrapper() {
 
 	}
 
@@ -72,7 +72,7 @@ public final class NetworkWrapper {
 
 	/**
 	 * methode permettant d'envoyer une requete http GET
-	 * 
+	 *
 	 * @param url
 	 *            url demandé ,
 	 * @param HeaderName
@@ -113,7 +113,7 @@ public final class NetworkWrapper {
 	/**
 	 * methode permettant d'envoyer une requete http GET avec une liste comme
 	 * reponse
-	 * 
+	 *
 	 * @param url
 	 *            url demander
 	 * @return object retourner par la requete sous forme de liste
@@ -150,7 +150,7 @@ public final class NetworkWrapper {
 
 	/**
 	 * methode permettant d'envoyer une requete http POST
-	 * 
+	 *
 	 * @param url
 	 *            url demander
 	 * @param body_args
@@ -189,7 +189,7 @@ public final class NetworkWrapper {
 
 	/**
 	 * methode permettant d'envoyer une requete http POST
-	 * 
+	 *
 	 * @param url
 	 *            url demander
 	 * @param body_args
@@ -232,7 +232,7 @@ public final class NetworkWrapper {
 
 	/**
 	 * methode permettant d'analyser la reponse recu (parsing)
-	 * 
+	 *
 	 * @param r
 	 *            reponse recu
 	 * @return retourne la reponse sous forme de JSONObject
@@ -264,7 +264,7 @@ public final class NetworkWrapper {
 
 	/**
 	 * methode permettant d'analyser la reponse recu (parsing)
-	 * 
+	 *
 	 * @param r
 	 *            reponse recu
 	 * @return retourne la reponse sour forme de list JSONArray
@@ -306,7 +306,7 @@ public final class NetworkWrapper {
 		}
 		Socket socket = null;
 		socket = serverSocket.accept();
-		//OutputStream os = socket.getOutputStream();
+		OutputStream os = socket.getOutputStream();
 		BufferedReader br = null;
 		br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		String str = null;

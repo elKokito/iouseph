@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -42,9 +43,6 @@ public class MainController {
         }
     }
 
-    /**
-     * Shows the person overview inside the root layout.
-     */
     public void showMainLayout() {
         try {
             // Load main layout.
@@ -95,21 +93,13 @@ public class MainController {
 		this();
 		this.mainStage = mainStage;
         this.mainStage.setTitle("Iouseph");
+        this.mainStage.getIcons().add(new Image("file:res/Iouseph-icon.png"));
 
         initRootLayout();
 
         showMainLayout();
 	}
 
-
-    /**
-     * Opens a dialog to edit details for the specified person. If the user
-     * clicks OK, the changes are saved into the provided person object and true
-     * is returned.
-     *
-     * @param person the person object to be edited
-     * @return true if the user clicked OK, false otherwise.
-     */
     public boolean showLoginLayout(String url) {
         try {
             // Load the fxml file and create a new stage for the popup dialog.
@@ -120,6 +110,7 @@ public class MainController {
             // Create the dialog Stage.
             Stage loginStage = new Stage();
             loginStage.setTitle("Login");
+            loginStage.getIcons().add(new Image("file:res/Iouseph-icon.png"));
             loginStage.initModality(Modality.WINDOW_MODAL);
             loginStage.initOwner(mainStage);
             Scene scene = new Scene(page);

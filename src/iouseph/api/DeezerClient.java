@@ -15,7 +15,7 @@ import iouseph.model.Track;
 import iouseph.model.User;
 
 
-public class DeezerClient implements Iapi {
+public class DeezerClient extends NetworkWrapper implements Iapi{
 
 	private final String host = "https://api.deezer.com/";
 	private String app_id = "171795";
@@ -25,13 +25,11 @@ public class DeezerClient implements Iapi {
 
 	private IParser parser;
 
-
-
 	public DeezerClient() {
 		this.parser = new DeezerParser();
 	}
 
-	public void retreive_token() throws Exception {
+	public String retreive_token() throws Exception {
 
 		/*
 		 * https://connect.deezer.com/oauth/auth.php?app_id=YOUR_APP_ID&redirect_uri
@@ -56,7 +54,7 @@ public class DeezerClient implements Iapi {
 		url += paramString;
 		System.out.println(url);
 		java.awt.Desktop.getDesktop().browse(new URI(url));
-		String code_retrieved = NetworkWrapper.runServerToListen(9999);
+		String code_retrieved = runServerToListen(9999);
 		System.out.println(code_retrieved);
 		url = "https://connect.deezer.com/oauth/access_token.php?";
 		String[] parts = code_retrieved.split("=");
@@ -71,28 +69,27 @@ public class DeezerClient implements Iapi {
 
 		//url += "app_id=" + app_id + "&secret=" + secret + "&code="+ code_retrieved;
 		url += paramString;
-		JSONObject res_json = NetworkWrapper.post(url, body_args);
+		JSONObject res_json = post(url, body_args);
 		access_token = res_json.getString("access_token");
 
+		return access_token;
 	}
 
 	public User get_personnal_info() {
-
 		String url = host + "/infos";// me?oauth_token=" + token;
 		JSONObject res = null;
-		res = NetworkWrapper.get(url);
+		res = get(url);
 		Iterator<String> i = res.keys();
 		while (i.hasNext()) {
 			String s = i.next();
 			System.out.println(s + " : " + res.get(s));
 		}
-
 		return null;
 	}
 
 
 	/**
-	 * @see modele.Iapi#get_search(java.lang.String)
+	 * @see iouseph.api.model.Iapi#get_search(java.lang.String)
 	 */
 	public List<Track> get_search(String search) {
 
@@ -100,7 +97,7 @@ public class DeezerClient implements Iapi {
 													// "&index=0&limit=5";//me?oauth_token="
 													// + token;
 		JSONObject res = null;
-		res = NetworkWrapper.get(url);
+		res = get(url);
 		return this.parser.tracksParse(res);
 	}
 
@@ -113,7 +110,7 @@ public class DeezerClient implements Iapi {
 	public JSONObject get_user_info(String user_id) {
 		String url = host + "user/" + user_id;// + "/playlists";// +
 												// "?client_id=" + client_id;
-		JSONObject res = NetworkWrapper.get(url);
+		JSONObject res = get(url);
 		Iterator<String> i = res.keys();
 		while (i.hasNext()) {
 			String s = i.next();
@@ -123,36 +120,28 @@ public class DeezerClient implements Iapi {
 		return res;
 	}
 
-
-
 	/**
 	 *	retourne une liste de playlists
 	 *
 	 * @param search	le String a rechercher dana deezer
-	 * @return un JSONObject contenant une liste de playlists
-	 * @see modele.Iapi#get_playlists(java.lang.String)
+	 * @return une List<Playlist> contenant une liste de playlists
+	 * @see iouseph.api.model.Iapi#get_playlists(java.lang.String)
 	 */
 	public List<Playlist> get_playlists(String search) {
 		String url = host + "/search/playlist?q=" + search;
-		JSONObject res = null;
-		res = NetworkWrapper.get(url);
-		return this.parser.playlistsParse(res);
+		return this.parser.playlistsParse(get(url));
 	}
 
 	/*
 	 * retourne la liste des tracks de la playlist
 	 *
-	 * @see modele.Iapi#get_playlist(java.lang.String)
+	 * @see iouseph.api.model.Iapi#get_playlist(java.lang.String)
 	 */
 	@Override
 	public List<Track> get_playlist(String playlist_id) {
 		String url = host + "/playlist/" + playlist_id + "/tracks";
-		JSONObject res = null;
-		res = NetworkWrapper.get(url);
-		return this.parser.playlistIdParse(res);
+		return this.parser.playlistIdParse(get(url));
 	}
-
-
 
 	public Track get_track(String track_id) {
 		// TODO Auto-generated method stub
@@ -174,39 +163,39 @@ public class DeezerClient implements Iapi {
 
 	//TODO ces methodes seront implementees dans les prochaines versions
 	/*
-	public JSONObject get_album(String album_id) {
+	public Album get_album(String album_id) {
 	}
 
-	public JSONObject get_artist(String artist_id) {
+	public Artist get_artist(String artist_id) {
 	}
 
-	public JSONObject get_genre(String genre_id) {
+	public Genre get_genre(String genre_id) {
 	}
 
-	public JSONObject get_genres() {
+	public List<Genre> get_genres() {
 	}
 
 	public void get_chart() {
 	}
 
-	public void get_comment(String comment_id) {
+	public Comment get_comment(String comment_id) {
 	}
 
-	public void get_editorials() {
+	public List<Editorial> get_editorials() {
 	}
 
-	public void get_editorial(String editorial_id) {
+	public Editorial get_editorial(String editorial_id) {
 	}
 
-	public void get_podcast(String podcast_id) {
+	public Podcast get_podcast(String podcast_id) {
 	}
 
-	public void get_radios() {
+	public List<Radio> get_radios() {
 	}
 
-	public void get_radio(String radio_id) {
+	public Radio get_radio(String radio_id) {
 	}
-	public void get_options() {
+	public List<Option> get_options() {
 	}
 	*/
 

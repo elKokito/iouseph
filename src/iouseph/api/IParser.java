@@ -23,7 +23,7 @@ public interface IParser {
 	 *
 	 * @param json	un JSONObject recupere depuis le service de streaming
 	 *
-	 * @return	ArrayList<Track>
+	 * @return	List<Track>
 	 */
 	public List<Track> tracksParse(JSONObject json);
 
@@ -41,7 +41,7 @@ public interface IParser {
 	 *
 	 * @param json	un JSONObject recupere depuis le service de streaming
 	 *
-	 * @return	ArrayList<Playlist>
+	 * @return	List<Playlist>
 	 */
 	public List<Playlist> playlistsParse(JSONObject json);
 

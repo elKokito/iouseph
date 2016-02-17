@@ -8,7 +8,6 @@ import org.json.JSONObject;
 
 import iouseph.model.Playlist;
 import iouseph.model.Track;
-import modele.Parser;
 
 public class DeezerParser implements IParser{
 
@@ -27,7 +26,6 @@ public class DeezerParser implements IParser{
 		track.setArtist(((JSONObject) json.get("artist")).getString("name"));
 		track.setAlbum(((JSONObject) json.get("album")).getString("title"));
 		track.setImage(((JSONObject) json.get("album")).getString("cover_big"));
-		System.out.println(track);
 		return track;
 	}
 

@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 public class LoginLayoutController {
 	@FXML
     private WebView loginView;
+	@SuppressWarnings("unused")
 	private Stage loginStage;
 
 	/**

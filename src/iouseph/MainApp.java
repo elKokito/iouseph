@@ -5,6 +5,7 @@ import javafx.stage.Stage;
 
 public class MainApp extends Application {
 
+	@SuppressWarnings("unused")
 	private MainController controller;
 
     @Override
