@@ -1,11 +1,11 @@
 package ui;
 
-import iouseph.Parser;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
 import modele.DeezerClient;
 import modele.Iapi;
+import modele.Parser;
 import modele.Playlist;
 import modele.SoundcloudClient;
 import modele.SpotifyClient;

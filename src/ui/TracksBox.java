@@ -1,7 +1,5 @@
 package ui;
 
-import iouseph.Parser;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import modele.Parser;
 import modele.Track;
 
 import org.json.JSONObject;

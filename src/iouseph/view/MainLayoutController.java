@@ -1,6 +1,8 @@
 package iouseph.view;
 
 import iouseph.MainController;
+import iouseph.api.DeezerClient;
+import iouseph.api.Iapi;
 import iouseph.model.Playlist;
 import iouseph.model.Track;
 import javafx.fxml.FXML;
@@ -11,8 +13,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.web.WebView;
-import modele.DeezerClient;
-import modele.Iapi;
 
 public class MainLayoutController {
 	@FXML
@@ -105,6 +105,7 @@ public class MainLayoutController {
     private void showPlaylistDetails(Playlist playlist) {
     	mainController.getTracks().clear();
 		mainController.getTracks().addAll(api.get_playlist(playlist.getId()));
+		//TODO autoselect first track
 	}
 
     /**

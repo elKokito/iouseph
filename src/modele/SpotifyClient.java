@@ -195,7 +195,7 @@ public class SpotifyClient implements Iapi {
 	 * @see modele.Iapi#get_search(java.lang.String)
 	 */
 	@Override
-	public List<Track> get_search(String search) {
+	public JSONObject get_search(String search) {
 		return null;
 		// TODO Auto-generated method stub
 

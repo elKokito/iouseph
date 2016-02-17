@@ -1,4 +1,4 @@
-package modele;
+package iouseph.api;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import iouseph.model.Playlist;
 import iouseph.model.Track;
+import iouseph.model.User;
 
 
 public class DeezerClient implements Iapi {
@@ -21,6 +22,14 @@ public class DeezerClient implements Iapi {
 	private String secret = "a460f3efd5e3e0c98af00730d882b5f0";
 	private String redirect_uri = "http://localhost:9999/callback";
 	private String access_token = "";
+
+	private IParser parser;
+
+
+
+	public DeezerClient() {
+		this.parser = new DeezerParser();
+	}
 
 	public void retreive_token() throws Exception {
 
@@ -67,7 +76,7 @@ public class DeezerClient implements Iapi {
 
 	}
 
-	public JSONObject get_personnal_info() {
+	public User get_personnal_info() {
 
 		String url = host + "/infos";// me?oauth_token=" + token;
 		JSONObject res = null;
@@ -78,21 +87,21 @@ public class DeezerClient implements Iapi {
 			System.out.println(s + " : " + res.get(s));
 		}
 
-		return res;
+		return null;
 	}
 
 
 	/**
 	 * @see modele.Iapi#get_search(java.lang.String)
 	 */
-	public JSONObject get_search(String search) {
+	public List<Track> get_search(String search) {
 
 		String url = host + "/search?q=" + search;// +
 													// "&index=0&limit=5";//me?oauth_token="
 													// + token;
 		JSONObject res = null;
 		res = NetworkWrapper.get(url);
-		return res;
+		return this.parser.tracksParse(res);
 	}
 
 	/**
@@ -123,11 +132,11 @@ public class DeezerClient implements Iapi {
 	 * @return un JSONObject contenant une liste de playlists
 	 * @see modele.Iapi#get_playlists(java.lang.String)
 	 */
-	public JSONObject get_playlists(String search) {
+	public List<Playlist> get_playlists(String search) {
 		String url = host + "/search/playlist?q=" + search;
 		JSONObject res = null;
 		res = NetworkWrapper.get(url);
-		return res;
+		return this.parser.playlistsParse(res);
 	}
 
 	/*
@@ -136,97 +145,69 @@ public class DeezerClient implements Iapi {
 	 * @see modele.Iapi#get_playlist(java.lang.String)
 	 */
 	@Override
-	public JSONObject get_playlist(String playlist_id) {
+	public List<Track> get_playlist(String playlist_id) {
 		String url = host + "/playlist/" + playlist_id + "/tracks";
 		JSONObject res = null;
 		res = NetworkWrapper.get(url);
-		return res;
+		return this.parser.playlistIdParse(res);
+	}
+
+
+
+	public Track get_track(String track_id) {
+		// TODO Auto-generated method stub
+		return null;
+
+	}
+
+	@Override
+	public Track get_tracks(String tracks) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Track set_playlists(List<Playlist> playlists) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	//TODO ces methodes seront implementees dans les prochaines versions
-
-	@Override
+	/*
 	public JSONObject get_album(String album_id) {
-		// TODO Auto-generated method stub
-		JSONObject res = null;
-
-		return res;
-
 	}
 
-	@Override
 	public JSONObject get_artist(String artist_id) {
-		// TODO Auto-generated method stub
-		JSONObject res = null;
-
-		return res;
-
 	}
-
-
 
 	public JSONObject get_genre(String genre_id) {
-		// TODO Auto-generated method stub
-		JSONObject res = null;
-
-		return res;
-
-	}
-
-	public JSONObject get_track(String track_id) {
-		// TODO Auto-generated method stub
-		JSONObject res = null;
-
-		return res;
-
 	}
 
 	public JSONObject get_genres() {
-		// TODO Auto-generated method stub
-		JSONObject res = null;
-
-		return res;
-
 	}
 
 	public void get_chart() {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void get_comment(String comment_id) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void get_editorials() {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void get_editorial(String editorial_id) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void get_podcast(String podcast_id) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void get_radios() {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void get_radio(String radio_id) {
-		// TODO Auto-generated method stub
-
 	}
 	public void get_options() {
-		// TODO Auto-generated method stub
-
 	}
-
+	*/
 
 }

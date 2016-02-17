@@ -1,8 +1,10 @@
-package modele;
+package iouseph.api;
 
 import java.util.List;
 
-import org.json.JSONObject;
+import iouseph.model.Playlist;
+import iouseph.model.Track;
+import iouseph.model.User;
 
 /**
  * Interface pour chaque client d'API public de l'application. Ceci est pour
@@ -22,39 +24,9 @@ public interface Iapi {
 	 *            String decrivant la recherche
 	 * @return
 	 */
-	public JSONObject get_search(String search);
+	public List<Track> get_search(String search);
 
-	/**
-	 * methode pour recuperer l'information d'un album avec son id
-	 *
-	 * @param album_id
-	 *            id de l'album
-	 */
-	public JSONObject get_album(String album_id);
-
-	/**
-	 * methode pour recuperer l'information d'un artist avec son id
-	 *
-	 * @param artist_id
-	 *            id de l'artiste
-	 */
-	public JSONObject get_artist(String artist_id);
-
-	/**
-	 * methode pour recuperer les genres disponible
-	 *
-	 */
-	public JSONObject get_genres();
-
-	/**
-	 * methode pour recupere de l'information sur un genre en particulier
-	 *
-	 * @param genre_id
-	 *            id du genre rechercher
-	 */
-	public JSONObject get_genre(String genre_id);
-
-	public JSONObject get_playlists(String search);
+	public List<Playlist> get_playlists(String search);
 
 	/**
 	 * methode pour recuperer une playlist
@@ -62,7 +34,7 @@ public interface Iapi {
 	 * @param playlist_id
 	 *            id de la playlist rechercher
 	 */
-	public JSONObject get_playlist(String playlist_id);
+	public List<Track> get_playlist(String playlist_id);
 
 	/**
 	 * methode pour recupere de l'information sur une chanson en particulier
@@ -70,12 +42,17 @@ public interface Iapi {
 	 * @param track_id
 	 *            id de la chanson rechercher
 	 */
-	public JSONObject get_track(String track_id);
+	public Track get_track(String track_id);
+
+	public Track get_tracks(String tracks);
+
+	public Track set_playlists(List<Playlist> playlists);
+
 
 	/**
 	 * methode pour recuperer les informations personnelles de l'utilisateur
 	 *
 	 */
-	public JSONObject get_personnal_info();
+	public User get_personnal_info();
 
 }
