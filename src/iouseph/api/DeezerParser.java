@@ -1,6 +1,7 @@
 package iouseph.api;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.json.JSONException;
@@ -8,6 +9,7 @@ import org.json.JSONObject;
 
 import iouseph.model.Playlist;
 import iouseph.model.Track;
+import iouseph.model.User;
 
 public class DeezerParser implements IParser{
 
@@ -18,6 +20,7 @@ public class DeezerParser implements IParser{
 	 * @return	Track
 	 * @see IParser#tracksParse(JSONObject)
 	 */
+	@Override
 	public Track trackParse(JSONObject json) {
 		Track track = new Track();
 		track.setId(String.valueOf(json.getInt("id")));
@@ -36,6 +39,7 @@ public class DeezerParser implements IParser{
 	 *
 	 * @return	ArrayList<Track>
 	 */
+	@Override
 	public List<Track> tracksParse(JSONObject json) {
 		List<Track> tracks = new ArrayList<>();
 		int i = 0;
@@ -59,6 +63,7 @@ public class DeezerParser implements IParser{
 	 * @return	Playlist
 	 * @see IParser#playlistsParse(JSONObject)
 	 */
+	@Override
 	public Playlist playlistParse(JSONObject json){
 		Playlist playlist = new Playlist();
 		playlist.setId(String.valueOf(json.getInt("id")));
@@ -76,6 +81,7 @@ public class DeezerParser implements IParser{
 	 *
 	 * @return	ArrayList<Playlist>
 	 */
+	@Override
 	public List<Playlist> playlistsParse(JSONObject json){
 		List<Playlist> playlists = new ArrayList<>();
 		int i = 0;
@@ -92,7 +98,7 @@ public class DeezerParser implements IParser{
 		return playlists;
 	}
 
-
+	@Override
 	public List<Track> playlistIdParse(JSONObject json) {
 		/*List<Track> tracks = new ArrayList<>();
 		int i = 0;
@@ -107,5 +113,22 @@ public class DeezerParser implements IParser{
 			return tracks;
 		}*/
 		return tracksParse(json);
+	}
+
+	@Override
+	public JSONObject playlistsParse(List<Playlist> playlists) {
+		JSONObject json = new JSONObject();
+		// TODO Auto-generated method stub
+		return json;
+	}
+
+	public User userParse(JSONObject json){
+		User user = new User();
+		Iterator<String> i = json.keys();
+		while (i.hasNext()) {
+			String s = i.next();
+			System.out.println(s + " : " + json.get(s));
+		}
+		return user;
 	}
 }

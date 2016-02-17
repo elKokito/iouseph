@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import iouseph.model.Playlist;
 import iouseph.model.Track;
+import iouseph.model.User;
 
 public interface IParser {
 
@@ -46,4 +47,15 @@ public interface IParser {
 	public List<Playlist> playlistsParse(JSONObject json);
 
 	public List<Track> playlistIdParse(JSONObject json);
+
+	/**
+	 * retourne un JSONObject, il est parse a partir d'une List<Playlist>
+	 *
+	 * @param playliste	une List<Playlist> a envoyer vers le service de streaming
+	 *
+	 * @return	JSONObject
+	 */
+	public JSONObject playlistsParse(List<Playlist> playlists);
+
+	public User userParse(JSONObject json);
 }

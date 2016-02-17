@@ -6,9 +6,6 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import iouseph.model.Playlist;
-import iouseph.model.Track;
-
 public class Parser {
 
 	/**
@@ -22,10 +19,10 @@ public class Parser {
 		Track track = new Track();
 		track.setId(String.valueOf(json.getInt("id")));
 		track.setTitle(json.getString("title"));
-		track.setExternalUrl(json.getString("preview"));
+		track.setExternalUrl_(json.getString("preview"));
 		track.setArtist(((JSONObject) json.get("artist")).getString("name"));
-		track.setAlbum(((JSONObject) json.get("album")).getString("title"));
-		track.setImage(((JSONObject) json.get("album")).getString("cover_big"));
+		track.setAlbum_(((JSONObject) json.get("album")).getString("title"));
+		track.setImage_(((JSONObject) json.get("album")).getString("cover_big"));
 		System.out.println(track);
 		return track;
 	}

@@ -2,7 +2,6 @@ package iouseph.api;
 
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.http.NameValuePair;
@@ -77,14 +76,7 @@ public class DeezerClient extends NetworkWrapper implements Iapi{
 
 	public User get_personnal_info() {
 		String url = host + "/infos";// me?oauth_token=" + token;
-		JSONObject res = null;
-		res = get(url);
-		Iterator<String> i = res.keys();
-		while (i.hasNext()) {
-			String s = i.next();
-			System.out.println(s + " : " + res.get(s));
-		}
-		return null;
+		return this.parser.userParse(get(url));
 	}
 
 
@@ -92,13 +84,10 @@ public class DeezerClient extends NetworkWrapper implements Iapi{
 	 * @see iouseph.api.model.Iapi#get_search(java.lang.String)
 	 */
 	public List<Track> get_search(String search) {
-
 		String url = host + "/search?q=" + search;// +
 													// "&index=0&limit=5";//me?oauth_token="
 													// + token;
-		JSONObject res = null;
-		res = get(url);
-		return this.parser.tracksParse(res);
+		return this.parser.tracksParse(get(url));
 	}
 
 	/**
@@ -107,17 +96,10 @@ public class DeezerClient extends NetworkWrapper implements Iapi{
 	 * @param user_id	l'id du user dans deezer
 	 * @return un JSONObject contenant les informations de l'utilisateur
 	 */
-	public JSONObject get_user_info(String user_id) {
+	public User get_user_info(String user_id) {
 		String url = host + "user/" + user_id;// + "/playlists";// +
 												// "?client_id=" + client_id;
-		JSONObject res = get(url);
-		Iterator<String> i = res.keys();
-		while (i.hasNext()) {
-			String s = i.next();
-			System.out.println(s + " : " + res.get(s));
-		}
-
-		return res;
+		return this.parser.userParse(get(url));
 	}
 
 	/**
@@ -150,7 +132,7 @@ public class DeezerClient extends NetworkWrapper implements Iapi{
 	}
 
 	@Override
-	public Track get_tracks(String tracks) {
+	public List<Track> get_tracks() {
 		// TODO Auto-generated method stub
 		return null;
 	}

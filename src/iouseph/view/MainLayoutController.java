@@ -89,16 +89,14 @@ public class MainLayoutController {
 			artistNameLabel.setText(track.getArtist());
 			albumTitleLabel.setText(track.getAlbum());
 			// duration.setText(Float.toString(track.getDuration()));
-			Image image = new Image(track.getImage());
-			coverImage.setImage(image);
+			coverImage.setImage(new Image(track.getImage()));
 			loadTrack(track.getExternalUrl());
 		} else {
 			// track is null, remove all the text.
 			trackTitleLabel.setText("Title");
 			artistNameLabel.setText("Artist");
 			albumTitleLabel.setText("Album");
-			Image image = new Image("file:res/Iouseph-logo.png");
-			coverImage.setImage(image);
+			coverImage.setImage(new Image("file:res/Iouseph-logo.png"));
 			loadTrack("https://github.com/elKokito/iouseph");
 		}
 	}
@@ -145,7 +143,7 @@ public class MainLayoutController {
 
 	/**
 	 * verifie si le bouton ENTRER est cliquer, si c'est le cas la methode
-	 * {@link SearchBox#refresh()} est executee
+	 * {@link MainLayoutController#handleSearch()} est executee
 	 *
 	 * @param ke
 	 *            valeur du bouton clique
@@ -160,6 +158,11 @@ public class MainLayoutController {
 	@FXML
 	private void handleSearch() {
 		api = new DeezerClient();
+		try {
+			api.retreive_token();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		mainController.getTracks().clear();
 		mainController.getTracks().addAll(api.get_search(searchTextField.getText()));
 		mainController.getPlaylists().clear();

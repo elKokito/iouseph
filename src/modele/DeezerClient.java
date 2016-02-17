@@ -10,9 +10,6 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
-import iouseph.model.Playlist;
-import iouseph.model.Track;
-
 
 public class DeezerClient implements Iapi {
 
@@ -20,6 +17,7 @@ public class DeezerClient implements Iapi {
 	private String app_id = "171795";
 	private String secret = "a460f3efd5e3e0c98af00730d882b5f0";
 	private String redirect_uri = "http://localhost:9999/callback";
+	@SuppressWarnings("unused")
 	private String access_token = "";
 
 	public void retreive_token() throws Exception {

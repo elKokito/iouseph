@@ -17,6 +17,8 @@ import iouseph.model.User;
  */
 public interface Iapi {
 
+	public String retreive_token() throws Exception;
+
 	/**
 	 * methode servant a faire une recherche de chason de facon general
 	 *
@@ -44,7 +46,7 @@ public interface Iapi {
 	 */
 	public Track get_track(String track_id);
 
-	public Track get_tracks(String tracks);
+	public List<Track> get_tracks();
 
 	public Track set_playlists(List<Playlist> playlists);
 

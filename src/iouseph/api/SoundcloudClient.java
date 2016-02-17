@@ -1,4 +1,4 @@
-package modele;
+package iouseph.api;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,10 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import iouseph.model.Playlist;
+import iouseph.model.Track;
+import iouseph.model.User;
+
 
 /** client utilisant l'API public de Soundcloud [https://developers.soundcloud.com/docs/api/reference]
  * et respectant l'interface Iapi
@@ -15,7 +19,7 @@ import org.json.JSONObject;
  * @author Marcial Lopez-Ferrada
  *
  */
-public class SoundcloudClient implements Iapi {
+public class SoundcloudClient extends NetworkWrapper implements Iapi {
 
 	/**
 	 * String qui contient l'url de l'api de Soundcloud
@@ -38,6 +42,16 @@ public class SoundcloudClient implements Iapi {
 	 * @param username 	String username de l'utilisateur
 	 * @param password	String password de l'utilisateur
 	 */
+
+	private IParser parser;
+
+
+	public SoundcloudClient() {
+		this.parser = new SoundCloudParser();
+	}
+
+	public String retreive_token(){
+		return token;}
 	public void retreive_token(String username, String password) {
 
 		String url = "https://api.soundcloud.com/oauth2/token";
@@ -50,7 +64,7 @@ public class SoundcloudClient implements Iapi {
 		body_args.add(new BasicNameValuePair("password", password));
 		body_args.add(new BasicNameValuePair("scope", "non-expiring"));
 
-		JSONObject res = NetworkWrapper.post(url, body_args);
+		JSONObject res = post(url, body_args);
 		token = res.getString("access_token");
 
 	}
@@ -58,13 +72,9 @@ public class SoundcloudClient implements Iapi {
 	/**
 	 * methode permettant de recuperer l'information personnel de l'utilisateur
 	 */
-	public JSONObject get_personnal_info() {
-
+	public User get_personnal_info() {
 		String url = host + "me?oauth_token=" + token;
-		JSONObject res = NetworkWrapper.get(url);
-		System.out.println(res.toString());
-
-		return res;
+		return this.parser.userParse(get(url));
 	}
 
 	/** methode permettant de recuperer l'information d'un membre de soundcloud
@@ -72,7 +82,7 @@ public class SoundcloudClient implements Iapi {
 	 */
 	public JSONObject get_user_info(String user_id) {
 		String url = host + "users/" + user_id + "?client_id=" + client_id;
-		JSONObject res = NetworkWrapper.get(url);
+		JSONObject res = get(url);
 		System.out.println(res.toString());
 
 		return res;
@@ -80,38 +90,54 @@ public class SoundcloudClient implements Iapi {
 
 	public JSONObject  resolve(String soundcloud_url) {
 		String url = host + "resolve?url=" + soundcloud_url + "&client_id=" + client_id;
-		JSONObject res = NetworkWrapper.get(url);
+		JSONObject res = get(url);
 		System.out.println(res.toString());
 
 		return res;
 	}
 
-	public void get_tracks() {
+	public List<Track> get_tracks() {
 		String url = host + "tracks?client_id=" + client_id;
-		JSONArray res = NetworkWrapper.get_array(url);
-		System.out.println(res.toString());
+		return this.parser.tracksParse(get_array(url));
 	}
 
 	@Override
-	public JSONObject get_search(String query) {
+	public List<Track> get_search(String query) {
 		// TODO fix return
 		String url = host + "tracks?q=" + query + "&client_id=" + client_id;
-		JSONArray res = NetworkWrapper.get_array(url);
+		JSONArray res = get_array(url);
 		System.out.println(res.toString());
 		return null;
 
 	}
 
 	@Override
-	public JSONObject get_track(String song_id) {
+	public Track get_track(String song_id) {
 		String url = host + "tracks/" + song_id + "?client_id=" + client_id;
-		JSONObject res = NetworkWrapper.get(url);
-		System.out.println(res.toString());
-
-		return res;
+		return this.parser.trackParse(get(url));
 	}
 
 
+
+	@Override
+	public List<Track> get_playlist(String playlist_id) {
+		String url = null;// TODO Auto-generated method stub
+		return this.parser.playlistIdParse(get(url));
+
+	}
+
+	@Override
+	public List<Playlist> get_playlists(String search) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Track set_playlists(List<Playlist> playlists) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+/*
 	@Override
 	public JSONObject get_album(String album_id) {
 		// TODO Auto-generated method stub
@@ -146,21 +172,5 @@ public class SoundcloudClient implements Iapi {
 
 		return res;
 
-	}
-
-	@Override
-	public JSONObject get_playlist(String playlist_id) {
-		// TODO Auto-generated method stub
-		JSONObject res = null;
-
-		return res;
-
-	}
-
-	@Override
-	public JSONObject get_playlists(String search) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	}*/
 }

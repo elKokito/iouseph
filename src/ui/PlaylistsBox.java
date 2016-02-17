@@ -5,15 +5,11 @@ import java.util.List;
 
 import org.json.JSONObject;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
-import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -30,12 +26,12 @@ public class PlaylistsBox extends VBox {
 
 	/**
 	 * cree la section Playlists de la vue
-	 * 
+	 *
 	 * @param uI_HEIGHT
 	 *            pour la longueur de la fenetre
 	 * @param uI_WIDTH
 	 *            pour la largeur de la fenetre
-	 * 
+	 *
 	 * @see VBox,
 	 */
 	public PlaylistsBox(double uI_HEIGHT, double uI_WIDTH) {
@@ -61,7 +57,7 @@ public class PlaylistsBox extends VBox {
 
 	/**
 	 * actualise la liste des playlists dans la vue
-	 * 
+	 *
 	 * @param json
 	 */
 	public void setList(JSONObject json) {
@@ -79,7 +75,7 @@ public class PlaylistsBox extends VBox {
 	/**
 	 * remplit un item de la list, y ajout le EventHandler pour actualiser le
 	 * TracksBox
-	 * 
+	 *
 	 * @param playlist
 	 * @return VBox
 	 * @see VBox

@@ -1,4 +1,4 @@
-package modele;
+package iouseph.api;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,8 +20,12 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import iouseph.model.Playlist;
+import iouseph.model.Track;
+import iouseph.model.User;
 
-public class SpotifyClient implements Iapi {
+
+public class SpotifyClient extends NetworkWrapper implements Iapi {
 
 	private String host = "https://accounts.spotify.com";
 	private String client_id = "ccb24bc509974a72babd14e92902f816";
@@ -31,6 +35,15 @@ public class SpotifyClient implements Iapi {
 	private String access_token;
 	Thread myMainThread ;
 	private Map<String, String> lastItemSearchedInfo = new HashMap<String, String>();
+
+	private IParser parser;
+
+
+
+	public SpotifyClient() {
+		this.parser = new SpotifyParser();
+	}
+
 
 	/**
 	 * @throws Exception
@@ -77,7 +90,7 @@ public class SpotifyClient implements Iapi {
 
 		String encodedBytes = "";//TODO Base64.encode((client_id + ":" + client_secret).getBytes());
 
-		JSONObject res_json = NetworkWrapper.post(url, body_args, "Authorization", "Basic " + encodedBytes);
+		JSONObject res_json = post(url, body_args, "Authorization", "Basic " + encodedBytes);
 		access_token = res_json.getString("access_token");
 	}
 
@@ -86,12 +99,9 @@ public class SpotifyClient implements Iapi {
 	 *
 	 * @see modele.Iapi#get_personnal_info()
 	 */
-	public JSONObject get_personnal_info() {
+	public User get_personnal_info() {
 		String url = "https://api.spotify.com/v1/me";
-		JSONObject res = NetworkWrapper.get(url, "Authorization", "Bearer " + access_token);
-		System.out.println(res.toString());
-
-		return res;
+		return this.parser.userParse(get(url, "Authorization", "Bearer " + access_token));
 	}
 
 	/**
@@ -108,7 +118,7 @@ public class SpotifyClient implements Iapi {
 		url += paramString;
 
 		System.out.println(url);
-		JSONObject res_json = NetworkWrapper.get(url);
+		JSONObject res_json = get(url);
 		// format
 		res_json = res_json.getJSONObject("tracks");
 		JSONArray jsonobjectsArray = (JSONArray) res_json.get("items");
@@ -141,7 +151,7 @@ public class SpotifyClient implements Iapi {
 		url += paramString;
 
 		System.out.println(url);
-		JSONObject res_json = NetworkWrapper.get(url);
+		JSONObject res_json = get(url);
 		System.out.println(res_json);
 
 		return res_json;
@@ -161,7 +171,7 @@ public class SpotifyClient implements Iapi {
 		url += paramString;
 
 		System.out.println(url);
-		JSONObject res_json = NetworkWrapper.get(url);
+		JSONObject res_json = get(url);
 
 		// format
 		res_json = res_json.getJSONObject("albums");
@@ -183,10 +193,9 @@ public class SpotifyClient implements Iapi {
 	/**
 	 * @param user_id
 	 */
-	public void get_user_info(String user_id) {
+	public User get_user_info(String user_id) {
 		String url = "https://api.spotify.com/v1/users/" + user_id;
-		JSONObject res_json = NetworkWrapper.get(url);
-		System.out.println(res_json);
+		return this.parser.userParse(get(url));
 	}
 
 	/*
@@ -195,74 +204,21 @@ public class SpotifyClient implements Iapi {
 	 * @see modele.Iapi#get_search(java.lang.String)
 	 */
 	@Override
-	public JSONObject get_search(String search) {
+	public List<Track> get_search(String search) {
 		return null;
 		// TODO Auto-generated method stub
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see modele.Iapi#get_album(java.lang.String)
-	 */
-	@Override
-	public JSONObject get_album(String album_id) {
-		// TODO Auto-generated method stub
-		JSONObject res = null;
-
-		return res;
-	}
-
 	/**
+	 * @return
 	 *
 	 */
-	public void get_tracks() {
+	public List<Track> get_tracks() {
 		String url = "https://api.spotify.com/v1/me/tracks";
-		JSONObject res_json = NetworkWrapper.get(url, "Authorization", "Bearer " + access_token);
-		System.out.println("List of tracks");
-		System.out.println(res_json);
+		return this.parser.tracksParse(get(url, "Authorization", "Bearer " + access_token));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see modele.Iapi#get_artist(java.lang.String)
-	 */
-	@Override
-	public JSONObject  get_artist(String artist_id) {
-		// TODO Auto-generated method stub
-		JSONObject res = null;
-
-		return res;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see modele.Iapi#get_genres()
-	 */
-	@Override
-	public JSONObject get_genres() {
-		// TODO Auto-generated method stub
-		JSONObject res = null;
-
-		return res;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see modele.Iapi#get_genre(java.lang.String)
-	 */
-	@Override
-	public JSONObject get_genre(String genre_id) {
-		// TODO Auto-generated method stub
-		JSONObject res = null;
-
-		return res;
-
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -270,11 +226,9 @@ public class SpotifyClient implements Iapi {
 	 * @see modele.Iapi#get_playlist(java.lang.String)
 	 */
 	@Override
-	public JSONObject get_playlist(String playlist_id) {
+	public List<Track> get_playlist(String playlist_id) {
 		// TODO Auto-generated method stub
-		JSONObject res = null;
-
-		return res;
+		return this.parser.playlistIdParse(null);
 
 	}
 
@@ -284,21 +238,32 @@ public class SpotifyClient implements Iapi {
 	 * @see modele.Iapi#get_track(java.lang.String)
 	 */
 	@Override
-	public JSONObject get_track(String track_id) {
+	public Track get_track(String track_id) {
 		String url = "https://api.spotify.com/v1/tracks/" + track_id;
-
-		JSONObject res = NetworkWrapper.get(url, "Authorization", "Bearer " + access_token);
-		System.out.println("track");
-		System.out.println(res.toString());
-
-		return res;
+		return this.parser.trackParse(get(url, "Authorization", "Bearer " + access_token));
 	}
 
 	@Override
-	public JSONObject get_playlists(String search) {
+	public List<Playlist> get_playlists(String search) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+	@Override
+	public String retreive_token() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Track set_playlists(List<Playlist> playlists) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 	void runServer(final int port)
 	{
 		myMainThread = new Thread ( new Runnable() {
@@ -373,4 +338,5 @@ public class SpotifyClient implements Iapi {
 		System.out.println("server closed");
 		myMainThread.interrupt();
 	}
+
 }

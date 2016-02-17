@@ -1,7 +1,5 @@
 package modele;
 
-import java.util.List;
-
 import org.json.JSONObject;
 
 /**

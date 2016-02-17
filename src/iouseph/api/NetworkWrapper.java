@@ -24,7 +24,7 @@ import org.json.JSONObject;
 /**
  * classe NetworkWrapper pour faciliter l'envoie de requete http
  *
- * @author Marcial Lopez-Ferrada
+ * @author Marcial Lopez-Ferrada, Youssef Zemmahi, Aymen Zalila
  *
  */
 public abstract class NetworkWrapper {
@@ -37,37 +37,10 @@ public abstract class NetworkWrapper {
 	 * @return object contenant la reponse qui respecte le format json
 	 */
 	public NetworkWrapper() {
-
 	}
 
-	public static JSONObject get(String url) {
-
-		CloseableHttpClient httpclient = HttpClients.createDefault();
-		System.out.println("sending GET: " + url);
-		HttpGet get = new HttpGet(url);
-
-		CloseableHttpResponse httpresponse = null;
-		try {
-			httpresponse = httpclient.execute(get);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		JSONObject res_json = null;
-		if (httpresponse.getStatusLine().getStatusCode() == 200) {
-			try {
-				res_json = read_response(httpresponse.getEntity().getContent());
-			} catch (UnsupportedOperationException | IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			// System.out.println(res_json.toString());
-		} else {
-			System.out.println("error");
-			System.out.println(httpresponse.getStatusLine().getReasonPhrase());
-		}
-		return res_json;
+	public JSONObject get(String url) {
+		return get(url, null, null);
 	}
 
 	/**
@@ -81,33 +54,29 @@ public abstract class NetworkWrapper {
 	 *            valeur de l'entete
 	 * @return object contenant la reponse qui respecte le format json
 	 */
-	public static JSONObject get(String url, String HeaderName, String HeaderValue) {
+	public JSONObject get(String url, String HeaderName, String HeaderValue) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpGet get = new HttpGet(url);
+		if ((HeaderName != null) && (HeaderValue != null))
+			get.setHeader(HeaderName, HeaderValue);
 
-		get.setHeader(HeaderName, HeaderValue);
 		CloseableHttpResponse httpresponse = null;
 		try {
 			httpresponse = httpclient.execute(get);
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		JSONObject res_json = null;
 		if (httpresponse.getStatusLine().getStatusCode() == 200) {
-			System.out.println("access granted");
 			try {
-				res_json = read_response(httpresponse.getEntity().getContent());
+				return read_response_object(httpresponse.getEntity().getContent());
 			} catch (UnsupportedOperationException | IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 		} else {
-			System.out.println("access denied");
+			System.out.println("error");
 			System.out.println(httpresponse.getStatusLine().getStatusCode());
 		}
-		return res_json;
+		return null;
 	}
 
 	/**
@@ -118,34 +87,28 @@ public abstract class NetworkWrapper {
 	 *            url demander
 	 * @return object retourner par la requete sous forme de liste
 	 */
-	public static JSONArray get_array(String url) {
-
+	public JSONArray get_array(String url) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
-		System.out.println("sending GET: " + url);
 		HttpGet get = new HttpGet(url);
 
 		CloseableHttpResponse httpresponse = null;
 		try {
 			httpresponse = httpclient.execute(get);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		JSONArray res_json = null;
 		if (httpresponse.getStatusLine().getStatusCode() == 200) {
 			try {
-				res_json = read_response_array(httpresponse.getEntity().getContent());
+				return read_response_array(httpresponse.getEntity().getContent());
 			} catch (UnsupportedOperationException | IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			// System.out.println(res_json.toString());
 		} else {
 			System.out.println("error");
 			System.out.println(httpresponse.getStatusLine().getReasonPhrase());
 		}
-		return res_json;
+		return null;
 	}
 
 	/**
@@ -157,34 +120,8 @@ public abstract class NetworkWrapper {
 	 *            argument a ajouter dans le corps(body) de la requete
 	 * @return object contenant la reponse qui respecte le format json
 	 */
-	public static JSONObject post(String url, List<NameValuePair> body_args) {
-
-		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpPost post = new HttpPost(url);
-		post.setEntity(new UrlEncodedFormEntity(body_args, Consts.UTF_8));
-
-		CloseableHttpResponse httpresponse = null;
-		try {
-			httpresponse = httpclient.execute(post);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		JSONObject res_json = null;
-		if (httpresponse.getStatusLine().getStatusCode() == 200) {
-			try {
-				res_json = read_response(httpresponse.getEntity().getContent());
-			} catch (UnsupportedOperationException | IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} else {
-			System.out.println("error");
-			System.out.println(httpresponse.getStatusLine().getReasonPhrase());
-		}
-
-		return res_json;
+	public JSONObject post(String url, List<NameValuePair> body_args) {
+		return post(url, body_args, null, null);
 	}
 
 	/**
@@ -200,34 +137,32 @@ public abstract class NetworkWrapper {
 	 *            valeur de l'entete
 	 * @return object contenant la reponse qui respecte le format json
 	 */
-	public static JSONObject post(String url, List<NameValuePair> body_args, String HeaderName, String HeaderValue) {
+	public JSONObject post(String url, List<NameValuePair> body_args, String HeaderName, String HeaderValue) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost post = new HttpPost(url);
 		post.setEntity(new UrlEncodedFormEntity(body_args, Consts.UTF_8));
 		// client_id:secret_id en base 64
-		post.setHeader(HeaderName, HeaderValue);
+		if ((HeaderName != null) && (HeaderValue != null))
+			post.setHeader(HeaderName, HeaderValue);
 
 		CloseableHttpResponse httpresponse = null;
 		try {
 			httpresponse = httpclient.execute(post);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		JSONObject res_json = null;
+
 		if (httpresponse.getStatusLine().getStatusCode() == 200) {
 			System.out.println("access granted");
 			try {
-				res_json = read_response(httpresponse.getEntity().getContent());
+				return read_response_object(httpresponse.getEntity().getContent());
 			} catch (UnsupportedOperationException | IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} else {
 			System.out.println("access denied");
 		}
-
-		return res_json;
+		return null;
 	}
 
 	/**
@@ -237,7 +172,7 @@ public abstract class NetworkWrapper {
 	 *            reponse recu
 	 * @return retourne la reponse sous forme de JSONObject
 	 */
-	private static JSONObject read_response(InputStream r) {
+	private StringBuffer read_response(InputStream r) {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(r));
 
 		String inputLine;
@@ -248,18 +183,19 @@ public abstract class NetworkWrapper {
 				response.append(inputLine);
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		System.out.println(response);
 		try {
 			reader.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		JSONObject res_json = new JSONObject(response.toString());
-		return res_json;
+		return response;
+	}
+
+	private JSONObject read_response_object(InputStream r) {
+		return new JSONObject(read_response(r));
 	}
 
 	/**
@@ -269,39 +205,19 @@ public abstract class NetworkWrapper {
 	 *            reponse recu
 	 * @return retourne la reponse sour forme de list JSONArray
 	 */
-	private static JSONArray read_response_array(InputStream r) {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(r));
-
-		String inputLine;
-		StringBuffer response = new StringBuffer();
-
-		try {
-			while ((inputLine = reader.readLine()) != null) {
-				response.append(inputLine);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		System.out.println(response);
-		try {
-			reader.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		JSONArray res_json = new JSONArray(response.toString());
-		return res_json;
+	private JSONArray read_response_array(InputStream r) {
+		return new JSONArray(read_response(r));
 	}
 
 	// un serveur se met en ecoute pour recuperer le code d'authorization
 	@SuppressWarnings("resource")
-	public static String runServerToListen(int port) throws Exception {
+	public String runServerToListen(int port) throws Exception {
 		final int portNumber = port;
 		System.out.println("Creating server socket on port " + portNumber);
 		ServerSocket serverSocket = null;
 		try {
 			serverSocket = new ServerSocket(portNumber);
 		} catch (IOException e2) {
-			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
 		Socket socket = null;
