@@ -172,7 +172,7 @@ public abstract class NetworkWrapper {
 	 *            reponse recu
 	 * @return retourne la reponse sous forme de JSONObject
 	 */
-	private StringBuffer read_response(InputStream r) {
+	private String read_response(InputStream r) {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(r));
 
 		String inputLine;
@@ -191,7 +191,7 @@ public abstract class NetworkWrapper {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return response;
+		return response.toString();
 	}
 
 	private JSONObject read_response_object(InputStream r) {

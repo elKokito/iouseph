@@ -48,7 +48,7 @@ public interface Iapi {
 
 	public List<Track> get_tracks();
 
-	public Track set_playlists(List<Playlist> playlists);
+	public boolean set_playlists(List<Playlist> playlists);
 
 
 	/**

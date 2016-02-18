@@ -45,11 +45,11 @@ public class SoundcloudClient extends NetworkWrapper implements Iapi {
 
 	private IParser parser;
 
-
 	public SoundcloudClient() {
 		this.parser = new SoundCloudParser();
 	}
 
+	@Override
 	public String retreive_token(){
 		return token;}
 	public void retreive_token(String username, String password) {
@@ -72,6 +72,7 @@ public class SoundcloudClient extends NetworkWrapper implements Iapi {
 	/**
 	 * methode permettant de recuperer l'information personnel de l'utilisateur
 	 */
+	@Override
 	public User get_personnal_info() {
 		String url = host + "me?oauth_token=" + token;
 		return this.parser.userParse(get(url));
@@ -96,9 +97,10 @@ public class SoundcloudClient extends NetworkWrapper implements Iapi {
 		return res;
 	}
 
+	@Override
 	public List<Track> get_tracks() {
 		String url = host + "tracks?client_id=" + client_id;
-		return this.parser.tracksParse(get_array(url));
+		return this.parser.tracksParse(get_array(url)); //TODO si possible changer en JSONObject
 	}
 
 	@Override
@@ -133,12 +135,11 @@ public class SoundcloudClient extends NetworkWrapper implements Iapi {
 	}
 
 	@Override
-	public Track set_playlists(List<Playlist> playlists) {
+	public boolean set_playlists(List<Playlist> playlists) {
 		// TODO Auto-generated method stub
-		return null;
+		return true;
 	}
-/*
-	@Override
+/* prochaines versions
 	public JSONObject get_album(String album_id) {
 		// TODO Auto-generated method stub
 		JSONObject res = null;
@@ -146,8 +147,6 @@ public class SoundcloudClient extends NetworkWrapper implements Iapi {
 		return res;
 
 	}
-
-	@Override
 	public JSONObject get_artist(String artist_id) {
 		// TODO Auto-generated method stub
 		JSONObject res = null;
@@ -155,8 +154,6 @@ public class SoundcloudClient extends NetworkWrapper implements Iapi {
 		return res;
 
 	}
-
-	@Override
 	public JSONObject get_genres() {
 		// TODO Auto-generated method stub
 		JSONObject res = null;
@@ -164,8 +161,6 @@ public class SoundcloudClient extends NetworkWrapper implements Iapi {
 		return res;
 
 	}
-
-	@Override
 	public JSONObject  get_genre(String genre_id) {
 		// TODO Auto-generated method stub
 		JSONObject res = null;

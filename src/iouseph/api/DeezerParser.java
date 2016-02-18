@@ -29,6 +29,7 @@ public class DeezerParser implements IParser{
 		track.setArtist(((JSONObject) json.get("artist")).getString("name"));
 		track.setAlbum(((JSONObject) json.get("album")).getString("title"));
 		track.setImage(((JSONObject) json.get("album")).getString("cover_big"));
+		track.setSource("Deezer");
 		return track;
 	}
 
@@ -69,7 +70,7 @@ public class DeezerParser implements IParser{
 		playlist.setId(String.valueOf(json.getInt("id")));
 		playlist.setTitle(json.getString("title"));
 		playlist.setOwner(((JSONObject) json.get("user")).getString("name"));
-
+		playlist.setSource("Deezer");
 		return playlist;
 	}
 

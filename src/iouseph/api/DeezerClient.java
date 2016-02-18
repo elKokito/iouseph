@@ -126,9 +126,8 @@ public class DeezerClient extends NetworkWrapper implements Iapi{
 	}
 
 	public Track get_track(String track_id) {
-		// TODO Auto-generated method stub
-		return null;
-
+		String url = host + "track/" + track_id;
+		return this.parser.trackParse(get(url));
 	}
 
 	@Override
@@ -138,9 +137,9 @@ public class DeezerClient extends NetworkWrapper implements Iapi{
 	}
 
 	@Override
-	public Track set_playlists(List<Playlist> playlists) {
+	public boolean set_playlists(List<Playlist> playlists) {
 		// TODO Auto-generated method stub
-		return null;
+		return true;
 	}
 
 	//TODO ces methodes seront implementees dans les prochaines versions

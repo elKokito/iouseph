@@ -29,7 +29,7 @@ public class MainController {
      */
     public void initRootLayout() {
         try {
-            // Load root layout from fxml file.
+            // Load root layout from FXML file.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainController.class.getResource("view/RootLayout.fxml"));
             rootLayout = (BorderPane) loader.load();
@@ -102,12 +102,12 @@ public class MainController {
 
     public boolean showLoginLayout(String url) {
         try {
-            // Load the fxml file and create a new stage for the popup dialog.
+            // Load the FXML file and create a new stage for the popup.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainController.class.getResource("view/LoginLayout.fxml"));
             AnchorPane page = (AnchorPane) loader.load();
 
-            // Create the dialog Stage.
+            // Create the login Stage.
             Stage loginStage = new Stage();
             loginStage.setTitle("Login");
             loginStage.getIcons().add(new Image("file:res/Iouseph-icon.png"));
@@ -119,7 +119,6 @@ public class MainController {
             LoginLayoutController controller = loader.getController();
             controller.setLoginStage(loginStage);
 
-            // Show the dialog and wait until the user closes it
             loginStage.show();
             controller.loadTrack(url);
 

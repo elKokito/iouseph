@@ -158,11 +158,6 @@ public class MainLayoutController {
 	@FXML
 	private void handleSearch() {
 		api = new DeezerClient();
-		try {
-			api.retreive_token();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		mainController.getTracks().clear();
 		mainController.getTracks().addAll(api.get_search(searchTextField.getText()));
 		mainController.getPlaylists().clear();

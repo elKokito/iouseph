@@ -38,8 +38,6 @@ public class SpotifyClient extends NetworkWrapper implements Iapi {
 
 	private IParser parser;
 
-
-
 	public SpotifyClient() {
 		this.parser = new SpotifyParser();
 	}
@@ -99,6 +97,7 @@ public class SpotifyClient extends NetworkWrapper implements Iapi {
 	 *
 	 * @see modele.Iapi#get_personnal_info()
 	 */
+	@Override
 	public User get_personnal_info() {
 		String url = "https://api.spotify.com/v1/me";
 		return this.parser.userParse(get(url, "Authorization", "Bearer " + access_token));
@@ -214,6 +213,7 @@ public class SpotifyClient extends NetworkWrapper implements Iapi {
 	 * @return
 	 *
 	 */
+	@Override
 	public List<Track> get_tracks() {
 		String url = "https://api.spotify.com/v1/me/tracks";
 		return this.parser.tracksParse(get(url, "Authorization", "Bearer " + access_token));
@@ -258,9 +258,9 @@ public class SpotifyClient extends NetworkWrapper implements Iapi {
 
 
 	@Override
-	public Track set_playlists(List<Playlist> playlists) {
+	public boolean set_playlists(List<Playlist> playlists) {
 		// TODO Auto-generated method stub
-		return null;
+		return true;
 	}
 
 
