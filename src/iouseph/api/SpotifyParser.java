@@ -37,6 +37,18 @@ public class SpotifyParser implements IParser{
 		return currentUserTracks;
 	}
 
+	public List<Track> tracksSearchedParse(JSONObject json)
+	{
+		List<Track> currentUserTracks = new ArrayList<Track>();
+		json=json.getJSONObject("tracks");
+		JSONArray jsonobjectsArray = (JSONArray) json.get("items");
+		for(int i=0;i<jsonobjectsArray.length();i++)
+		{
+			currentUserTracks.add(trackParse(jsonobjectsArray.getJSONObject(i)));
+		}
+
+		return currentUserTracks;
+	}
 	@Override
 	public Playlist playlistParse(JSONObject json) {
 		// TODO Auto-generated method stub

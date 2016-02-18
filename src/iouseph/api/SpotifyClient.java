@@ -8,7 +8,6 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +26,6 @@ import iouseph.model.Playlist;
 import iouseph.model.Track;
 import iouseph.model.User;
 
-
 public class SpotifyClient implements Iapi {
 
 	private String host = "https://accounts.spotify.com";
@@ -36,7 +34,7 @@ public class SpotifyClient implements Iapi {
 	private String client_secret = "9e85225cb1324ee1bb7fa32be121a96c";
 	private String redirect_uri = "http://localhost:8888/callback";
 	private String access_token;
-	Thread myMainThread ;
+	Thread myMainThread;
 	private Map<String, String> lastItemSearchedInfo = new HashMap<String, String>();
 
 	private IParser parser;
@@ -45,11 +43,10 @@ public class SpotifyClient implements Iapi {
 		this.parser = new SpotifyParser();
 	}
 
-
 	/**
 	 * @throws Exception
 	 */
-	public String  GetAuthorizationUrl() {
+	public String GetAuthorizationUrl() {
 		String url = host + "/authorize/?";
 		String scope = "playlist-read-private playlist-read-collaborative playlist-modify-public "
 				+ "playlist-modify-private streaming user-follow-modify user-follow-read user-library-read "
@@ -74,9 +71,7 @@ public class SpotifyClient implements Iapi {
 		return url;
 	}
 
-
-	public void retreive_token(String code_retrieved)
-	{
+	public void retreive_token(String code_retrieved) {
 		String url = host + "/api/token";
 		// recuperation de la partie qui nous importe
 		// format du code GET
@@ -223,10 +218,10 @@ public class SpotifyClient implements Iapi {
 		url += paramString;
 
 		System.out.println(url);
-		//JSONObject res_json = NetworkWrapper.get(url);
-		List<Track> myTrackList=this.parser.tracksParse(NetworkWrapper.get(url).getJSONObject("tracks"));
+		JSONObject res_json = NetworkWrapper.get(url);
+		System.out.println(res_json);
+		List<Track> myTrackList = ((SpotifyParser) this.parser).tracksSearchedParse(NetworkWrapper.get(url));
 		return myTrackList;
-
 	}
 
 	/**
@@ -236,10 +231,10 @@ public class SpotifyClient implements Iapi {
 	@Override
 	public List<Track> get_tracks() {
 		String url = "https://api.spotify.com/v1/me/tracks";
-		List<Track> myTrackList=this.parser.tracksParse(NetworkWrapper.get(url, "Authorization", "Bearer " + access_token));
+		List<Track> myTrackList = this.parser
+				.tracksParse(NetworkWrapper.get(url, "Authorization", "Bearer " + access_token));
 		return myTrackList;
 	}
-
 
 	/*
 	 * (non-Javadoc)
@@ -250,10 +245,8 @@ public class SpotifyClient implements Iapi {
 	public List<Track> get_playlist(String playlist_id) {
 
 		String url = "https://api.spotify.com/v1/me/playlists";
-	System.out.println(NetworkWrapper.get(url, "Authorization", "Bearer " + access_token));
-
+		System.out.println(NetworkWrapper.get(url, "Authorization", "Bearer " + access_token));
 		return null;
-
 	}
 
 	/*
@@ -273,13 +266,11 @@ public class SpotifyClient implements Iapi {
 		return null;
 	}
 
-
 	@Override
 	public String retreive_token() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 
 	@Override
 	public boolean set_playlists(List<Playlist> playlists) {
@@ -287,78 +278,76 @@ public class SpotifyClient implements Iapi {
 		return true;
 	}
 
+	void runServer(final int port) {
+		myMainThread = new Thread(new Runnable() {
 
-	void runServer(final int port)
-	{
-		myMainThread = new Thread ( new Runnable() {
+			public void run() {
+				final int portNumber = port;
+				System.out.println("Creating server socket on port " + portNumber);
+				ServerSocket serverSocket = null;
+				try {
+					serverSocket = new ServerSocket(portNumber);
+				} catch (IOException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+				Socket socket = null;
+				try {
+					socket = serverSocket.accept();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					OutputStream os = socket.getOutputStream();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				BufferedReader br = null;
+				try {
+					br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				String str = null;
+				try {
+					str = br.readLine();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
-		public	void run() {
-		final int portNumber = port;
-		System.out.println("Creating server socket on port " + portNumber);
-		ServerSocket serverSocket = null;
-		try {
-			serverSocket = new ServerSocket(portNumber);
-		} catch (IOException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
-		Socket socket = null;
-		try {
-			socket = serverSocket.accept();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			OutputStream os = socket.getOutputStream();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		BufferedReader br = null;
-		try {
-			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		String str = null;
-		try {
-			str = br.readLine();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		String response = "<html><h3>MERCI</h3></html>";
-		PrintWriter out = null;
-		try {
-			out = new PrintWriter(socket.getOutputStream());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		out.println("HTTP/1.1 200 OK");
-		out.println("Content-Type: text/html");
-		out.println("Content-Length: " + response.length());
-		out.println();
-		out.println(response);
-		out.flush();
-		out.close();
-		try {
-			socket.close();
-			retreive_token(str) ;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		}});
+				String response = "<html><h3>MERCI</h3></html>";
+				PrintWriter out = null;
+				try {
+					out = new PrintWriter(socket.getOutputStream());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				out.println("HTTP/1.1 200 OK");
+				out.println("Content-Type: text/html");
+				out.println("Content-Length: " + response.length());
+				out.println();
+				out.println(response);
+				out.flush();
+				out.close();
+				try {
+					socket.close();
+					retreive_token(str);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
 
 		myMainThread.start();
 	}
 
-	void stopServer()
-	{
+	void stopServer() {
 		System.out.println("server closed");
 		myMainThread.interrupt();
 	}
