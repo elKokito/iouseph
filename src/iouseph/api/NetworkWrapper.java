@@ -39,7 +39,7 @@ public abstract class NetworkWrapper {
 	public NetworkWrapper() {
 	}
 
-	public JSONObject get(String url) {
+	public static JSONObject get(String url) {
 		return get(url, null, null);
 	}
 
@@ -54,7 +54,7 @@ public abstract class NetworkWrapper {
 	 *            valeur de l'entete
 	 * @return object contenant la reponse qui respecte le format json
 	 */
-	public JSONObject get(String url, String HeaderName, String HeaderValue) {
+	public static JSONObject get(String url, String HeaderName, String HeaderValue) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpGet get = new HttpGet(url);
 		if ((HeaderName != null) && (HeaderValue != null))
@@ -87,7 +87,7 @@ public abstract class NetworkWrapper {
 	 *            url demander
 	 * @return object retourner par la requete sous forme de liste
 	 */
-	public JSONArray get_array(String url) {
+	public static JSONArray get_array(String url) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpGet get = new HttpGet(url);
 
@@ -120,7 +120,7 @@ public abstract class NetworkWrapper {
 	 *            argument a ajouter dans le corps(body) de la requete
 	 * @return object contenant la reponse qui respecte le format json
 	 */
-	public JSONObject post(String url, List<NameValuePair> body_args) {
+	public static JSONObject post(String url, List<NameValuePair> body_args) {
 		return post(url, body_args, null, null);
 	}
 
@@ -137,7 +137,7 @@ public abstract class NetworkWrapper {
 	 *            valeur de l'entete
 	 * @return object contenant la reponse qui respecte le format json
 	 */
-	public JSONObject post(String url, List<NameValuePair> body_args, String HeaderName, String HeaderValue) {
+	public static JSONObject post(String url, List<NameValuePair> body_args, String HeaderName, String HeaderValue) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost post = new HttpPost(url);
 		post.setEntity(new UrlEncodedFormEntity(body_args, Consts.UTF_8));
@@ -172,7 +172,7 @@ public abstract class NetworkWrapper {
 	 *            reponse recu
 	 * @return retourne la reponse sous forme de JSONObject
 	 */
-	private String read_response(InputStream r) {
+	private static String read_response(InputStream r) {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(r));
 
 		String inputLine;
@@ -194,7 +194,7 @@ public abstract class NetworkWrapper {
 		return response.toString();
 	}
 
-	private JSONObject read_response_object(InputStream r) {
+	private static JSONObject read_response_object(InputStream r) {
 		return new JSONObject(read_response(r));
 	}
 
@@ -205,7 +205,7 @@ public abstract class NetworkWrapper {
 	 *            reponse recu
 	 * @return retourne la reponse sour forme de list JSONArray
 	 */
-	private JSONArray read_response_array(InputStream r) {
+	private static JSONArray read_response_array(InputStream r) {
 		return new JSONArray(read_response(r));
 	}
 

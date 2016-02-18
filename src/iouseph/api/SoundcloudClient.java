@@ -100,7 +100,8 @@ public class SoundcloudClient extends NetworkWrapper implements Iapi {
 	@Override
 	public List<Track> get_tracks() {
 		String url = host + "tracks?client_id=" + client_id;
-		return this.parser.tracksParse(get_array(url)); //TODO si possible changer en JSONObject
+		//return this.parser.tracksParse(get_array(url)); //TODO si possible changer en JSONObject
+		return null;
 	}
 
 	@Override

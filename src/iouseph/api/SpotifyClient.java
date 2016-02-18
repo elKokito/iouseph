@@ -7,8 +7,9 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,12 +21,14 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+
 import iouseph.model.Playlist;
 import iouseph.model.Track;
 import iouseph.model.User;
 
 
-public class SpotifyClient extends NetworkWrapper implements Iapi {
+public class SpotifyClient implements Iapi {
 
 	private String host = "https://accounts.spotify.com";
 	private String client_id = "ccb24bc509974a72babd14e92902f816";
@@ -61,7 +64,12 @@ public class SpotifyClient extends NetworkWrapper implements Iapi {
 		url += paramString;
 		// redirect
 		System.out.println(url);
-		//java.awt.Desktop.getDesktop().browse(new URI(url));
+		try {
+			java.awt.Desktop.getDesktop().browse(new URI(url));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		runServer(8888);
 		return url;
 	}
@@ -70,7 +78,6 @@ public class SpotifyClient extends NetworkWrapper implements Iapi {
 	public void retreive_token(String code_retrieved)
 	{
 		String url = host + "/api/token";
-		stopServer();
 		// recuperation de la partie qui nous importe
 		// format du code GET
 		// exemple
@@ -86,10 +93,12 @@ public class SpotifyClient extends NetworkWrapper implements Iapi {
 		body_args.add(new BasicNameValuePair("code", code_retrieved));
 		// client_id:secret_id en base 64
 
-		String encodedBytes = "";//TODO Base64.encode((client_id + ":" + client_secret).getBytes());
+		String encodedBytes = Base64.encode((client_id + ":" + client_secret).getBytes());
 
-		JSONObject res_json = post(url, body_args, "Authorization", "Basic " + encodedBytes);
+		JSONObject res_json = NetworkWrapper.post(url, body_args, "Authorization", "Basic " + encodedBytes);
 		access_token = res_json.getString("access_token");
+		stopServer();
+
 	}
 
 	/*
@@ -100,7 +109,7 @@ public class SpotifyClient extends NetworkWrapper implements Iapi {
 	@Override
 	public User get_personnal_info() {
 		String url = "https://api.spotify.com/v1/me";
-		return this.parser.userParse(get(url, "Authorization", "Bearer " + access_token));
+		return this.parser.userParse(NetworkWrapper.get(url, "Authorization", "Bearer " + access_token));
 	}
 
 	/**
@@ -117,10 +126,11 @@ public class SpotifyClient extends NetworkWrapper implements Iapi {
 		url += paramString;
 
 		System.out.println(url);
-		JSONObject res_json = get(url);
+		JSONObject res_json = NetworkWrapper.get(url);
 		// format
 		res_json = res_json.getJSONObject("tracks");
 		JSONArray jsonobjectsArray = (JSONArray) res_json.get("items");
+
 		// returning the tracks found
 		String MyKey, external_urls;
 		lastItemSearchedInfo.clear();
@@ -150,7 +160,7 @@ public class SpotifyClient extends NetworkWrapper implements Iapi {
 		url += paramString;
 
 		System.out.println(url);
-		JSONObject res_json = get(url);
+		JSONObject res_json = NetworkWrapper.get(url);
 		System.out.println(res_json);
 
 		return res_json;
@@ -170,7 +180,7 @@ public class SpotifyClient extends NetworkWrapper implements Iapi {
 		url += paramString;
 
 		System.out.println(url);
-		JSONObject res_json = get(url);
+		JSONObject res_json = NetworkWrapper.get(url);
 
 		// format
 		res_json = res_json.getJSONObject("albums");
@@ -194,7 +204,7 @@ public class SpotifyClient extends NetworkWrapper implements Iapi {
 	 */
 	public User get_user_info(String user_id) {
 		String url = "https://api.spotify.com/v1/users/" + user_id;
-		return this.parser.userParse(get(url));
+		return this.parser.userParse(NetworkWrapper.get(url));
 	}
 
 	/*
@@ -204,8 +214,18 @@ public class SpotifyClient extends NetworkWrapper implements Iapi {
 	 */
 	@Override
 	public List<Track> get_search(String search) {
-		return null;
-		// TODO Auto-generated method stub
+		String url = "https://api.spotify.com/v1/search?";
+		List<NameValuePair> body_args = new ArrayList<NameValuePair>();
+		body_args.add(new BasicNameValuePair("q", search));
+		body_args.add(new BasicNameValuePair("type", "track"));
+		String paramString = URLEncodedUtils.format(body_args, "utf-8");
+
+		url += paramString;
+
+		System.out.println(url);
+		//JSONObject res_json = NetworkWrapper.get(url);
+		List<Track> myTrackList=this.parser.tracksParse(NetworkWrapper.get(url).getJSONObject("tracks"));
+		return myTrackList;
 
 	}
 
@@ -216,7 +236,8 @@ public class SpotifyClient extends NetworkWrapper implements Iapi {
 	@Override
 	public List<Track> get_tracks() {
 		String url = "https://api.spotify.com/v1/me/tracks";
-		return this.parser.tracksParse(get(url, "Authorization", "Bearer " + access_token));
+		List<Track> myTrackList=this.parser.tracksParse(NetworkWrapper.get(url, "Authorization", "Bearer " + access_token));
+		return myTrackList;
 	}
 
 
@@ -227,8 +248,11 @@ public class SpotifyClient extends NetworkWrapper implements Iapi {
 	 */
 	@Override
 	public List<Track> get_playlist(String playlist_id) {
-		// TODO Auto-generated method stub
-		return this.parser.playlistIdParse(null);
+
+		String url = "https://api.spotify.com/v1/me/playlists";
+	System.out.println(NetworkWrapper.get(url, "Authorization", "Bearer " + access_token));
+
+		return null;
 
 	}
 
@@ -240,7 +264,7 @@ public class SpotifyClient extends NetworkWrapper implements Iapi {
 	@Override
 	public Track get_track(String track_id) {
 		String url = "https://api.spotify.com/v1/tracks/" + track_id;
-		return this.parser.trackParse(get(url, "Authorization", "Bearer " + access_token));
+		return this.parser.trackParse(NetworkWrapper.get(url, "Authorization", "Bearer " + access_token));
 	}
 
 	@Override
@@ -324,7 +348,7 @@ public class SpotifyClient extends NetworkWrapper implements Iapi {
 		try {
 			socket.close();
 			retreive_token(str) ;
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
