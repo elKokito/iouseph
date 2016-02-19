@@ -19,23 +19,24 @@ public class Playlist {
 	private StringProperty title;
 	private StringProperty owner;
 	private StringProperty source;
-	private String url;
+	private StringProperty url;
 	private ListProperty<Track> tracks;
 	private SpotifyParser parser;
 
 	public Playlist() {
-		this(null, null, null, null, null);
+		this(null, null, null, null, null,null);
 		parser =new SpotifyParser();
 	}
 
 	public Playlist(String id, String title, String owner, String source,
-			List<Track> tracks) {
+			List<Track> tracks, String url) {
 		super();
 		this.id = new SimpleStringProperty(id);
 		this.title = new SimpleStringProperty(title);
 		this.owner = new SimpleStringProperty(owner);
 		this.source = new SimpleStringProperty(source);
 		this.tracks = new SimpleListProperty<Track>(javafx.collections.FXCollections.observableList(new ArrayList<Track>()));
+		this.url=new SimpleStringProperty(url);
 		parser =new SpotifyParser();
 	}
 
@@ -62,7 +63,7 @@ public class Playlist {
 	}
 	public void initiliasePlayList(String HeaderName, String HeaderValue)
 	{
-		JSONObject json = NetworkWrapper.get(url,HeaderName,HeaderValue);
+		JSONObject json = NetworkWrapper.get(url.get(),HeaderName,HeaderValue);
 		List<Track> myTracks= parser.tracksParse(json);
 		for(int i=0;i<myTracks.size();i++)
 		{
@@ -121,11 +122,11 @@ public class Playlist {
 	}
 
 	public String getUrl() {
-		return url;
+		return url.get();
 	}
 
 	public void setUrl(String myurl) {
-		this.url=myurl;
+		this.url.set(myurl);
 		System.out.println(myurl);
 	}
 }

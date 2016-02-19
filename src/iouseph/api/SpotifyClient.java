@@ -1,24 +1,13 @@
 package iouseph.api;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.lang.reflect.Method;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
@@ -31,12 +20,9 @@ public class SpotifyClient implements Iapi {
 
 	private String host = "https://accounts.spotify.com";
 	private String client_id = "ccb24bc509974a72babd14e92902f816";
-	@SuppressWarnings("unused")
 	private String client_secret = "9e85225cb1324ee1bb7fa32be121a96c";
 	private String redirect_uri = "http://localhost:8888/callback";
 	private String access_token;
-	Thread myMainThread;
-	private Map<String, String> lastItemSearchedInfo = new HashMap<String, String>();
 
 	private IParser parser;
 

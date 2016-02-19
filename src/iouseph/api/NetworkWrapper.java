@@ -31,7 +31,7 @@ import org.json.JSONObject;
  */
 public abstract class NetworkWrapper {
 
-	static Thread myMainThread;
+	static Thread MyServerThread;
 	/**
 	 * methode permettant d'envoyer une requete http GET
 	 *
@@ -215,7 +215,7 @@ public abstract class NetworkWrapper {
 	// un serveur se met en ecoute pour recuperer le code d'authorization
 	@SuppressWarnings("resource")
 	public static void runServerToListen(int port,Object object, Method methodToInvoke )  {
-		myMainThread = new Thread(new Runnable() {
+		MyServerThread = new Thread(new Runnable() {
 
 			public void run() {
 				final int portNumber = port;
@@ -280,7 +280,7 @@ public abstract class NetworkWrapper {
 			}
 		});
 
-		myMainThread.start();
+		MyServerThread.start();
 
 	}
 	static private void InvokeMethod(Object object ,Method method, String message)
@@ -301,6 +301,6 @@ public abstract class NetworkWrapper {
 	}
 	static private void stopServer() {
 		System.out.println("server closed");
-		myMainThread.interrupt();
+		MyServerThread.interrupt();
 	}
 }
