@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
@@ -29,6 +31,7 @@ import org.json.JSONObject;
  */
 public abstract class NetworkWrapper {
 
+	static Thread myMainThread;
 	/**
 	 * methode permettant d'envoyer une requete http GET
 	 *
@@ -211,35 +214,93 @@ public abstract class NetworkWrapper {
 
 	// un serveur se met en ecoute pour recuperer le code d'authorization
 	@SuppressWarnings("resource")
-	public String runServerToListen(int port) throws Exception {
-		final int portNumber = port;
-		System.out.println("Creating server socket on port " + portNumber);
-		ServerSocket serverSocket = null;
+	public static void runServerToListen(int port,Object object, Method methodToInvoke )  {
+		myMainThread = new Thread(new Runnable() {
+
+			public void run() {
+				final int portNumber = port;
+				System.out.println("Creating server socket on port " + portNumber);
+				ServerSocket serverSocket = null;
+				try {
+					serverSocket = new ServerSocket(portNumber);
+				} catch (IOException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+				Socket socket = null;
+				try {
+					socket = serverSocket.accept();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					OutputStream os = socket.getOutputStream();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				BufferedReader br = null;
+				try {
+					br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				String str = null;
+				try {
+					str = br.readLine();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				String response = "<html><h3>MERCI</h3></html>";
+				PrintWriter out = null;
+				try {
+					out = new PrintWriter(socket.getOutputStream());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				out.println("HTTP/1.1 200 OK");
+				out.println("Content-Type: text/html");
+				out.println("Content-Length: " + response.length());
+				out.println();
+				out.println(response);
+				out.flush();
+				out.close();
+				try {
+					socket.close();
+					InvokeMethod(object,methodToInvoke,str);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+
+		myMainThread.start();
+
+	}
+	static private void InvokeMethod(Object object ,Method method, String message)
+	{
 		try {
-			serverSocket = new ServerSocket(portNumber);
-		} catch (IOException e2) {
-			e2.printStackTrace();
+			method.invoke(object, message);
+			stopServer();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		Socket socket = null;
-		socket = serverSocket.accept();
-		OutputStream os = socket.getOutputStream();
-		BufferedReader br = null;
-		br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		String str = null;
-		str = br.readLine();
-
-		String response = "<html><h3>MERCI</h3></html>";
-		PrintWriter out = new PrintWriter(socket.getOutputStream());
-		out.println("HTTP/1.1 200 OK");
-		out.println("Content-Type: text/html");
-		out.println("Content-Length: " + response.length());
-		out.println();
-		out.println(response);
-		out.flush();
-		out.close();
-		socket.close();
-
-		return str;
-
+	}
+	static private void stopServer() {
+		System.out.println("server closed");
+		myMainThread.interrupt();
 	}
 }

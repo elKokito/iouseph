@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.lang.reflect.Method;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URI;
@@ -67,7 +68,18 @@ public class SpotifyClient implements Iapi {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		runServer(8888);
+		//runServer(8888);
+		Class[] parameterTypes = new Class[1];
+        parameterTypes[0] = String.class;
+        Method method1;
+		try {
+			method1 = SpotifyClient.class.getMethod("retreive_token", parameterTypes);
+			NetworkWrapper.runServerToListen(8888,this,method1);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		return url;
 	}
 
@@ -92,7 +104,7 @@ public class SpotifyClient implements Iapi {
 
 		JSONObject res_json = NetworkWrapper.post(url, body_args, "Authorization", "Basic " + encodedBytes);
 		access_token = res_json.getString("access_token");
-		stopServer();
+		//stopServer();
 
 	}
 
