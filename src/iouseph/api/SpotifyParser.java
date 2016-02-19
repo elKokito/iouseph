@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import iouseph.model.Playlist;
 import iouseph.model.Track;
 import iouseph.model.User;
+import sun.net.www.content.text.plain;
 
 public class SpotifyParser implements IParser{
 
@@ -51,15 +52,24 @@ public class SpotifyParser implements IParser{
 	}
 	@Override
 	public Playlist playlistParse(JSONObject json) {
-		// TODO Auto-generated method stub
-		return null;
+		Playlist myplaylist=new Playlist();
+		myplaylist.setId(json.getString("id"));
+		myplaylist.setOwner(json.getJSONObject("owner").getString("id"));
+		myplaylist.setUrl(json.getJSONObject("tracks").getString("href"));
+		return myplaylist;
 	}
 
 	@Override
 	public List<Playlist> playlistsParse(JSONObject json) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Playlist> myPlaylists = new ArrayList<Playlist>();
+		JSONArray jsonobjectsArray = json.getJSONArray("items");
+		for(int i=0;i<jsonobjectsArray.length();i++)
+		{
+			myPlaylists.add(playlistParse(jsonobjectsArray.getJSONObject(i)));
+		}
+		return myPlaylists;
 	}
+
 
 	@Override
 	public List<Track> playlistIdParse(JSONObject json) {

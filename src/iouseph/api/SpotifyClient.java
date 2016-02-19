@@ -246,6 +246,13 @@ public class SpotifyClient implements Iapi {
 
 		String url = "https://api.spotify.com/v1/me/playlists";
 		System.out.println(NetworkWrapper.get(url, "Authorization", "Bearer " + access_token));
+		List<Playlist> myPlaylists = this.parser.playlistsParse(NetworkWrapper.get(url, "Authorization", "Bearer " + access_token));
+		for(int i=0;i<myPlaylists.size();i++)
+		{
+			myPlaylists.get(i).initiliasePlayList("Authorization", "Bearer " + access_token);
+		}
+
+		//return myPlaylists;
 		return null;
 	}
 
