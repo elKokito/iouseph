@@ -14,7 +14,7 @@ import iouseph.model.Track;
 import iouseph.model.User;
 
 
-public class DeezerClient extends NetworkWrapper implements Iapi{
+public class DeezerClient implements Iapi{
 
 	private final String host = "https://api.deezer.com/";
 	private String app_id = "171795";
@@ -53,7 +53,7 @@ public class DeezerClient extends NetworkWrapper implements Iapi{
 		url += paramString;
 		System.out.println(url);
 		java.awt.Desktop.getDesktop().browse(new URI(url));
-		String code_retrieved = runServerToListen(9999);
+		String code_retrieved = NetworkWrapper.runServerToListen(9999);
 		System.out.println(code_retrieved);
 		url = "https://connect.deezer.com/oauth/access_token.php?";
 		String[] parts = code_retrieved.split("=");
@@ -68,7 +68,7 @@ public class DeezerClient extends NetworkWrapper implements Iapi{
 
 		//url += "app_id=" + app_id + "&secret=" + secret + "&code="+ code_retrieved;
 		url += paramString;
-		JSONObject res_json = post(url, body_args);
+		JSONObject res_json = NetworkWrapper.post(url, body_args);
 		access_token = res_json.getString("access_token");
 
 		return access_token;
@@ -76,7 +76,7 @@ public class DeezerClient extends NetworkWrapper implements Iapi{
 
 	public User get_personnal_info() {
 		String url = host + "/infos";// me?oauth_token=" + token;
-		return this.parser.userParse(get(url));
+		return this.parser.userParse(NetworkWrapper.get(url));
 	}
 
 
@@ -87,7 +87,7 @@ public class DeezerClient extends NetworkWrapper implements Iapi{
 		String url = host + "/search?q=" + search;// +
 													// "&index=0&limit=5";//me?oauth_token="
 													// + token;
-		return this.parser.tracksParse(get(url));
+		return this.parser.tracksParse(NetworkWrapper.get(url));
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class DeezerClient extends NetworkWrapper implements Iapi{
 	public User get_user_info(String user_id) {
 		String url = host + "user/" + user_id;// + "/playlists";// +
 												// "?client_id=" + client_id;
-		return this.parser.userParse(get(url));
+		return this.parser.userParse(NetworkWrapper.get(url));
 	}
 
 	/**
@@ -111,7 +111,7 @@ public class DeezerClient extends NetworkWrapper implements Iapi{
 	 */
 	public List<Playlist> get_playlists(String search) {
 		String url = host + "/search/playlist?q=" + search;
-		return this.parser.playlistsParse(get(url));
+		return this.parser.playlistsParse(NetworkWrapper.get(url));
 	}
 
 	/*
@@ -122,12 +122,12 @@ public class DeezerClient extends NetworkWrapper implements Iapi{
 	@Override
 	public List<Track> get_playlist(String playlist_id) {
 		String url = host + "/playlist/" + playlist_id + "/tracks";
-		return this.parser.playlistIdParse(get(url));
+		return this.parser.playlistIdParse(NetworkWrapper.get(url));
 	}
 
 	public Track get_track(String track_id) {
 		String url = host + "track/" + track_id;
-		return this.parser.trackParse(get(url));
+		return this.parser.trackParse(NetworkWrapper.get(url));
 	}
 
 	@Override

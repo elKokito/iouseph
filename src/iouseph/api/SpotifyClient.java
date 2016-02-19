@@ -123,7 +123,7 @@ public class SpotifyClient implements Iapi {
 	 * @param item
 	 * @return
 	 */
-	public Set<String> getListOfTracks(String item) {
+/*	public Set<String> getListOfTracks(String item) {
 		String url = "https://api.spotify.com/v1/search?";
 		List<NameValuePair> body_args = new ArrayList<NameValuePair>();
 		body_args.add(new BasicNameValuePair("q", item));
@@ -151,7 +151,7 @@ public class SpotifyClient implements Iapi {
 			lastItemSearchedInfo.put(MyKey, external_urls);
 		}
 		return lastItemSearchedInfo.keySet();
-	}
+	}*/
 
 	/**
 	 * @param item
@@ -177,7 +177,7 @@ public class SpotifyClient implements Iapi {
 	 * @param item
 	 * @return
 	 */
-	public Set<String> getListOfAlbum(String item) {
+	/*public Set<String> getListOfAlbum(String item) {
 		String url = "https://api.spotify.com/v1/search?";
 		List<NameValuePair> body_args = new ArrayList<NameValuePair>();
 		body_args.add(new BasicNameValuePair("q", item));
@@ -204,7 +204,7 @@ public class SpotifyClient implements Iapi {
 			lastItemSearchedInfo.put(MyKey, external_urls);
 		}
 		return lastItemSearchedInfo.keySet();
-	}
+	}*/
 
 	/**
 	 * @param user_id
@@ -297,7 +297,7 @@ public class SpotifyClient implements Iapi {
 		return true;
 	}
 
-	void runServer(final int port) {
+	/*void runServer(final int port) {
 		myMainThread = new Thread(new Runnable() {
 
 			public void run() {
@@ -369,6 +369,6 @@ public class SpotifyClient implements Iapi {
 	void stopServer() {
 		System.out.println("server closed");
 		myMainThread.interrupt();
-	}
+	}*/
 
 }

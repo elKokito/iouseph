@@ -19,7 +19,7 @@ import iouseph.model.User;
  * @author Marcial Lopez-Ferrada
  *
  */
-public class SoundcloudClient extends NetworkWrapper implements Iapi {
+public class SoundcloudClient implements Iapi {
 
 	/**
 	 * String qui contient l'url de l'api de Soundcloud
@@ -64,7 +64,7 @@ public class SoundcloudClient extends NetworkWrapper implements Iapi {
 		body_args.add(new BasicNameValuePair("password", password));
 		body_args.add(new BasicNameValuePair("scope", "non-expiring"));
 
-		JSONObject res = post(url, body_args);
+		JSONObject res = NetworkWrapper.post(url, body_args);
 		token = res.getString("access_token");
 
 	}
@@ -75,7 +75,7 @@ public class SoundcloudClient extends NetworkWrapper implements Iapi {
 	@Override
 	public User get_personnal_info() {
 		String url = host + "me?oauth_token=" + token;
-		return this.parser.userParse(get(url));
+		return this.parser.userParse(NetworkWrapper.get(url));
 	}
 
 	/** methode permettant de recuperer l'information d'un membre de soundcloud
@@ -83,7 +83,7 @@ public class SoundcloudClient extends NetworkWrapper implements Iapi {
 	 */
 	public JSONObject get_user_info(String user_id) {
 		String url = host + "users/" + user_id + "?client_id=" + client_id;
-		JSONObject res = get(url);
+		JSONObject res = NetworkWrapper.get(url);
 		System.out.println(res.toString());
 
 		return res;
@@ -91,7 +91,7 @@ public class SoundcloudClient extends NetworkWrapper implements Iapi {
 
 	public JSONObject  resolve(String soundcloud_url) {
 		String url = host + "resolve?url=" + soundcloud_url + "&client_id=" + client_id;
-		JSONObject res = get(url);
+		JSONObject res = NetworkWrapper.get(url);
 		System.out.println(res.toString());
 
 		return res;
@@ -108,7 +108,7 @@ public class SoundcloudClient extends NetworkWrapper implements Iapi {
 	public List<Track> get_search(String query) {
 		// TODO fix return
 		String url = host + "tracks?q=" + query + "&client_id=" + client_id;
-		JSONArray res = get_array(url);
+		JSONArray res = NetworkWrapper.get_array(url);
 		System.out.println(res.toString());
 		return null;
 
@@ -117,7 +117,7 @@ public class SoundcloudClient extends NetworkWrapper implements Iapi {
 	@Override
 	public Track get_track(String song_id) {
 		String url = host + "tracks/" + song_id + "?client_id=" + client_id;
-		return this.parser.trackParse(get(url));
+		return this.parser.trackParse(NetworkWrapper.get(url));
 	}
 
 
@@ -125,7 +125,7 @@ public class SoundcloudClient extends NetworkWrapper implements Iapi {
 	@Override
 	public List<Track> get_playlist(String playlist_id) {
 		String url = null;// TODO Auto-generated method stub
-		return this.parser.playlistIdParse(get(url));
+		return this.parser.playlistIdParse(NetworkWrapper.get(url));
 
 	}
 
