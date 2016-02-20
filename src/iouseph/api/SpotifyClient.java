@@ -3,14 +3,13 @@ package iouseph.api;
 import java.lang.reflect.Method;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
-
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 import iouseph.model.Playlist;
 import iouseph.model.Track;
@@ -86,7 +85,7 @@ public class SpotifyClient implements Iapi {
 		body_args.add(new BasicNameValuePair("code", code_retrieved));
 		// client_id:secret_id en base 64
 
-		String encodedBytes = Base64.encode((client_id + ":" + client_secret).getBytes());
+		String encodedBytes = Base64.getEncoder().encodeToString((client_id + ":" + client_secret).getBytes());
 
 		JSONObject res_json = NetworkWrapper.post(url, body_args, "Authorization", "Basic " + encodedBytes);
 		access_token = res_json.getString("access_token");

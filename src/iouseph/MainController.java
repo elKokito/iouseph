@@ -4,8 +4,6 @@ import java.io.IOException;
 
 import iouseph.model.Playlist;
 import iouseph.model.Track;
-import iouseph.view.LoginLayoutController;
-import iouseph.view.MainLayoutController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;

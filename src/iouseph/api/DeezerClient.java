@@ -1,5 +1,6 @@
 package iouseph.api;
 
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +54,9 @@ public class DeezerClient implements Iapi{
 		url += paramString;
 		System.out.println(url);
 		java.awt.Desktop.getDesktop().browse(new URI(url));
-		String code_retrieved = NetworkWrapper.runServerToListen(9999);
+		Method method = null;
+		String code_retrieved ="";
+		NetworkWrapper.runServerToListen(9999, this, method);
 		System.out.println(code_retrieved);
 		url = "https://connect.deezer.com/oauth/access_token.php?";
 		String[] parts = code_retrieved.split("=");

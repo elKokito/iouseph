@@ -18,6 +18,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.json.JSONArray;
@@ -142,7 +143,7 @@ public abstract class NetworkWrapper {
 	 */
 	public static JSONObject post(String url, List<NameValuePair> body_args, String HeaderName, String HeaderValue) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpPost post = new HttpPost(url);
+		HttpPost post = new HttpPost(url);//TODO encripter
 		post.setEntity(new UrlEncodedFormEntity(body_args, Consts.UTF_8));
 		// client_id:secret_id en base 64
 		if ((HeaderName != null) && (HeaderValue != null))
@@ -214,7 +215,7 @@ public abstract class NetworkWrapper {
 
 	// un serveur se met en ecoute pour recuperer le code d'authorization
 	@SuppressWarnings("resource")
-	public static void runServerToListen(int port,Object object, Method methodToInvoke )  {
+	public static void runServerToListen(int port, Object object, Method methodToInvoke )  {
 		MyServerThread = new Thread(new Runnable() {
 
 			public void run() {

@@ -1,6 +1,5 @@
-package iouseph.view;
+package iouseph;
 
-import iouseph.MainController;
 import iouseph.api.DeezerClient;
 import iouseph.api.Iapi;
 import iouseph.model.Playlist;
