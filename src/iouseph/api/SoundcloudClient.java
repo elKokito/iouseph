@@ -82,7 +82,7 @@ public class SoundcloudClient implements Iapi {
 	 * @param user_id	id du membre rechercher
 	 */
 	public JSONObject get_user_info(String user_id) {
-		String url = host + "users/" + user_id + "?client_id=" + client_id;
+		String url = host + "users/" + NetworkWrapper.encode(user_id) + "?client_id=" + client_id;
 		JSONObject res = NetworkWrapper.get(url);
 		System.out.println(res.toString());
 
@@ -90,7 +90,7 @@ public class SoundcloudClient implements Iapi {
 	}
 
 	public JSONObject  resolve(String soundcloud_url) {
-		String url = host + "resolve?url=" + soundcloud_url + "&client_id=" + client_id;
+		String url = host + "resolve?url=" + NetworkWrapper.encode(soundcloud_url) + "&client_id=" + client_id;
 		JSONObject res = NetworkWrapper.get(url);
 		System.out.println(res.toString());
 
@@ -107,7 +107,7 @@ public class SoundcloudClient implements Iapi {
 	@Override
 	public List<Track> get_search(String query) {
 		// TODO fix return
-		String url = host + "tracks?q=" + query + "&client_id=" + client_id;
+		String url = host + "tracks?q=" + NetworkWrapper.encode(query) + "&client_id=" + client_id;
 		JSONArray res = NetworkWrapper.get_array(url);
 		System.out.println(res.toString());
 		return null;
@@ -116,7 +116,7 @@ public class SoundcloudClient implements Iapi {
 
 	@Override
 	public Track get_track(String song_id) {
-		String url = host + "tracks/" + song_id + "?client_id=" + client_id;
+		String url = host + "tracks/" + NetworkWrapper.encode(song_id) + "?client_id=" + client_id;
 		return this.parser.trackParse(NetworkWrapper.get(url));
 	}
 

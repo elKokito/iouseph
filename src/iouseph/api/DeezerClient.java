@@ -1,7 +1,9 @@
 package iouseph.api;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,7 +89,7 @@ public class DeezerClient implements Iapi{
 	 * @see iouseph.api.model.Iapi#get_search(java.lang.String)
 	 */
 	public List<Track> get_search(String search) {
-		String url = host + "/search?q=" + search;// +
+		String url = host + "/search?q=" + NetworkWrapper.encode(search);// +
 													// "&index=0&limit=5";//me?oauth_token="
 													// + token;
 		return this.parser.tracksParse(NetworkWrapper.get(url));
@@ -100,7 +102,7 @@ public class DeezerClient implements Iapi{
 	 * @return un JSONObject contenant les informations de l'utilisateur
 	 */
 	public User get_user_info(String user_id) {
-		String url = host + "user/" + user_id;// + "/playlists";// +
+		String url = host + "user/" + NetworkWrapper.encode(user_id);// + "/playlists";// +
 												// "?client_id=" + client_id;
 		return this.parser.userParse(NetworkWrapper.get(url));
 	}
@@ -113,7 +115,7 @@ public class DeezerClient implements Iapi{
 	 * @see iouseph.api.model.Iapi#get_playlists(java.lang.String)
 	 */
 	public List<Playlist> get_playlists(String search) {
-		String url = host + "/search/playlist?q=" + search;
+		String url = host + "/search/playlist?q=" + NetworkWrapper.encode(search);
 		return this.parser.playlistsParse(NetworkWrapper.get(url));
 	}
 
@@ -124,12 +126,12 @@ public class DeezerClient implements Iapi{
 	 */
 	@Override
 	public List<Track> get_playlist(String playlist_id) {
-		String url = host + "/playlist/" + playlist_id + "/tracks";
+		String url = host + "/playlist/" + NetworkWrapper.encode(playlist_id) + "/tracks";
 		return this.parser.playlistIdParse(NetworkWrapper.get(url));
 	}
 
 	public Track get_track(String track_id) {
-		String url = host + "track/" + track_id;
+		String url = host + "track/" + NetworkWrapper.encode(track_id);
 		return this.parser.trackParse(NetworkWrapper.get(url));
 	}
 

@@ -6,10 +6,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URLEncoder;
 import java.util.List;
 
 import org.apache.http.Consts;
@@ -18,7 +20,6 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.json.JSONArray;
@@ -30,7 +31,7 @@ import org.json.JSONObject;
  * @author Marcial Lopez-Ferrada, Youssef Zemmahi, Aymen Zalila
  *
  */
-public abstract class NetworkWrapper {
+public final class NetworkWrapper {
 
 	static Thread MyServerThread;
 	/**
@@ -41,6 +42,16 @@ public abstract class NetworkWrapper {
 	 * @return object contenant la reponse qui respecte le format json
 	 */
 	public NetworkWrapper() {
+	}
+
+	public static String encode(String s){
+		try {
+			return URLEncoder.encode(s, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return s;
 	}
 
 	public static JSONObject get(String url) {

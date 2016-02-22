@@ -2,6 +2,7 @@ package iouseph;
 
 import iouseph.api.DeezerClient;
 import iouseph.api.Iapi;
+import iouseph.api.SpotifyClient;
 import iouseph.model.Playlist;
 import iouseph.model.Track;
 import javafx.fxml.FXML;

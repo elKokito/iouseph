@@ -108,40 +108,6 @@ public class SpotifyClient implements Iapi {
 	 * @param item
 	 * @return
 	 */
-/*	public Set<String> getListOfTracks(String item) {
-		String url = "https://api.spotify.com/v1/search?";
-		List<NameValuePair> body_args = new ArrayList<NameValuePair>();
-		body_args.add(new BasicNameValuePair("q", item));
-		body_args.add(new BasicNameValuePair("type", "track"));
-		String paramString = URLEncodedUtils.format(body_args, "utf-8");
-
-		url += paramString;
-
-		System.out.println(url);
-		JSONObject res_json = NetworkWrapper.get(url);
-		// format
-		res_json = res_json.getJSONObject("tracks");
-		JSONArray jsonobjectsArray = (JSONArray) res_json.get("items");
-
-		// returning the tracks found
-		String MyKey, external_urls;
-		lastItemSearchedInfo.clear();
-		for (int i = 0; i < jsonobjectsArray.length(); i++) {
-			// cle est titre-artiste
-			String title = jsonobjectsArray.getJSONObject(i).getString("name");
-			String artist = jsonobjectsArray.getJSONObject(i).getJSONArray("artists").getJSONObject(0)
-					.getString("name");
-			external_urls = jsonobjectsArray.getJSONObject(i).getJSONObject("external_urls").getString("spotify");
-			MyKey = title + " - " + artist;
-			lastItemSearchedInfo.put(MyKey, external_urls);
-		}
-		return lastItemSearchedInfo.keySet();
-	}*/
-
-	/**
-	 * @param item
-	 * @return
-	 */
 	public JSONObject getListOfArtist(String item) {
 		String url = "https://api.spotify.com/v1/search?";
 		List<NameValuePair> body_args = new ArrayList<NameValuePair>();
@@ -158,44 +124,11 @@ public class SpotifyClient implements Iapi {
 		return res_json;
 	}
 
-	/**
-	 * @param item
-	 * @return
-	 */
-	/*public Set<String> getListOfAlbum(String item) {
-		String url = "https://api.spotify.com/v1/search?";
-		List<NameValuePair> body_args = new ArrayList<NameValuePair>();
-		body_args.add(new BasicNameValuePair("q", item));
-		body_args.add(new BasicNameValuePair("type", "album"));
-		String paramString = URLEncodedUtils.format(body_args, "utf-8");
-
-		url += paramString;
-
-		System.out.println(url);
-		JSONObject res_json = NetworkWrapper.get(url);
-
-		// format
-		res_json = res_json.getJSONObject("albums");
-		JSONArray jsonobjectsArray = (JSONArray) res_json.get("items");
-		// returning the tracks found
-		String MyKey, albumType, external_urls;
-		lastItemSearchedInfo.clear();
-		for (int i = 0; i < jsonobjectsArray.length(); i++) {
-			// cle est titre-artiste
-			MyKey = jsonobjectsArray.getJSONObject(i).getString("name");
-			albumType = jsonobjectsArray.getJSONObject(i).getString("album_type");
-			external_urls = jsonobjectsArray.getJSONObject(i).getJSONObject("external_urls").getString("spotify");
-			MyKey += " - " + albumType;
-			lastItemSearchedInfo.put(MyKey, external_urls);
-		}
-		return lastItemSearchedInfo.keySet();
-	}*/
-
-	/**
+		/**
 	 * @param user_id
 	 */
 	public User get_user_info(String user_id) {
-		String url = "https://api.spotify.com/v1/users/" + user_id;
+		String url = "https://api.spotify.com/v1/users/" + NetworkWrapper.encode(user_id);
 		return this.parser.userParse(NetworkWrapper.get(url));
 	}
 
@@ -250,7 +183,7 @@ public class SpotifyClient implements Iapi {
 		}
 
 		//return myPlaylists;
-		return null;
+		return myPlaylists.get(0).getTracks();
 	}
 
 	/*
@@ -260,14 +193,21 @@ public class SpotifyClient implements Iapi {
 	 */
 	@Override
 	public Track get_track(String track_id) {
-		String url = "https://api.spotify.com/v1/tracks/" + track_id;
+		String url = "https://api.spotify.com/v1/tracks/" + NetworkWrapper.encode(track_id);
 		return this.parser.trackParse(NetworkWrapper.get(url, "Authorization", "Bearer " + access_token));
 	}
 
 	@Override
 	public List<Playlist> get_playlists(String search) {
-		// TODO Auto-generated method stub
-		return null;
+		String url = "https://api.spotify.com/v1/me/playlists";
+		System.out.println(NetworkWrapper.get(url, "Authorization", "Bearer " + access_token));
+		List<Playlist> myPlaylists = this.parser.playlistsParse(NetworkWrapper.get(url, "Authorization", "Bearer " + access_token));
+		for(int i=0;i<myPlaylists.size();i++)
+		{
+			myPlaylists.get(i).initiliasePlayList("Authorization", "Bearer " + access_token);
+		}
+
+		return myPlaylists;
 	}
 
 	@Override
@@ -282,78 +222,4 @@ public class SpotifyClient implements Iapi {
 		return true;
 	}
 
-	/*void runServer(final int port) {
-		myMainThread = new Thread(new Runnable() {
-
-			public void run() {
-				final int portNumber = port;
-				System.out.println("Creating server socket on port " + portNumber);
-				ServerSocket serverSocket = null;
-				try {
-					serverSocket = new ServerSocket(portNumber);
-				} catch (IOException e2) {
-					// TODO Auto-generated catch block
-					e2.printStackTrace();
-				}
-				Socket socket = null;
-				try {
-					socket = serverSocket.accept();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				try {
-					OutputStream os = socket.getOutputStream();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				BufferedReader br = null;
-				try {
-					br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				String str = null;
-				try {
-					str = br.readLine();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-				String response = "<html><h3>MERCI</h3></html>";
-				PrintWriter out = null;
-				try {
-					out = new PrintWriter(socket.getOutputStream());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				out.println("HTTP/1.1 200 OK");
-				out.println("Content-Type: text/html");
-				out.println("Content-Length: " + response.length());
-				out.println();
-				out.println(response);
-				out.flush();
-				out.close();
-				try {
-					socket.close();
-					retreive_token(str);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		});
-
-		myMainThread.start();
 	}
-
-	void stopServer() {
-		System.out.println("server closed");
-		myMainThread.interrupt();
-	}*/
-
-}
