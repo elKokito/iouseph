@@ -179,7 +179,7 @@ public class SpotifyClient implements Iapi {
 		List<Playlist> myPlaylists = this.parser.playlistsParse(NetworkWrapper.get(url, "Authorization", "Bearer " + access_token));
 		for(int i=0;i<myPlaylists.size();i++)
 		{
-			myPlaylists.get(i).initiliasePlayList("Authorization", "Bearer " + access_token);
+			//myPlaylists.get(i).initiliasePlayList("Authorization", "Bearer " + access_token);
 		}
 
 		//return myPlaylists;
@@ -204,7 +204,7 @@ public class SpotifyClient implements Iapi {
 		List<Playlist> myPlaylists = this.parser.playlistsParse(NetworkWrapper.get(url, "Authorization", "Bearer " + access_token));
 		for(int i=0;i<myPlaylists.size();i++)
 		{
-			myPlaylists.get(i).initiliasePlayList("Authorization", "Bearer " + access_token);
+			//myPlaylists.get(i).initiliasePlayList("Authorization", "Bearer " + access_token);
 		}
 
 		return myPlaylists;

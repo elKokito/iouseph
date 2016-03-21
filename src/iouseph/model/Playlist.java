@@ -3,10 +3,6 @@ package iouseph.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONObject;
-
-import iouseph.api.NetworkWrapper;
-import iouseph.api.SpotifyParser;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -21,11 +17,9 @@ public class Playlist {
 	private StringProperty source;
 	private StringProperty url;
 	private ListProperty<Track> tracks;
-	private SpotifyParser parser;
 
 	public Playlist() {
 		this(null, null, null, null, null,null);
-		parser =new SpotifyParser();
 	}
 
 	public Playlist(String id, String title, String owner, String source,
@@ -37,7 +31,6 @@ public class Playlist {
 		this.source = new SimpleStringProperty(source);
 		this.tracks = new SimpleListProperty<Track>(javafx.collections.FXCollections.observableList(new ArrayList<Track>()));
 		this.url=new SimpleStringProperty(url);
-		parser =new SpotifyParser();
 	}
 
 
@@ -61,15 +54,7 @@ public class Playlist {
 		}
 		return false;
 	}
-	public void initiliasePlayList(String HeaderName, String HeaderValue)
-	{
-		JSONObject json = NetworkWrapper.get(url.get(),HeaderName,HeaderValue);
-		List<Track> myTracks= parser.tracksParse(json);
-		for(int i=0;i<myTracks.size();i++)
-		{
-			tracks.add(myTracks.get(i));
-		}
-	}
+
 	/**
 	 * @param track
 	 * @return

@@ -2,7 +2,6 @@ package iouseph;
 
 import iouseph.api.DeezerClient;
 import iouseph.api.Iapi;
-import iouseph.api.SpotifyClient;
 import iouseph.model.Playlist;
 import iouseph.model.Track;
 import javafx.fxml.FXML;
@@ -12,6 +11,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.web.WebView;
 
 public class MainLayoutController {
@@ -97,7 +98,7 @@ public class MainLayoutController {
 			artistNameLabel.setText("Artist");
 			albumTitleLabel.setText("Album");
 			coverImage.setImage(new Image("file:res/Iouseph-logo.png"));
-			loadTrack("https://github.com/elKokito/iouseph");
+			//loadTrack("https://github.com/elKokito/iouseph");
 		}
 	}
 
@@ -119,6 +120,10 @@ public class MainLayoutController {
 	 */
 	public void loadTrack(String url) {
 		player.getEngine().load(url);
+		Media hit = new Media(url);
+		MediaPlayer mediaPlayer = new MediaPlayer(hit);
+		mediaPlayer.play();
+
 	}
 
 	@FXML

@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -21,6 +22,7 @@ public class MainController {
     private BorderPane rootLayout;
     private ObservableList<Track> tracks = FXCollections.observableArrayList();
     private ObservableList<Playlist> playlists = FXCollections.observableArrayList();
+    MediaPlayer mediaPlayer;
 
     /**
      * Initializes the root layout.
