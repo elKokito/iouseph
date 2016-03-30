@@ -119,7 +119,7 @@ public class MainLayoutController {
 	 *            lien vers la chanson dans le service de streaming
 	 */
 	public void loadTrack(String url) {
-		player.getEngine().load(url);
+		//player.getEngine().load(url);
 		Media hit = new Media(url);
 		MediaPlayer mediaPlayer = new MediaPlayer(hit);
 		mediaPlayer.play();
